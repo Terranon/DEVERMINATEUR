@@ -15,8 +15,6 @@ int main()
     DDRD = 0x00; // PORT D est en mode entree
     
     static const short DEBOUNCETIME = 10;
-    static const int TEMPSDEDUREE = 2000;
-    static const int TEMPS_AMBRE = 100;
     static const short OFF = 0x00;
     
     while(1) {
@@ -25,13 +23,13 @@ int main()
         
         unsigned oscillator = 0;
         
-        while (PIND & 0x02) {
+        while (PIND & 0x04) {
              
             oscillator++;
             
             PORTC = oscillator >> 4;
             }
-        if (!(PIND & 0x02)) {
+        if (!(PIND & 0x04)) {
             PORTC = OFF;
         }
     }   
