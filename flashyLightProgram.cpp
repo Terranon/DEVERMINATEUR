@@ -1,7 +1,7 @@
 /*
  * Nom: Flashy light program
  * Description: Makes light flash in an alternating pattern; Green, Red, Amber 
- * Version: 2.1
+ * Version: 3.0
  */
 
 
@@ -13,33 +13,29 @@ int main()
 {
     DDRA = 0xff; // PORT A est en mode sortie
     
-    static const int TEMPSDEDUREE = 2;
+    
+    static const int TEMPSDEDUREE = 2000;
+    static const int TEMPS_AMBRE = 100;
     
     uint8_t green = 0x02, red = 0x01;
+
     
-    typedef enum { false, true } bool;
-    
-    while(true){                                        // boucle sans fin
+    while(1){                                       // boucle sans fin
         
         PORTA = green;                              // DEL en VERT
         
-        for (int i = 0; i < TEMPSDEDUREE; i++) {    // Attendre TEMPSDEDUREEx1000ms
-            _delay_ms (1000);
-        }
+        _delay_ms (TEMPSDEDUREE);            		// Attendre TEMPSDEDUREE ms
         
         PORTA = red;                                // DEL en ROUGE
         
-        for (int i = 0; i < TEMPSDEDUREE; i++) {    // Attendre TEMPSDEDUREEx1000ms
-            _delay_ms (1000);
+        _delay_ms (TEMPSDEDUREE);                   // Attendre TEMPSDEDUREE ms
+        
+        for (int i = 0; i < TEMPSDEDUREE*(1000/TEMPS_AMBRE); i++) { // Duree de temps pour la couleur ambre
+			PORTA = i >> 4;
+			_delay_us (TEMPS_AMBRE);
         }
         
-        unsigned compteur = 1;
-        PORTA = compteur >> 4;                      // DEL en AMBRE commence une fois que le compteur change de valeur
-        
-        do {                                        // Loop commence a 1 alors la condition de sortie est seulement vrais quand compteur retourne a 0
-        compteur++
-        } while (compteur != 0)
-        
+    }    
   return 0; 
 }
 
