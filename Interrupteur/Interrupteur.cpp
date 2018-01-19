@@ -1,5 +1,5 @@
 /*
- * Nom: Interupteur
+ * Nom: Interrupteur
  * Description: activates LED when button is pushed
  * Version: 1.0
  */
@@ -15,6 +15,8 @@ int main()
     DDRD = 0x00; // PORT D est en mode entree
     
     static const short DEBOUNCETIME = 10;
+    static const int TEMPSDEDUREE = 2000;
+    static const int TEMPS_AMBRE = 100;
     static const short OFF = 0x00;
     
     while(1) {

@@ -1,7 +1,7 @@
 /*
  * Nom: Flashy light program
  * Description: Makes light flash in an alternating pattern; Green, Red, Amber 
- * Version: 3.0
+ * Version: 2.1
  */
 
 
