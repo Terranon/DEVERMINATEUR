@@ -17,7 +17,7 @@ int main() {
     const short DEBOUNCETIME = 40;
     const int ONTIME = 1000;
     const uint8_t red = 0x01;
-    const uint8_t off - 0x00;
+    const uint8_t off = 0x00;
     enum state {INIT, EA} s = INIT;             // INIT = Etat initial, EA = Etat allume
     
     
@@ -41,7 +41,7 @@ int main() {
         switch(s){
 
             case INIT :
-                PORTC = off
+                PORTC = off;
                 
                 if (buttonIsPressed && !buttonWasPressed) {
                     buttonPushCounter++;
