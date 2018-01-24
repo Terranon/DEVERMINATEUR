@@ -1,7 +1,8 @@
 /****************************************************************************************
- * Nom:         Flashy light program
+ * Nom:         5_push_button
+ * Auteurs:     Maximilien Bianchi, Jean-Raphael Matte
  * Description: Si le bouton est pousser 5 fois, la DEL libre s'allume en ROUGE pour 1 seconde
- * Utilisation: Brancher fil MAUVE sur PORTC-1 et BLANC sur PORTC-2. Ensuit brancher MAUVE sur borne + et BLANC sur la borne - de DEL libre
+ * Utilisation: Brancher fil MAUVE sur PORTC broche 1 et BLANC sur PORTC broche 2. Ensuit brancher MAUVE sur broche + et BLANC sur la broche - de DEL libre
  *              Pesez bouton 5 fois pour allumer DEL libre pour 1 seconde.
  * Version:     2.1
  ***************************************************************************************/
