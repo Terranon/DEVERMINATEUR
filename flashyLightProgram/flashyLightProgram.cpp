@@ -20,7 +20,7 @@ int main()
     uint8_t green = 0x02, red = 0x01;
 
     
-    while(1){                                       // boucle sans fin
+	while (true) {                                       // boucle sans fin
         
         PORTA = green;                              // DEL en VERT
         
