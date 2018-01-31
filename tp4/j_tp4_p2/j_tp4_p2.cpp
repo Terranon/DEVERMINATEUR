@@ -27,29 +27,27 @@ const uint8_t OFF  = 0x00;
 const uint8_t FRWD = 0x01;
 const uint8_t BACK = 0x03;
 
-
-
 void sleep_us (uint16_t us) {
     
     uint16_t nLoopIterations = us / SLEEP_PRECISION; 
+    
     for (uint16_t i = 0; i < nLoopIterations; i++) {
         _delay_us(SLEEP_PRECISION);
     }
 }
 
-
-void driveMotors (uint8_t direction, uint8_t speed, uint16_t time,
+void driveMotors (uint8_t direction, uint8_t speed, uint32_t time,
                   uint16_t pwmFreqInv) {
     
-    uint16_t nLoopIterations = time / pwmFreqInv;
-    uint16_t onTime = (pwmFreqInv * speed) / 255;
+    uint32_t nLoopIterations = time / pwmFreqInv;
+    uint16_t onTime = pwmFreqInv * (speed / 255.0);
     uint16_t offTime = pwmFreqInv - onTime;
     
-    for (uint8_t i = 0; i < nLoopIterations; i++;) {
+    for (uint32_t i = 0; i < nLoopIterations; i++) {
         PORTC = direction;
         sleep_us(onTime);
         PORTC = OFF;
-        sleep_us(pwmFreqInv - onTime);
+        sleep_us(offTime);
     }
 }
 
@@ -64,7 +62,16 @@ int main () {
     // D PORT input
     DDRD = 0x00;
     
-    
+    driveMotors(FRWD, 0x00, 2'000'000, LOOP_TIME_60HZ);
+    driveMotors(FRWD, 0x40, 2'000'000, LOOP_TIME_60HZ);
+    driveMotors(FRWD, 0x80, 2'000'000, LOOP_TIME_60HZ);
+    driveMotors(FRWD, 0xc0, 2'000'000, LOOP_TIME_60HZ);
+    driveMotors(FRWD, 0xff, 2'000'000, LOOP_TIME_60HZ);
+    driveMotors(FRWD, 0x00, 2'000'000, LOOP_TIME_400HZ);
+    driveMotors(FRWD, 0x40, 2'000'000, LOOP_TIME_400HZ);
+    driveMotors(FRWD, 0x80, 2'000'000, LOOP_TIME_400HZ);
+    driveMotors(FRWD, 0xc0, 2'000'000, LOOP_TIME_400HZ);
+    driveMotors(FRWD, 0xff, 2'000'000, LOOP_TIME_400HZ);
     
     return 0;
 }
