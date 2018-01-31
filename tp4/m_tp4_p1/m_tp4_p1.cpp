@@ -16,8 +16,6 @@
  * Declaration des modes des PORTS et constantes.
  ************************************************************************************************/
 
-DDRD = 0xff; // PORT D est en mode sortie
-
 const uint16_t FREQUENCY = 1000;  // 1000 us (1 ms) correspond a une frequence de 1 kHz.
 const uint16_t ONTIME    = 3000;  // Correspond au nombre de cycle dans la fonction pwm. 
                                   // 3000 us x 1000 us donne 3 secondes pour chaque execution de la fonction pwm.
@@ -49,7 +47,7 @@ void pwm(uint8_t color, uint16_t ONTIME, uint16_t FREQUENCY) {
         uint16_t delayOff = (i/(ONTIME/FREQUENCY));
         
         PORTD = color;      // delayRed + delayOff devrait toujours s'additionner a 1000
-        wait(delayRed/10)   // on divise toujours par 10 pour compenser le multiple de 10
+        wait(delayRed/10);   // on divise toujours par 10 pour compenser le multiple de 10
                             // existant dans la fonction wait.
         PORTD = OFF;
         wait(delayOff/10);
@@ -61,6 +59,8 @@ void pwm(uint8_t color, uint16_t ONTIME, uint16_t FREQUENCY) {
  ************************************************************************************************/
 
 int main() {
+    
+    DDRD = 0xff; // PORT D est en mode sortie
     
     enum state { red, green } s = red;   
     
