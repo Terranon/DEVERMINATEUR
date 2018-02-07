@@ -1,8 +1,5 @@
-    // C PORT output
-    DDRC = 0xff;
     
-    // D PORT input
-    DDRD = 0x00;
+
     
     // in ms
     const uint8_t DEBOUNCE_TIME = 40;

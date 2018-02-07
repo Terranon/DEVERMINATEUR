@@ -20,9 +20,49 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+volatile uint8_t etat = 0;
+
+// C PORT output
+DDRC = 0xff;
+    
+// D PORT input
+DDRD = 0x00;
+
+// N'importe quel changement logique sur INT0 genere une requete d'interruption
+EICRA |= (0 << ISC01) | (1 << ISC00);
+
+
+// à prendre en charge en argument
+
+ISR (INT0_VECT) {
+
+// laisser un delai avant de confirmer la réponse du
+
+// bouton-poussoir: environ 30 ms (anti-rebond)
+
+_delay_loop_ms ( 30 );
+
+// se souvenir ici si le bouton est pressé ou relâché
+
+'modifier ici'
+
+// changements d'états tels que ceux de la
+
+// semaine précédente
+
+'modifier ici'
+
+// Voir la note plus bas pour comprendre cette instruction et son rôle
+
+EIFR |= (1 << INTF0) ;
+GPIOR0 |= (!!estPese << 0);
+
+}
+
 /******************************************************************************\
  * Main
 \******************************************************************************/
+
 int main () {
     
     
