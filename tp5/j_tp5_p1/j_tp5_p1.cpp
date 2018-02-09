@@ -14,28 +14,8 @@
 /******************************************************************************\
  * Preprocessor instructions
 \******************************************************************************/
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#define F_CPU 8000000UL
-#include <util/delay.h>
+
 #include "j_tp5_p1.h"
-
-/******************************************************************************\
- * Constants
-\******************************************************************************/
-
-
-
-/******************************************************************************\
- * Global variables
-\******************************************************************************/
-
-// List of all possible states for the state machine
-enum state { INIT, SAMBER, SGREEN1, SRED, SOFF, SGREEN2 };
-
-// Since interruptions will alter the state of the state machine, 
-// the state machine must be declared globally
-volatile state stateMachine;
 
 /******************************************************************************\
  * Functions
@@ -84,12 +64,33 @@ volatile state stateMachine;
  * 
  * \param reg target byte
  * \param values values for the specified bits
- * \param bitMask bit mask, where a 1 indicates bits that should be set, and 0
- *                indicates the bits that should be left unchanged
+ * \param bitMask bit mask, where a 1 indicates a bit that should be set, and 0
+ *                indicates a bit that should be left unchanged
  */
 void setBits(uint8_t& reg, const uint8_t& values, const uint8_t& bitMask) {
     reg &= ~bitMask;
     reg |= values;
+}
+
+/**
+ * \brief This function is executed whenever PORTD2 is powered
+ * 
+ * 
+ * 
+ * \param INT0_vect the function will run when the INT0 interrupt vector is
+ *                  called
+ */
+ISR (INT0_vect) {
+
+    // Wait for the physical switch to stop bouncing
+    _delay_loop_ms(DEBOUNCE_TIME);
+
+    // Change to thr next state
+    stateMachine++;
+
+    // Voir la note plus bas pour comprendre cette instruction et son rôle
+    EIFR |= (1 << INTF0) ;
+    
 }
 
 /**
@@ -107,9 +108,28 @@ void initialize() {
     
     // D PORT input
     DDRD = 0x00;
+
+    {// EIMSK is the External Interrupt Mask Register
+        
+        // bit      | 7      6      5      4      3      2      1      0
+        // mnemonic | unused unused unused unused unused INT2   INT1   INT0
+        // 
+        // bits 7:3 are unused
+        // bit 2 sets the behavior of the INT2 interrupt vector
+        // bit 1 sets the behavior of the INT1 interrupt vector
+        // bit 0 sets the behavior of the INT0 interrupt vector
+        
+        // values | behavior
+        // 0      | the corresponding bit will not be set
+        // 1      | the corresponding bit will be set to 1
+        
+        EIMSK |= (0 << INT2);
+        EIMSK |= (0 << INT1);
+        EIMSK |= (1 << INT0);
+    }
     
-    {
-        // EICRA is the External Interrupt Control Register A
+    {// EICRA is the External Interrupt Control Register A
+        
         // bit      | 7      6      5      4      3      2      1      0
         // mnemonic | unused unused ISC21  ISC20  ISC11  ISC10  ISC01  ISC00
         // 
@@ -128,41 +148,13 @@ void initialize() {
         const uint8_t FAL = 0b000000'10;
         const uint8_t RIS = 0b000000'11;
     
-        ECRIA = (4 << LOW) // INT2
-               |(2 << LOW) // INT1
-               |(0 << ANY);// INT0
-        
+        EICRA |= (LOW << ISC20);// INT2
+        EICRA |= (LOW << ISC10);// INT1
+        EICRA |= (ANY << ISC00);// INT0
     }
+    
     // enable interruptions
     sei()
-}
-
-/**
- * \brief This function is executed whenever PORTD2 is powered
- * 
- * 
- * 
- * \param
- */
-ISR (INT0_vect) {
-
-// Wait for the physical switch to stop bouncing
-_delay_loop_ms (DEBOUNCE_TIME);
-
-// se souvenir ici si le bouton est pressé ou relâché
-
-'modifier ici'
-
-// changements d'états tels que ceux de la
-
-// semaine précédente
-
-'modifier ici'
-
-// Voir la note plus bas pour comprendre cette instruction et son rôle
-
-EIFR |= (1 << INTF0) ;
-
 }
 
 /******************************************************************************\
@@ -178,51 +170,25 @@ EIFR |= (1 << INTF0) ;
  */
 int main () {
     
-    // List of all possible states for the state machine
-    enum state { INIT, SAMBER, SGREEN1, SRED, SOFF, SGREEN2 };
-    
-    State machine = INIT;
+    initialize();
+    stateMachine = INIT;
 
     // Infinite loop
     while (1){
         
         // Behavior for all states
-        switch(machine) {
+        switch(stateMachine) {
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             case INIT : 
         
                 PORTC = RED;
                 
-                // When the button is pressed
-                if (PIND & 0x04) {
-                    
-                    // Change state
-                    machine = SAMBER;
-                    
-                    // Wait for debounce
-                    _delay_ms(DEBOUNCE_TIME);
-                }
-                
             break;
-            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             case SAMBER : 
                 
                 //Flips the signal sent to the LED
                 PORTC ^= 0x03;
-                
-                // When the button is released
-                if (!(PIND & 0x04)) {
-                    
-                    // Change state
-                    machine = SGREEN1;
-                    
-                    // The LED must be changed before the debounce delay,
-                    // otherwise it'll flash a random color for DEBOUNCE_TIME ms
-                    PORTC = GREEN;
-                    
-                    // Wait for debounce
-                    _delay_ms(DEBOUNCE_TIME);
-                }
                 
             break;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -230,47 +196,17 @@ int main () {
             
                 PORTC = GREEN;
             
-                // When the button is pressed
-                if (PIND & 0x04) {
-                
-                    // Change state
-                    machine = SRED;
-                
-                    // Wait for debounce
-                    _delay_ms(DEBOUNCE_TIME);
-                }
-                
             break;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             case SRED: 
             
                 PORTC = RED;
             
-                // When the button is released
-                if (!(PIND & 0x04)) {
-                
-                    // Change state
-                    machine = SOFF;
-                    
-                    // Wait for debounce
-                    _delay_ms(DEBOUNCE_TIME);
-                }
-                
             break;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             case SOFF : 
                 
                 PORTC = OFF;
-                
-                // When the button is pressed
-                if (PIND & 0x04) {
-                  
-                    // Change state
-                    machine = SGREEN2;
-                    
-                    // Wait for debounce
-                    _delay_ms(DEBOUNCE_TIME);
-                }
                 
             break;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -278,20 +214,10 @@ int main () {
                 
                 PORTC = GREEN;
         
-                // When the button is released
-                if (!(PIND & 0x04)) {
-                    
-                    // Change state
-                    machine = INIT;
-                    
-                    // Wait for debounce
-                    _delay_ms(DEBOUNCE_TIME);
-                }
-                
             break;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
     }
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 

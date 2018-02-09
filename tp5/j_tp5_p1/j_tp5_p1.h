@@ -2,7 +2,21 @@
  * Preprocessor instructions
 \******************************************************************************/
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#define F_CPU 8000000UL
+#include <util/delay.h>
 
+/******************************************************************************\
+ * Global variables
+\******************************************************************************/
+
+// List of all possible states for the state machine
+enum state { INIT, SAMBER, SGREEN1, SRED, SOFF, SGREEN2 };
+
+// Since interruptions will alter the state of the state machine, 
+// the state machine must be declared globally
+volatile state stateMachine;
 
 /******************************************************************************\
  * Constants
