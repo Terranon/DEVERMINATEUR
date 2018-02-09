@@ -83,14 +83,46 @@ void setBits(uint8_t& reg, const uint8_t& values, const uint8_t& bitMask) {
 ISR (INT0_vect) {
 
     // Wait for the physical switch to stop bouncing
-    _delay_loop_ms(DEBOUNCE_TIME);
+    _delay_ms(DEBOUNCE_TIME);
 
-    // Change to thr next state
-    stateMachine++;
+    // Indicate an interruption
+    interrupted = true;
 
-    // Voir la note plus bas pour comprendre cette instruction et son rôle
-    EIFR |= (1 << INTF0) ;
     
+    EIFR |= (1 << INTF0);
+    
+}
+
+/**
+ * \brief Sets an enum state to its sequential next state
+ * 
+ * 
+ * 
+ * \param stateMachine the state to be incremented
+ */
+void nextState(state& stateMachine) {
+    state newState;
+    switch(stateMachine) {
+        case INIT : 
+            newState = SAMBER;
+        break;
+        case SAMBER : 
+            newState = SGREEN1;
+        break;
+        case SGREEN1 : 
+            newState = SRED;
+        break;
+        case SRED: 
+            newState = SOFF;
+        break;
+        case SOFF : 
+            newState = SGREEN2;
+        break;
+        case SGREEN2 :
+            newState = INIT;
+        break;
+    }
+    stateMachine = newState;
 }
 
 /**
@@ -101,7 +133,7 @@ ISR (INT0_vect) {
 void initialize() {
     
     // disable interruptions
-    cli()
+    cli();
     
     // C PORT output
     DDRC = 0xff;
@@ -154,7 +186,7 @@ void initialize() {
     }
     
     // enable interruptions
-    sei()
+    sei();
 }
 
 /******************************************************************************\
@@ -171,11 +203,18 @@ void initialize() {
 int main () {
     
     initialize();
-    stateMachine = INIT;
+    state stateMachine = INIT;
+    interrupted = 0;
 
     // Infinite loop
-    while (1){
+    while (1) {
         
+        // Check if any interruptions happened
+        if (interrupted) {
+            nextState(stateMachine);
+            interrupted = false;
+        }
+            
         // Behavior for all states
         switch(stateMachine) {
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -218,6 +257,6 @@ int main () {
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
     }
-    return EXIT_SUCCESS;
+    return 0;
 }
 

@@ -8,15 +8,18 @@
 #include <util/delay.h>
 
 /******************************************************************************\
- * Global variables
+ * Type Definitions
 \******************************************************************************/
 
 // List of all possible states for the state machine
 enum state { INIT, SAMBER, SGREEN1, SRED, SOFF, SGREEN2 };
 
-// Since interruptions will alter the state of the state machine, 
-// the state machine must be declared globally
-volatile state stateMachine;
+/******************************************************************************\
+ * Global variables
+\******************************************************************************/
+
+// Global variable to catch interruptions
+volatile bool interrupted;
 
 /******************************************************************************\
  * Constants
@@ -36,4 +39,5 @@ const uint8_t GREEN = 0x02;
 
 void setBits(uint8_t& reg, const uint8_t& values, const uint8_t& bitMask);
 void initialize();
+void nextState(state& state);
 int main();
