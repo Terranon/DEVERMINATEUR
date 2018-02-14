@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 // List of all possible states for the state machine
 enum etat { INIT, SAMBER, SGREEN1, SRED, SOFF, SGREEN2 };
     
