@@ -3,9 +3,12 @@
  * Name:        j_tp5_p2.cpp
  * Description: Skill game
  * 
- *              Pinout :    LED ( + - )
- *                                | |
- *                       PORT C ( 0 1 2 3 4 5 6 7 )
+ *                              H Bridge JM2 ( E D ) 
+ *                                             | |
+ *              Pinout : Main board PORTD  1 3 5 7
+ *                                         0 2 4 6
+ *                                             | |
+ *                              H Bridge JM1 ( E D )
  * 
  * Version: 1.0
 \******************************************************************************/
@@ -14,7 +17,7 @@
  * Preprocessor instructions
 \******************************************************************************/
 
-#include "j_tp5_p2.h"
+#include "j_tp5_p3.h"
 
 /******************************************************************************\
  * Functions
@@ -77,12 +80,6 @@ void setBits(uint8_t& reg, const uint8_t& values, const uint8_t& bitMask) {
  *                  called
  */
 ISR (INT0_vect) {
-
-    // Indicate that the button was pressed
-    buttonPressed = true;
-    
-    // Wait for the physical switch to stop bouncing
-    _delay_ms(DEBOUNCE_TIME);
     
 }
 
@@ -92,7 +89,7 @@ ISR (INT0_vect) {
  *                     timer 1
  */
 ISR (TIMER1_COMPA_vect) {
-    timerExpired = true;
+    
 }
 
 /**
@@ -100,11 +97,15 @@ ISR (TIMER1_COMPA_vect) {
  */
 void initIO() {
     
-    // C PORT output
-    DDRC = 0xff;
-    
-    // D PORT input
-    DDRD = 0x00;
+    // PORTD I/O setup
+    DDRD |= (0 << 0);
+    DDRD |= (0 << 1);
+    DDRD |= (0 << 2);
+    DDRD |= (0 << 3);
+    DDRD |= (1 << 4);
+    DDRD |= (1 << 5);
+    DDRD |= (1 << 6);
+    DDRD |= (1 << 7);
 
 }
 
@@ -130,7 +131,7 @@ void initEInt() {
     
     EIMSK |= (0 << INT2);
     EIMSK |= (0 << INT1);
-    EIMSK |= (1 << INT0);
+    EIMSK |= (0 << INT0);
     
     
     // EICRA is the External Interrupt Control Register A
@@ -152,7 +153,7 @@ void initEInt() {
 
     EICRA |= (0 << ISC20);// INT2
     EICRA |= (0 << ISC10);// INT1
-    EICRA |= (3 << ISC00);// INT0
+    EICRA |= (0 << ISC00);// INT0
     
 }
 
@@ -197,8 +198,8 @@ void initTimer() {
     // 2 | Clear OC1x when up-count match. Set OC1x when downcount match.
     // 3 | Set OC1x when up-count match. Clear OC1x when downcount match.
     
-    TCCR1A |= (0 << COM1A0);
-    TCCR1A |= (0 << COM1B0);
+    TCCR1A |= (2 << COM1A0);
+    TCCR1A |= (2 << COM1B0);
     
     // WGM1[1:0] Waveform Generation Mode
     // -> See Description for WGM[3:0] below
@@ -253,7 +254,7 @@ void initTimer() {
     // 6 | External clock source on T1 pin. Clock on falling edge.
     // 7 | External clock source on T1 pin. Clock on rising edge.
     
-    TCCR1B |= (5 << CS10);
+    TCCR1B |= (2 << CS10);
     
     // ~~~TCCR1C~~~
     //
@@ -306,7 +307,7 @@ void initTimer() {
     // 14   | Fast PWM                     | ICR1   | BOTTOM    | TOP
     // 15   | Fast PWM                     | OCR1A  | BOTTOM    | TOP
     
-    const uint8_t WGM1_val = 4;
+    const uint8_t WGM1_val = 1;
     
     TCCR1B |= ((WGM1_val >> 2) << WGM12);
     TCCR1A |= ((WGM1_val & 0x03) << WGM10);
@@ -349,19 +350,7 @@ void initTimer() {
         
 }
 
-/**
- * \brief Schedule a TIMER_COMPA interrupt
- * \param duration time before the interrupt occurs, in ms. MAX : 8389
- */
-void startTimer (uint32_t duration) {
 
-    // value of Timer/Counter 1, 16 bits
-    TCNT1 = 0;
-    
-    // Output Compare Register 1 A
-    OCR1A = (duration * (F_CPU >> 10)) / 1000;
-    
-}
 
 /**
  * \brief master initialization function
@@ -372,9 +361,7 @@ void initialize() {
     cli();
     
     initIO();
-    timerExpired = 0;
     initTimer();
-    buttonPressed = 0;
     initEInt();
     
     // enable interruptions
@@ -393,39 +380,36 @@ int main () {
     
     initialize();
     
-    // Wait 10 s
-    startTimer(5000);
-    while (timerExpired == 0) {
-    }
-    timerExpired = 0;
-    startTimer(5000);
-    while (timerExpired == 0) {
-    }
-    timerExpired = 0;
+    PORTD |= (0 << 6);
+    PORTD |= (0 << 7);
     
-    PORTC = RED;
+    OCR1A = 0x00;
+    OCR1B = 0x00;
     
-    // Wait 0.1 s
-    startTimer(100);
-    while (timerExpired == 0) {
-    }
-    timerExpired = 0;
+    _delay_ms(2000);
     
-    PORTC = OFF;
+    OCR1A = 0x40;
+    OCR1B = 0x40;
+
+    _delay_ms(2000);
     
-    buttonPressed = 0;
-    // Wait for 1 s OR a button press
-    startTimer(1000);
-    while (timerExpired == 0 && buttonPressed == 0) {
-    }
+    OCR1A = 0x80;
+    OCR1B = 0x80;
     
-    cli();
+    _delay_ms(2000);
     
-    if (buttonPressed) {
-        PORTC = GREEN;
-    } else {
-        PORTC = RED;
-    }
+    OCR1A = 0xC0;
+    OCR1B = 0xC0;
+    
+    _delay_ms(2000);
+    
+    OCR1A = 0xF0;
+    OCR1B = 0xF0;
+    
+    _delay_ms(2000);
+    
+    OCR1A = 0x00;
+    OCR1B = 0x00;
     
     return 0;
 }

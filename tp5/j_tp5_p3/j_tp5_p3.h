@@ -16,9 +16,6 @@
  * Global variables
 \******************************************************************************/
 
-// Global variables to catch interruptions
-volatile uint8_t timerExpired;
-volatile uint8_t buttonPressed;
 
 /******************************************************************************\
  * Constants
@@ -40,6 +37,5 @@ void setBits(uint8_t& reg, const uint8_t& values, const uint8_t& bitMask);
 void initIO();
 void initEInt();
 void initTimer();
-void startTimer(uint32_t duration);
 void initialize();
 int main();
