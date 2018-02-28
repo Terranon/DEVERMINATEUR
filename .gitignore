@@ -1,4 +1,5 @@
 *.d
+*.hex
 *.o
 *.out
 *.out.map
