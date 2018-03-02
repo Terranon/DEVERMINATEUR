@@ -1,10 +1,13 @@
 TODO
 constructeur pour registres
 read pour registres
-class interupt
-class timer
-class pwm   -led
-            -piezo
-            -moteurs
+Makefile // Jerry
+class button  // Max
+class PhotoCell // Tomdri
+class timer // Jerry
+class pwm   -led // Max utilise Timer 0 ocr0a
+            -piezo // Max utilise Timer 0 ocr0b
+            -moteurs // Will utilise Timer 2
 
             
+class interupt  // peut etre

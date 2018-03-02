@@ -23,7 +23,7 @@
  * \return a Button
  */
 namespace {
-    uint8_t isPressed;
+    uint8_t isPressed; //button::isPressed
 }
 
 Button::button(uint8_t intxVect, uint8_t valueWhenButtonOpen)
