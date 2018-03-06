@@ -19,16 +19,9 @@ public:
     uint8_t isPressed();
     
 private:
-    
-    void setPORTA(uint8_t color);
-    void setPORTB(uint8_t color);
-    void setPORTC(uint8_t color);
-    void setPORTD(uint8_t color);
-    
-    uint8_t color_;
-    uint8_t positiveLead_;
-    uint8_t negativeLead_;
-    uint8_t port_;
+
+    xVect_;
+    openValue_;
 };
 
 #endif // BUTTON_H
