@@ -18,56 +18,73 @@
  *             Led::C or Led::D
  * \return an Led
  */
-Led::Led(uint8_t posLead, uint8_t negLead, uint8_t port)
-    : positiveLead_(posLead),
-      negativeLead_(negLead),
-      port_(port),
-      color_(OFF) {
-          
-    switch(port_) {
-        case A :
-            DDRA |= (1 << positiveLead_); 
-            DDRA |= (1 << negativeLead_);
-            break;
-        case B :
-            DDRB |= (1 << positiveLead_); 
-            DDRB |= (1 << negativeLead_);
-            break;
-        case C :
-            DDRC |= (1 << positiveLead_); 
-            DDRC |= (1 << negativeLead_);
-            break;
-        case D :
-            DDRD |= (1 << positiveLead_); 
-            DDRD |= (1 << negativeLead_);
-            break;
-    }
+Led::Led()
+    : color_(OFF),
+      pwmFrequency_(LA) {
     
+}
+/**
+ * \brief makes Led flash in an amberColor
+ */
+void Led::amberColorInfinite() {
+    
+    while(1) {
+        PORTC ^= 0x03;
+    }
+}
+
+/**
+ * \brief makes Led flash in an amberColor for a specified amout of time
+ * \param time length of time that the led will flash with an amber color
+ */
+
+void Led::amberColor(uint8_t time) {
+    
+    uint8_t nLoopIterations = time / 10;
+    
+    for(uint8_t i = 0; i < nLoopIterations; i++) {
+        
+        PORTC ^= 0x03;
+        delay_ms(10);
+    }
+}
+
+/**
+ * \brief changes behavior of pwm for led
+ * \param percentOn sets the percentage of time where waveform is ON
+ * \param pwmFreq sets the frequency of the waveform of the pwm
+ * \param time length of time that the led is on
+ */
+void Led::setPwm(float percentOn, uint8_t pwmFreq, uint32_t time) {
+    
+    uint32_t nLoopIterations = time / pwmFreq;
+    uint8_t onTime = pwmFreq * (percentOn / 100);
+    uint8_t offTime = pwmFreq - onTime;
+    
+    for(uint32_t i = 0; i < nLoopIterations; i++) {
+        
+        Led::amberColor(onTime);
+        PORTC = OFF;
+        delay_us(offTime);
+    }
 }
 
 /**
  * \brief changes the color of the LED
- * \param color color of the LED, can be Led::OFF, Led::GREEN or Led::RED
+ * \param color color of the LED, can be Led::OFF, Led::GREEN, Led::RED OR Led::AMBER
  */
 void Led::setColor(uint8_t color) {
     
     color_ = color;
     
-    switch(port_) {
-        case A :
-            this->setPORTA(color);
-            break;
-        case B :
-            this->setPORTB(color);
-            break;
-        case C :
-            this->setPORTC(color);
-            break;
-        case D :
-            this->setPORTD(color);
-            break;
-    }
+    if (color == AMBER) {
         
+        Led::amberColorInfinite();
+    }
+    else {
+    
+        setPORTC(color);
+    }
 }
 
 /**
@@ -81,7 +98,6 @@ void Led::toggleColor() {
     } else if (color_ == GREEN) {
         setColor(RED);
     }
-    
 }
 
 /**

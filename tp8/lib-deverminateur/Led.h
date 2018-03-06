@@ -6,6 +6,7 @@
 \******************************************************************************/
 
 #include <avr/io.h>
+#include <avr/delay.h>
 
 #ifndef LED_H
 #define LED_H
@@ -44,6 +45,7 @@ public:
     static const uint8_t OFF = 0;
     static const uint8_t GREEN = 1;
     static const uint8_t RED = 2;
+    static const uint8_t AMBER = 3;
     
     /** 
      * \brief These constants defines the value of port_
@@ -52,6 +54,11 @@ public:
     static const uint8_t B = 1;
     static const uint8_t C = 2;
     static const uint8_t D = 3;
+    
+    /** 
+     * \brief These constants defines the frequencies of pwmFrequency_
+     */
+    static const uint16_t AMBER = 500;
     
 private:
     
