@@ -2,7 +2,7 @@
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
  * Name:        Led.h
  * Description: Simplify the use of an LED
- * Version: 1.2
+ * Version: 2.0
 \******************************************************************************/
 
 #include <avr/io.h>
@@ -15,23 +15,34 @@ class Led {
 public:
     
     /**
-     * \brief constructor for the Led; the DDRx register will be set to enable
-     *        output on the appropriate pins
-     * \param posLead the pin on which the positive lead of the LED is 
-     *                connected, value between 0-7
-     * \param negLead the pin on which the negative lead of the LED is  
-     *                connected, value between 0-7
-     * \param port the port on which the LED is connected, can be Led::A, 
-     *             Led::B, Led::C or Led::D
-     * \return an Led
-     */
-    Led(uint8_t posLead, uint8_t negLead, uint8_t port);
+    * \brief constructor for the Led; the DDRC register will 
+    *        be set to enable output
+    * \param pwmFreq sets begining frequency of the pwm in Hz
+    * \return an Led
+    */
+    Led(uint16_t pwmFreq);
+    
+    ~Led();
+    
+    /**
+    * \brief makes Led flash in an amberColor for a specified amout of time
+    * \param time length of time that the led will flash with an amber color in miliseconds
+    */
+    void amberColor(float time);
     
     /**
      * \brief changes the color of the LED
      * \param color color of the LED, can be Led::OFF, Led::GREEN or Led::RED
      */
     void setColor(uint8_t color);
+    
+    /**
+    * \brief changes behavior of pwm for led
+    * \param percentOn sets the percentage of time where waveform is ON
+    * \param pwmFreq sets the frequency of the waveform of the pwm
+    * \param time length of time that the led is on in miliseconds
+    */
+    void setPwm(float percentOn, uint16_t pwmFreq, uint32_t time);
     
     /**
      * \brief toggles the color of the LED (green becomes red and vice versa).
@@ -46,67 +57,26 @@ public:
     static const uint8_t GREEN = 1;
     static const uint8_t RED = 2;
     static const uint8_t AMBER = 3;
-    
-    /** 
-     * \brief These constants defines the value of port_
-     */
-    static const uint8_t A = 0;
-    static const uint8_t B = 1;
-    static const uint8_t C = 2;
-    static const uint8_t D = 3;
-    
-    /** 
-     * \brief These constants defines the frequencies of pwmFrequency_
-     */
-    static const uint16_t AMBER = 500;
-    
+
 private:
     
     /**
-     * \brief changes the color of an LED in PORTA
-     * \param color color of the LED, can be OFF, GREEN or RED
-     */
-    void setPORTA(uint8_t color);
+    * \brief changes LED to specified color with PWM
+    * \param color color of the LED, can be Led::GREEN, Led::RED OR Led::AMBER
+    * \param onTime period of time for LED to stay on in miliseconds
+    * \param offTime period of time for LED to stay off in miliseconds
+    */
+    void Led::setPwmColor(uint8_t color, float onTime, float offTime);
     
     /**
-     * \brief changes the color of an LED in PORTB
-     * \param color color of the LED, can be OFF, GREEN or RED
-     */
-    void setPORTB(uint8_t color);
-    
-    /**
-     * \brief changes the color of an LED in PORTC
-     * \param color color of the LED, can be OFF, GREEN or RED
-     */
-    void setPORTC(uint8_t color);
-    
-    /**
-     * \brief changes the color of an LED in PORTD
-     * \param color color of the LED, can be OFF, GREEN or RED
-     */
-    void setPORTD(uint8_t color);
-    
-    /**
-     * \brief The color of the LED; can be OFF, RED or GREEN
+     * \brief The color of the LED; can be OFF, RED, GREEN or AMBER
      */ 
     uint8_t color_;
     
     /**
-     * \brief The pin on which the tive lead of the LED is connected,
-     *        value between 0-7
+     * \brief The frequency that the pwm
      */
-    uint8_t positiveLead_;
-    
-    /**
-     * \brief The pin on which the negative lead of the LED is connected,
-     *        value between 0-7
-     */
-    uint8_t negativeLead_;
-    
-    /** 
-     * \brief The port on on which the LED is connected, can be A, B, C or D
-     */
-    uint8_t port_;
+    uint16_t pwmFrequency_;
     
 };
 
