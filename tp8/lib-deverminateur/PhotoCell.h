@@ -1,32 +1,33 @@
 /*****************************************************************************\
  * Authors: Jean-Raphael Matte, Maximilien Bianchi, Thomas Dufour, William Chartrand
- * Name: sPhotoCell.h
+ * Name: PhotoCell.h
  * Description:
  * Version: 1.0
 \******************************************************************************/
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#define F_CPU 8000000UL
+#include <util/delay.h>
+#include "can.h"
 
 class PhotoCell {
 public:
     
-PhotoCell(uint8_t valeurIntensite);
-void AllumeDelAmbre;
-void SetCouleurLed(valeurIntensite);
-can convertisseur;
-PhotoCell~;
+	PhotoCell();
+	void allumeDelAmbree() const;
+	void SetCouleurLed();
+	
+	static const uint8_t position = 0;
+	static const uint8_t ENTREE = 0x00;
+	static const uint8_t SORTIE = 0xff;
+	static const uint8_t DEL_ROUGE = (1<<1);
+	static const uint8_t DEL_VERT = (1<<0);
+	static const uint8_t intensiteFaible = 140;
+	static const uint8_t intensiteMoyenne = 230;
     
 private:
 
-uint8_t valeurIntensite_;
-const uint8_t ENTREE = 0x00;      
-const uint8_t SORTIE = 0xff;
-const uint8_t DEL_ROUGE = (1<<1);
-const uint8_t DEL_VERT = (1<<0);
-const uint8_t intensiteFaible = 140; 
-const uint8_t intensiteMoyenne = 230;
-DDRA = ENTREE;
-DDRC = SORTIE;
+	uint8_t valeurIntensite_ = 0;
 
 };
