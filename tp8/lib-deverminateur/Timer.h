@@ -64,6 +64,11 @@ public:
      */
     uint8_t isExpired();
     
+    /**
+     * \brief Resets the expired state of the timer
+     */
+    void resetExpiration();
+    
 private:
     
     /**

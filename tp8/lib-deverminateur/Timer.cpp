@@ -276,6 +276,10 @@ uint8_t Timer::isExpired() {
     return PIND & (1 << PIND5);
 }
 
+void resetExpiration() {
+    PORTD &= ~(0 << PORTD5)
+}
+
 uint8_t Timer::getPrescalerValue() {
     
     // CS1[2:0] Clock Select
