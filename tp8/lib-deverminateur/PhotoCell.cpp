@@ -9,7 +9,7 @@
 
 /**
  * \brief default constructor for the intensity of the Led
- * \param valeurIntensite_ sets the Led's color
+ * \param none
  * \return none
  */
 PhotoCell::PhotoCell():
@@ -17,7 +17,8 @@ PhotoCell::PhotoCell():
 }
 
 /**
- * \brief allumerDelAmbree turns the Led to ambree
+ * \brief allumerDelAmbree turns the Led to ambree by toogling
+ *  between red and green
  * \param none
  * \return none
  */
@@ -29,12 +30,12 @@ void PhotoCell::allumeDelAmbree() const{
 }
 
 /**
- * \brief sets Led's color based on valeurIntensite_'s value. the Led's
- * 		will keep his color as long as the intensity stays in the range
+ * \brief sets Led's color based on valeurIntensite_'s value. Led's
+ * color will stay the same as long as the intensity stays in the range
  * \param valeurIntensite_ determines color of Led
  * \return none
  */
-void PhotoCell::SetCouleurLed(){
+void PhotoCell::setCouleurLed(){
 	
 	Adc convertisseur;
 	while(1){

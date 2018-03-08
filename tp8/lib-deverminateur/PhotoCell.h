@@ -16,10 +16,27 @@
 
 class PhotoCell {
 public:
-    
+    /**
+ * \brief default constructor for the intensity of the Led
+ * \param none
+ * \return none
+ */
 	PhotoCell();
+	
+	/**
+ * \brief allumerDelAmbree turns the Led to ambree
+ * \param none
+ * \return none
+ */
 	void allumeDelAmbree() const;
-	void SetCouleurLed();
+	
+	/**
+ * \brief sets Led's color based on valeurIntensite_'s value. the Led's
+ * 		will keep his color as long as the intensity stays in the range
+ * \param valeurIntensite_ determines color of Led
+ * \return none
+ */
+	void setCouleurLed();
 	
 	static const uint8_t position = 0;
 	static const uint8_t ENTREE = 0x00;
@@ -30,7 +47,6 @@ public:
 	static const uint8_t intensiteMoyenne = 230;
     
 private:
-
 	uint8_t valeurIntensite_ = 0;
 
 };
