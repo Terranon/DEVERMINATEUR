@@ -31,7 +31,11 @@ uint8_t PhotoCell::getValeurIntensite(){
 	return valeurIntensite_;
 }
 
-
+/**
+ * \brief sets pin's position on A port
+ * \param position of pin on A port
+ * \return none
+ */
 void PhotoCell::setPosition(uint8_t position){
 	position_ = position;
 }

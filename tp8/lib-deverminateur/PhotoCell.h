@@ -13,22 +13,26 @@
 
 class PhotoCell {
 public:
-    /**
+/**
  * \brief default constructor for the intensity of the Led
  * \param none
  * \return none
  */
 	PhotoCell();
 
-	/**
+/**
  * \brief sets Led's color based on valeurIntensite_'s value. the Led's
  * 		will keep his color as long as the intensity stays in the range
  * \param valeurIntensite_ determines color of Led
- * \return none
+ * \return value of intensity
  */
 	uint8_t getValeurIntensite();
 	
-	
+/**
+ * \brief sets pin's position on A port
+ * \param position of pin on A port
+ * \return none
+ */
 	void setPosition(uint8_t position);
 	
 	
