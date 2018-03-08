@@ -1,150 +1,79 @@
 /*****************************************************************************\
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
- * Name:        Led.cpp
+ * Name:        Led.h
  * Description: Simplify the use of an LED
- * Version: 2.0
+ * Version: 1.1
 \******************************************************************************/
 
 #include "Led.h"
 
 /**
- * \brief constructor for the Led; the DDRC register will be set to enable
+ * \brief constructor for the Led; the DDRx register will be set to enable
  *        output on the appropriate pins
- * \param pwmFreq sets begining frequency of the pwm in Hz
+ * \param posLead the pin on which the positive lead of the LED is connected,
+ *                value between 0-7
+ * \param negLead the pin on which the negative lead of the LED is connected,
+ *                value between 0-7
+ * \param port the port on which the LED is connected, can be Led::A, Led::B,
+ *             Led::C or Led::D
  * \return an Led
  */
-Led::Led(uint16_t pwmFreq)
-    : color_(OFF),
-      pwmFrequency_(pwmFreq) {
-
-        DDRB = 0x06;              // sets PINB3 and PINB4 to output
-        
-        // TCCR0A/TCCR0B are the Timer/Counter Control Registers 0 A/B]
+Led::Led(uint8_t posLead, uint8_t negLead, uint8_t port)
+    : positiveLead_(posLead),
+      negativeLead_(negLead),
+      port_(port),
+      color_(OFF) {
+          
+    switch(port_) {
+        case A :
+            DDRA |= (1 << positiveLead_); 
+            DDRA |= (1 << negativeLead_);
+            break;
+        case B :
+            DDRB |= (1 << positiveLead_); 
+            DDRB |= (1 << negativeLead_);
+            break;
+        case C :
+            DDRC |= (1 << positiveLead_); 
+            DDRC |= (1 << negativeLead_);
+            break;
+        case D :
+            DDRD |= (1 << positiveLead_); 
+            DDRD |= (1 << negativeLead_);
+            break;
+    }
     
-        // ~~~TCCR0A~~~
-        
-        TCCR0A |= (3 << COM0A0);
-        TCCR0A |= (2 << COM0B0);
-        TCCR0A |= (1 << WGM00);
-        TCCR0A &= ~(1 << WGM01);
-    
-        // ~~~TCCR0B~~~
-        TCCR0B |= (0 << FOC0A);
-        TCCR0B |= (0 << FOC0B);
-        TCCR0B &= ~(1 << WGM02);
-        TCCR0B |= (5 << CS00);
-    
-        // TIMSK0 is the Timer Interrupt Mask Register 0
-        TIMSK0 &= ~(0 << ICIEA);
-        TIMSK0 &= ~(0 << ICIEB);
-        TIMSK0 &= ~(0 << TOIE);
-        
-        TCNT0 = 0;
-*/
 }
 
 /**
  * \brief destructor for the Led
  */
-Led::~Led() {
+~Led::Led() {
 }
 
 /**
- * \brief makes Led flash in an amberColor for a specified amout of time then turns LED off
- * \param time length of time that the led will flash with an amber color in miliseconds
+ * \brief changes the color of the LED
+ * \param color color of the LED, can be Led::OFF, Led::GREEN or Led::RED
  */
-void Led::amberColor(float time) {
-    
-    color_ = AMBER;
-    
-    float nLoopIterations = time / 10;
-    
-    for(uint32_t i = 0; i < nLoopIterations; i++) {
-        
-<<<<<<< HEAD
-        PORTC ^= color_;            // toggles the pins of PORTC to produce an amber color
-        delay_ms(10);
-=======
-        PORTC ^= color_;
-        _delay_ms(10);
->>>>>>> c1d4d7ace8317714917fdbbbb4216676e6dd4f41
-    }
-    
-    color_ = OFF;
-    PORTC = OFF;
-}
-
-/**
- * \brief changes the color of the LED (time must be specified if chosen color is amber
- * \param color color of the LED, can be Led::OFF, Led::GREEN, Led::RED OR Led::AMBER
- * \param time length of time for LED to stay on in amber, in miliseconds
- */
-void Led::setColor(uint8_t color, float time) {
+void Led::setColor(uint8_t color) {
     
     color_ = color;
     
-    if (color_ == AMBER) {
+    switch(port_) {
+        case A :
+            this->setPORTA(color);
+            break;
+        case B :
+            this->setPORTB(color);
+            break;
+        case C :
+            this->setPORTC(color);
+            break;
+        case D :
+            this->setPORTD(color);
+            break;
+    }
         
-        amberColor(time);
-    }
-    else {
-    
-        PORTC = color_;
-    }
-}
-
-/**
- * \brief changes LED to specified color with PWM
- * \param color color of the LED, can be Led::GREEN, Led::RED OR Led::AMBER
- * \param onTime period of time for LED to stay on in miliseconds
- * \param offTime period of time for LED to stay off in miliseconds
- */
-void Led::setPwmColor(uint8_t color, float onTime, float offTime) {
-    
-    color_ = color;
-    
-    if(color == AMBER) {
-        amberColor(onTime);
-        PORTC = OFF;
-        delay_ms(offTime);
-    }
-    else {
-        PORTC = color;
-        delay_ms(onTime);
-        PORTC = OFF;
-        delay_ms(offTime);
-    }
-}
-
-/**
- * \brief changes behavior of pwm for led; for practicality
- * \param percentOn sets the percentage of time where waveform is ON
- * \param pwmFreq sets the frequency of the waveform of the pwm
- * \param time length of time that the led is on in miliseconds
- */
-void Led::setPwm(uint8_t color, uint16_t pwmFreq, uint32_t time, float percentOn) {
-    
-    color_ = color;
-    pwmFrequency_ = pwmFreq;
-    
-    uint32_t nLoopIterations = time / pwmFreq;
-    float onTime = pwmFreq * (percentOn / 100);
-    float offTime = pwmFreq - onTime;
-    
-    for(uint32_t i = 0; i < nLoopIterations; i++) {
-        
-        switch(color){
-            case GREEN
-                setPwmColor(GREEN, onTime, offTime);
-                break;
-            case RED
-                setPwmColor(RED, onTime, offTime);
-                break;
-            case AMBER
-                setPwmColor(AMBER, onTime, offTime);
-                break;
-        }
-    }
 }
 
 /**
@@ -154,24 +83,93 @@ void Led::setPwm(uint8_t color, uint16_t pwmFreq, uint32_t time, float percentOn
 void Led::toggleColor() {
     
     if (color_ == RED) {
-        PORTC = GREEN;
+        setColor(GREEN);
     } else if (color_ == GREEN) {
-        PORTC = RED;
+        setColor(RED);
+    }
+    
+}
+
+/**
+ * \brief changes the color of an LED in PORTA
+ * \param color color of the LED, can be OFF, GREEN or RED
+ */
+void Led::setPORTA(uint8_t color) {
+    switch(color) {
+        case OFF :
+            PORTA &= ~(1 << positiveLead_);
+            PORTA &= ~(1 << negativeLead_);
+            break;
+        case GREEN :
+            PORTA &= ~(1 << positiveLead_);
+            PORTA |= (1 << negativeLead_);
+            break;
+        case RED :
+            PORTA |= (1 << positiveLead_);
+            PORTA &= ~(1 << negativeLead_);
+            break;
     }
 }
 
 /**
- * \brief gets value of color_
- * \return a color_
+ * \brief changes the color of an LED in PORTB
+ * \param color color of the LED, can be OFF, GREEN or RED
  */
-uint8_t Led::getColor() {
-    return color_;
+void Led::setPORTB(uint8_t color) {
+    switch(color) {
+        case OFF :
+            PORTB &= ~(1 << positiveLead_);
+            PORTB &= ~(1 << negativeLead_);
+            break;
+        case GREEN :
+            PORTB &= ~(1 << positiveLead_);
+            PORTB |= (1 << negativeLead_);
+            break;
+        case RED :
+            PORTB |= (1 << positiveLead_);
+            PORTB &= ~(1 << negativeLead_);
+            break;
+    }
 }
 
 /**
- * \brief gets value of pwmFrequency_
- * \return a pwmFrequency_
+ * \brief changes the color of an LED in PORTC
+ * \param color color of the LED, can be OFF, GREEN or RED
  */
-uint16_t Led::getPwmFrequency() {
-    return pwmFrequency_;
+void Led::setPORTC(uint8_t color) {
+    switch(color) {
+        case OFF :
+            PORTC &= ~(1 << positiveLead_);
+            PORTC &= ~(1 << negativeLead_);
+            break;
+        case GREEN :
+            PORTC &= ~(1 << positiveLead_);
+            PORTC |= (1 << negativeLead_);
+            break;
+        case RED :
+            PORTC |= (1 << positiveLead_);
+            PORTC &= ~(1 << negativeLead_);
+            break;
+    }
+}
+
+/**
+ * \brief changes the color of an LED in PORTD
+ * \param color color of the LED, can be OFF, GREEN or RED
+ */
+void Led::setPORTD(uint8_t color) {
+    switch(color) {
+        case OFF :
+            PORTD &= ~(1 << positiveLead_);
+            PORTD &= ~(1 << negativeLead_);
+            break;
+        case GREEN :
+            PORTD &= ~(1 << positiveLead_);
+            PORTD |= (1 << negativeLead_);
+            break;
+        case RED :
+            PORTD |= (1 << positiveLead_);
+            PORTD &= ~(1 << negativeLead_);
+            break;
+    }
 }
