@@ -9,9 +9,6 @@
 #define PHOTOCELL_H
 
 #include <avr/io.h>
-#include <avr/interrupt.h>
-#define F_CPU 8000000UL
-#include <util/delay.h>
 #include "Adc.h"
 
 class PhotoCell {
@@ -32,12 +29,12 @@ public:
 	uint8_t getValeurIntensite();
 	
 	
-	void setPosition();
+	void setPosition(uint8_t position);
 	
 	
 private:
 	uint8_t valeurIntensite_;
-	Adc convertisseur_;
+	can convertisseur_;
 	uint8_t position_;
 
 };

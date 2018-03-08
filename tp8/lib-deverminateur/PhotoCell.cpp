@@ -12,9 +12,10 @@
  * \param none
  * \return none
  */
-PhotoCell::PhotoCell():
-	valeurIntensite_(0), position_(0){
-	Adc convertisseur_ = Adc();
+PhotoCell::PhotoCell() : convertisseur_()
+{
+	valeurIntensite_ = 0;
+	position_ = 0;
 }
 
 /**
@@ -24,7 +25,10 @@ PhotoCell::PhotoCell():
  * \return none
  */
 uint8_t PhotoCell::getValeurIntensite(){
-	return valeurIntensite_ = convertisseur_.read(position_) >> 2;
+	
+
+	valeurIntensite_ = convertisseur_.read(position_) >> 2;
+	return valeurIntensite_;
 }
 
 
