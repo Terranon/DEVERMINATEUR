@@ -1,7 +1,7 @@
 /*****************************************************************************\
  * Author:      William Chartrand
  * Name:        Motor.h
- * Description: General use of motors
+ * Description: General use of motors able to go forward and backward
  * Version: 1.0
 \******************************************************************************/
 
@@ -13,28 +13,29 @@
 #endif
 
 #include <avr/io.h> 
-const uint8_t FRWD = 0x00; //lorsque direction = 0 lumiere verte
-const uint8_t BACK = 0x30; //lorsque direction = 1 lumiere rouge
+const uint8_t FRWD = 0x00; 
+const uint8_t BACK = 0x30; 
 const uint8_t PORT_SORTIE = 0xff;
 
 class Motor{
 public:
 
 	/**
-	 * \brief Constuctor  
-	 * \return a Motor
+	* \brief Default Constructor : initialize private attributes of an object from the class Motor
+	* by default
+	* \return a Motor going forward with a speed of 0
+	*/
+	Motor();
+
+	/**
+	 * \brief Constuctor with parameters : initialize private attributes of an object from the class Motor
+	 * by passing a direction FRWD(forward) and BACK(backward), and a speed (between 0 and 255) 
+	 * \return a Motor having a direction and a speed decided by the user
 	 */
 	Motor(uint8_t direction, uint8_t speed);
 	
 	/**
-	 * \brief Default Constructor
-	 * \return 
-	 */
-	Motor();
-	
-	/**
-	 * \brief Destructor 
-	 * \return 
+	 * \brief Destructor : destroy an object from the class motor and reset all its private attributes
 	 */
 	~Motor();
 
@@ -44,13 +45,13 @@ public:
 	void setDirection(uint8_t direction);
 	
 	/**
-	 * \brief function setSpeed changes the speed of the motor
-	 * the minimum is 0 and the maximum is 255
+	 * \brief function setSpeed changes the speed of the motor between 0 and 255
 	 */
 	void setSpeed(uint8_t speed);
 	
 	/**
-	 * \brief driveMotors initialise Timer 2 
+	 * \brief function driveMotors initialize the mechanism of the motors by starting Timer 2 who create
+	 * a PWM permitting to have two output activating each motor to a certain speed
 	 */
 	void driveMotors();
 	
