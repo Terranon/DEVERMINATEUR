@@ -5,11 +5,14 @@
  * Version: 1.0
 \******************************************************************************/
 
+#ifndef PHOTOCELL_H
+#define PHOTOCELL_H
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #define F_CPU 8000000UL
 #include <util/delay.h>
-#include "can.h"
+#include "Adc.h"
 
 class PhotoCell {
 public:
@@ -51,3 +54,4 @@ private:
 	uint8_t valeurIntensite_ = 0;
 
 };
+#endif
