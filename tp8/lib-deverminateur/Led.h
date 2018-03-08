@@ -5,11 +5,11 @@
  * Version: 2.0
 \******************************************************************************/
 
-#include <avr/io.h>
-#include <avr/delay.h>
-
 #ifndef LED_H
 #define LED_H
+
+#include <avr/io.h>
+#include <util/delay.h>
 
 class Led {
 public:
@@ -66,7 +66,7 @@ private:
     * \param onTime period of time for LED to stay on in miliseconds
     * \param offTime period of time for LED to stay off in miliseconds
     */
-    void Led::setPwmColor(uint8_t color, float onTime, float offTime);
+    void setPwmColor(uint8_t color, float onTime, float offTime);
     
     /**
      * \brief The color of the LED; can be OFF, RED, GREEN or AMBER

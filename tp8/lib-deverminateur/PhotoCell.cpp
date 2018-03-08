@@ -12,7 +12,6 @@
  * \param valeurIntensite_ sets the Led's color
  * \return none
  */
- 
 PhotoCell::PhotoCell():
 	valeurIntensite_(0){
 }
@@ -22,7 +21,6 @@ PhotoCell::PhotoCell():
  * \param none
  * \return none
  */
- 
 void PhotoCell::allumeDelAmbree() const{
 	PORTC = DEL_ROUGE;
 	_delay_ms(5);
@@ -36,13 +34,12 @@ void PhotoCell::allumeDelAmbree() const{
  * \param valeurIntensite_ determines color of Led
  * \return none
  */
- 
 void PhotoCell::SetCouleurLed(){
 	
-	can convertisseur;
+	Adc convertisseur;
 	while(1){
 		
-	valeurIntensite_ = convertisseur.lecture(position) >> 2;
+	valeurIntensite_ = convertisseur.read(position) >> 2;
 	
 	if (valeurIntensite_ < intensiteFaible)
 		PORTC = DEL_VERT;

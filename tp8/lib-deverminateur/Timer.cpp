@@ -5,6 +5,8 @@
  * Version: 1.0
 \******************************************************************************/
 
+#include "Timer.h"
+
 Timer::Timer()
     : prescalerMode_(5) {
     
@@ -264,7 +266,7 @@ uint16_t Timer::getTop() {
     return OCR1A;
 }
 
-void schedule(uint16_t duration) {
+void Timer::schedule(uint16_t duration) {
     // Value of Timer/Counter 1, 16 bits
     this->clear();
     
@@ -276,8 +278,8 @@ uint8_t Timer::isExpired() {
     return PIND & (1 << PIND5);
 }
 
-void resetExpiration() {
-    PORTD &= ~(0 << PORTD5)
+void Timer::resetExpiration() {
+    PORTD &= ~(0 << PORTD5);
 }
 
 uint8_t Timer::getPrescalerValue() {

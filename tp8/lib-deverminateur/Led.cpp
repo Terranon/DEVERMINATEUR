@@ -36,7 +36,7 @@ void Led::amberColor(float time) {
     for(uint32_t i = 0; i < nLoopIterations; i++) {
         
         PORTC ^= color_;
-        delay_ms(10);
+        _delay_ms(10);
     }
     
     color_ = OFF;

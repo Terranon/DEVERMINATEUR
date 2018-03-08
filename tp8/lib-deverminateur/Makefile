@@ -15,6 +15,9 @@
 # ex: 'at90s8515')
 MCU=atmega324pa
 
+# Frequency of the main clock
+FREQ=8000000
+
 # Name of you project
 # (use a single word, ex: "myproject")
 PROJECTNAME=lib-deverminateur
@@ -24,7 +27,7 @@ PROJECTNAME=lib-deverminateur
 # List all source file to compile, separated by a whitespace,
 # or use '$(wildcard *.cpp)' to include all .cpp files in the current directory
 # ex: 'tp1.c tp2.cpp':
-PRJSRC=$(wildcard *.cpp)
+PRJSRC=Adc.cpp Motor.cpp PhotoCell.cpp Timer.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
 INC=
@@ -39,7 +42,6 @@ OPTLEVEL=s
 # Programmer ID - Do not change 
 # Complete list of Programmer IDs available with AVRdude
 AVRDUDE_PROGRAMMERID=usbasp
-
 
 
 # End of configuration
@@ -68,6 +70,7 @@ HEXFORMAT=ihex
 
 # Flags for the C compiler
 CFLAGS= -I . \
+	-D F_CPU=$(FREQ)UL \
 	-MMD \
 	$(INC) \
 	-g \
@@ -81,6 +84,7 @@ CFLAGS= -I . \
 
 # -I . : Add the current directory (.) to the list of directories to be searched 
 #        for header files.
+# -D F_CPU=$(FREQ)UL : Define F_CPU at the frequency specified in FREQ
 # -MMD : Instead of outputting the result of preprocessing, output a make rule 
 #        describing the dependencies of the source file. This file will have the 
 #        same name as the source file, with a .d suffixe.
