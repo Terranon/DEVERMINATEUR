@@ -14,19 +14,7 @@
  */
 PhotoCell::PhotoCell():
 	valeurIntensite_(0){
-}
-
-/**
- * \brief allumerDelAmbree turns the Led to ambree by toogling
- *  between red and green
- * \param none
- * \return none
- */
-void PhotoCell::allumeDelAmbree() const{
-	PORTC = DEL_ROUGE;
-	_delay_ms(5);
-	PORTC = DEL_VERT;
-	_delay_ms(10);
+	Adc convertisseur_ = Adc();
 }
 
 /**
@@ -35,20 +23,6 @@ void PhotoCell::allumeDelAmbree() const{
  * \param valeurIntensite_ determines color of Led
  * \return none
  */
-void PhotoCell::setCouleurLed(){
-	
-	Adc convertisseur;
-	while(1){
-		
-	valeurIntensite_ = convertisseur.read(position) >> 2;
-	
-	if (valeurIntensite_ < intensiteFaible)
-		PORTC = DEL_VERT;
-
-    else if (valeurIntensite_ < intensiteMoyenne)  
-		allumeDelAmbree();
-
-	else 
-		PORTC = DEL_ROUGE;
-	}
+uint8_t PhotoCell::getValeurIntensite(){
+	return valeurIntensite_ = convertisseur_.read(position) >> 2;
 }
