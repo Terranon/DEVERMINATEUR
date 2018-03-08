@@ -3,3 +3,14 @@ PRJSRC= $(wildcard *.cpp) pour inclure tous les fichiers cpp dans le dossier
 Traduction des commentaires
 Explication des CFLAGS et LDFLAGS en commentaire
 Ajout de -D F_CPU=8000000UL dans les CFLAGS
+Ajout de @ devant les commandes pour les rendre silencieuses
+Ajout d'un fichier verbose.makesetting qui defini si make doit afficher des message lors de son execution, et d'une regle 'v' qui bascule ce parametre
+Ajout de sortie echo dans toutes les regles, qui sont executee si VERBOSE=true
+Separation en Makefile pour la library et Makefile pour l'executable
+Dans le Makefile de la library:
+	Suppression des regles et variables relatives a l'edition de liens
+	Ajout d'une regle pour l'archivage
+	Modification de la regle clean pour qu'elle ne supprime pas l'archive
+	Ajout de la regle mrproper qui enleve aussi l'archive
+Dans le Makefile pour l'executable:
+	

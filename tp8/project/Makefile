@@ -1,5 +1,5 @@
 ################################################################################
-# Description: Makefile for the library lib-deverminateur                      #
+# Description: Makefile for an executable project                              #
 #                                                                              #
 # Authors: Jean-Raphael Matte, Maximilien Bianchi,                             #
 #          Thomas Dufour & William Chartrand                                   #
@@ -20,21 +20,31 @@ FREQ=8000000
 
 # Name of you project
 # (use a single word, ex: "myproject")
-PROJECTNAME=deverminateur
+PROJECTNAME=project
 
 # Source files
 # Use the .cpp suffix for c++ files
 # List all source file to compile, separated by a whitespace,
 # or use '$(wildcard *.cpp)' to include all .cpp files in the current directory
 # ex: 'tp1.c tp2.cpp':
-PRJSRC=Adc.cpp Motor.cpp Timer.cpp Led.cpp
+PRJSRC=project.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=
+INC=-I../libdeverminateur
+
+# Additional directories where the linker should look for libraries
+LDINC=$(patsubst -I%,-L%,$(INC))
+
+# Libraries to link (ex: -lmylib)
+LIBS=-ldeverminateur
 
 # Optimization level
 # Utilisez s (size opt), 1, 2, 3 ou 0 (off)
 OPTLEVEL=s
+
+# Programmer ID - Do not change 
+# Complete list of Programmer IDs available with AVRdude
+AVRDUDE_PROGRAMMERID=usbasp
 
 
 # End of configuration
@@ -46,8 +56,11 @@ OPTLEVEL=s
 # Compiler
 CC=avr-gcc
 
-# Archiver
-AR=ar
+# Object copy command
+OBJCOPY=avr-objcopy
+
+# AVRdude command
+AVRDUDE=avrdude
 
 # Command to remove files
 REMOVE=rm -f
@@ -68,6 +81,9 @@ SVERB=$(CYAN)[VERBOSE]$(NC)
 
 # Colored [COMMAND] string
 SCOMM=$(BLUE)[COMMAND]$(NC)
+
+# Format (bfdname) for the .hex file
+HEXFORMAT=ihex
 
 # Additional settings
 -include *.makesetting
@@ -113,21 +129,23 @@ CXXFLAGS=-fno-exceptions
 
 # -fno-exceptions : disable try-catch blocks
 
-# Options for the archiver
+# Linker to link libraries
+LDFLAGS=$(LDINC) \
+	-Wl,-Map,$(TRG).map \
+	-mmcu=$(MCU)
 
-AROPTIONS=rcs
+# $(LDINC) : Should be specified as a list of '-L/path/to/my/dir' corresponding to 
+#          other directories to include
+# -Wl,-Map,$(TRG).map : give -Map $(TRG).map as options to the linker
+# -mmcu=$(MCU) : Specify ATMEL AVR MCU type
 
-# r : Insert the files into the archive (with replacement). This operation
-#     differs from q in that any previously existing members are deleted if
-#     their names match those being added.
-# c : Create the archive
-# s : Write an object-file index into the archive, or update an existing one,
-#     even if no other change is made to the archive.
 
 # Targets
 
 # Default target names
-TRG=lib$(PROJECTNAME).a
+TRG=$(PROJECTNAME).out
+HEXROMTRG=$(PROJECTNAME).hex
+HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 
 
 # Definition of all object files
@@ -147,7 +165,7 @@ OBJDEPS=$(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 # make commands 
 
 # Phony Targets
-.PHONY: all clean v mrproper
+.PHONY: all install clean v
 
 # 'make all' compiles the project
 all: $(TRG)
@@ -167,10 +185,10 @@ $(TRG): $(OBJDEPS)
 ifeq ($(VERBOSE), true)
 	@echo -e "$(SVERB) Linking $(OBJDEPS) in project $(TRG) ..."
 	@echo -e -n "$(SCOMM) "
-	$(AR) $(AROPTIONS) $(TRG) $(OBJDEPS)
+	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) -lm $(LIBS)
 	@echo -e "$(SVERB) Done"
 else
-	@$$(AR) $(AROPTIONS)v $(TRG) $(OBJDEPS)
+	@$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) -lm $(LIBS)
 endif
 
 # -lm : link the math library
@@ -205,26 +223,39 @@ endif
 # Includes the make commands contained .d files generated during compilation
 -include *.d
 
-# make clean leaves only the archive file
-clean:
+# creation of hex files from elf files
+%.hex: %.out
 ifeq ($(VERBOSE), true)
-	@echo -e "$(SVERB) Removing compilation files ..."
+	@echo -e "$(SVERB) Converting $< to $@ ..."
 	@echo -e -n "$(SCOMM) "
-	$(REMOVE) $(OBJDEPS) *.d
+	$(OBJCOPY) -j .text -j .data -O $(HEXFORMAT) $< $@
 	@echo -e "$(SVERB) Done"
 else
-	@$(REMOVE) $(OBJDEPS) *.d
+	@$(OBJCOPY) -j .text -j .data -O $(HEXFORMAT) $< $@
 endif
 
-# mrproper removes all files created during compilation
-mrproper: clean
+# make install allows compilation of the project and installation on the chip
+install: $(HEXROMTRG)
 ifeq ($(VERBOSE), true)
-	@echo -e "$(SVERB) Removing $(TRG) ..."
+	@echo -e "$(SVERB) Flashing $(HEXROMTRG) onto $(MCU) ..."
 	@echo -e -n "$(SCOMM) "
-	$(REMOVE) $(TRG)
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) \
+		-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 	@echo -e "$(SVERB) Done"
 else
-	@$(REMOVE) $(TRG)
+	@$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) \
+		-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
+endif
+
+# make clean removes all files created by compilation
+clean:
+ifeq ($(VERBOSE), true)
+	@echo -e "$(SVERB) Removing all compilation files ..."
+	@echo -e -n "$(SCOMM) "
+	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
+	@echo -e "$(SVERB) Done"
+else
+	@$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
 endif
 
 # EOF
