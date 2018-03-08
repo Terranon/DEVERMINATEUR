@@ -17,10 +17,7 @@ Led::Led()
           
         DDRC |= (1 << DDC2); // sets PORTC2 to output
         DDRC |= (1 << DDC3); // sets PORTC3 to output
-
     }
-    
-}
 
 /**
  * \brief destructor for the Led

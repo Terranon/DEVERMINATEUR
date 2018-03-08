@@ -10,11 +10,13 @@
 /**
  * \brief constructor for the Piezo; the DDRC register will be set to enable
  *        output on the appropriate pins
- * \param pwmFreq sets begining frequency of the pwm in Hz
+* \param freq sets begining frequency of Piezo
+*             ; uses preset notes in chromatic scale
+*             LA to SOSHARP
  * \return a Piezo
  */
-Piezo::Piezo(uint16_t pwmFreq)
-    : pwmFrequency_(pwmFreq) {
+Piezo::Piezo(uint16_t freq)
+      : frequency_(freq) {
           
         DDRC |= (1 << DDC0); // sets PORTC0 to output
         DDRC |= (1 << DDC1); // sets PORTC1 to output
@@ -27,119 +29,353 @@ Piezo::~Piezo() {
 }
 
 /**
- * \brief sets pwmFrequency_ to specified frequency
- * \param pwmFreq frequency that pwmFrequency_ will be set to
+ * \brief sets frequency_ to specified frequency
+ * \param freq frequency that frequency_ will be set to
  *                ; can use preset notes in chromatic scale
  *                LA to SOSHARP
  */
-void Piezo::setPwmFrequency(uint16_t pwmFreq) {
+void Piezo::setFrequency(uint16_t freq) {
     
-    pwmFrequency_ = pwmFreq;
-}
-
-/**
- * \brief plays tone set in pwmFrequency_ for 500 miliseconds
- */
-void Piezo::playTone() {
-    
-    uint32_t lengthOfTone = pwmFrequency_ * 500;
-    uint16_t highTime = 1000.0 / (pwmFrequency_/2);
-    uint16_t lowTime = 1000.0 - ontime;
-    
-    for(uint32_t i = 0; i < lengthOfTone; i++) {
-        
-        PORTC |= (posAmplitude << DDC0);
-        delay_ms(highTime);
-        PORTC |= (negAmplitude << DDC0);
-        delay_ms(lowTime);
-    }
+    frequency_ = freq;
 }
 
 /**
  * \brief plays a note for one milisecond
- * \param pwmFreq frequency that the Piezo will play; can use preset notes
- *                in chromatic scale LA to SOSHARP
+ * \param note frequency that the Piezo will play; can use preset notes
+ *             in chromatic scale LA to SOSHARP
  */
-void Piezo::playFastNote(uint16_t pwmFreq) {
+void Piezo::playFastNote(uint16_t note) {
     
-    pwmFrequency_ = pwmFreq;
-    
-    uint32_t nLoopIterations = pwmFreq * 1;
-    uint16_t highTime = 1000.0 / (pwmFreq/2);
-    uint16_t lowTime = 1000.0 - ontime;
-    
-    for(uint32_t i = 0; i < nLoopIterations; i++) {
-        
-        PORTC = posAmplitude;
-        delay_ms(highTime);
-        PORTC = negAmplitude;
-        delay_ms(lowTime);
+    for(uint32_t i = 0; i < FAST; i++) {
+        switch(note) {
+            case LA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LA);
+                break;
+            case LASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LASHARP);
+                break;
+            case SI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SI);
+                break;
+            case DO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DO);
+                break;
+            case DOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                break;
+            case RE:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RE);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RE);
+                break;
+            case RESHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RESHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RESHARP);
+                break;
+            case MI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(MI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(MI);
+                break;
+            case FA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FA);
+                break;
+            case FASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FASHARP);
+                break;
+            case SO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SO);
+                break;
+            case SOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                break;
+        }
     }
 }
 
 /**
- * \brief plays a note for one 250 miliseconds or one sixteenth note
- * \param pwmFreq frequency that the Piezo will play; can use preset notes
- *                in chromatic scale LA to SOSHARP
+ * \brief plays a note for 250 miliseconds
+ * \param note frequency that the Piezo will play; can use preset notes
+ *             in chromatic scale LA to SOSHARP
  */
-void Piezo::playSixteenthNote(uint16_t pwmFreq) {
+void Piezo::playSixteenthNote(uint16_t note) {
     
-    pwmFrequency_ = pwmFreq;
-    
-    uint32_t nLoopIterations = pwmFreq * 250;
-    uint16_t highTime = 1000.0 / (pwmFreq/2);
-    uint16_t lowTime = 1000.0 - ontime;
-    
-    for(uint32_t i = 0; i < nLoopIterations; i++) {
-        
-        PORTC = 0x01
-        delay_ms(highTime);
-        PORTC = 0x02
-        delay_ms(lowTime);
+    for(uint32_t i = 0; i < SIXTEENTH; i++) {
+        switch(note) {
+            case LA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LA);
+                break;
+            case LASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LASHARP);
+                break;
+            case SI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SI);
+                break;
+            case DO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DO);
+                break;
+            case DOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                break;
+            case RE:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RE);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RE);
+                break;
+            case RESHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RESHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RESHARP);
+                break;
+            case MI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(MI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(MI);
+                break;
+            case FA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FA);
+                break;
+            case FASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FASHARP);
+                break;
+            case SO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SO);
+                break;
+            case SOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                break;
+        }
     }
 }
 
 /**
- * \brief plays a note for one 500 miliseconds or one eighth note
- * \param pwmFreq frequency that the Piezo will play; can use preset notes
- *                in chromatic scale LA to SOSHARP
+ * \brief plays a note for 500 miliseconds
+ * \param note frequency that the Piezo will play; can use preset notes
+ *             in chromatic scale LA to SOSHARP
  */
-void Piezo::playEighthNote(uint16_t pwmFreq) {
+void Piezo::playEighthNote(uint16_t note) {
     
-    pwmFrequency_ = pwmFreq;
-    
-    uint32_t nLoopIterations = pwmFreq * 500;
-    uint16_t highTime = 1000 / (pwmFreq/2);
-    uint16_t lowTime = 1000 - ontime;
-    
-    for(uint32_t i = 0; i < nLoopIterations; i++) {
-        
-        PORTC = 0x01
-        delay_ms(highTime);
-        PORTC = 0x02
-        delay_ms(lowTime);
+    for(uint32_t i = 0; i < EIGHTH; i++) {
+        switch(note) {
+            case LA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LA);
+                break;
+            case LASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LASHARP);
+                break;
+            case SI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SI);
+                break;
+            case DO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DO);
+                break;
+            case DOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                break;
+            case RE:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RE);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RE);
+                break;
+            case RESHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RESHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RESHARP);
+                break;
+            case MI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(MI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(MI);
+                break;
+            case FA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FA);
+                break;
+            case FASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FASHARP);
+                break;
+            case SO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SO);
+                break;
+            case SOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                break;
+        }
     }
 }
 
 /**
- * \brief plays a note for one 1000 miliseconds or one quarter note
- * \param pwmFreq frequency that the Piezo will play; can use preset notes
- *                in chromatic scale LA to SOSHARP
+ * \brief plays a note for 1000 miliseconds
+ * \param note frequency that the Piezo will play; can use preset notes
+ *             in chromatic scale LA to SOSHARP
  */
-void Piezo::playQuarterNote(uint16_t pwmFreq) {
+void Piezo::playQuarterNote(uint16_t note) {
     
-    pwmFrequency_ = pwmFreq;
-    
-    uint32_t nLoopIterations = pwmFreq * 1000;
-    uint16_t highTime = 1000.0 / (pwmFreq/2);
-    uint16_t lowTime = 1000.0 - ontime;
-    
-    for(uint32_t i = 0; i < nLoopIterations; i++) {
-        
-        PORTC = 0x01
-        delay_ms(highTime);
-        PORTC = 0x02
-        delay_ms(lowTime);
+    for(uint32_t i = 0; i < QUARTER; i++) {
+        switch(note) {
+            case LA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LA);
+                break;
+            case LASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(LASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(LASHARP);
+                break;
+            case SI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SI);
+                break;
+            case DO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DO);
+                break;
+            case DOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(DOSHARP);
+                break;
+            case RE:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RE);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RE);
+                break;
+            case RESHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(RESHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(RESHARP);
+                break;
+            case MI:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(MI);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(MI);
+                break;
+            case FA:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FA);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FA);
+                break;
+            case FASHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(FASHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(FASHARP);
+                break;
+            case SO:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SO);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SO);
+                break;
+            case SOSHARP:
+                PORTC |= (posAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                PORTC |= (negAmplitude << DDC0);
+                _delay_us(SOSHARP);
+                break;
+        }
     }
 }
 
@@ -148,39 +384,39 @@ void Piezo::playQuarterNote(uint16_t pwmFreq) {
  */
 void Piezo::gucciGang() {
     
-    playEighthNote(LA * 2);
-    playEighthNote(RE * 2);
-    playSixteenthNote(MI * 2);
-    playSixteenthNote(FA * 2);
-    playEighthNote(MI * 2);
-    playEighthNote(RE * 2);
-    playEighthNote(DO * 2);
+    playEighthNote(LA);
+    playEighthNote(RE);
+    playSixteenthNote(MI);
+    playSixteenthNote(FA);
+    playEighthNote(MI);
+    playEighthNote(RE);
+    playEighthNote(DO);
     
-    playQuarterNote(LA * 2);
-    playEighthNote(LA * 2);
-    playEighthNote(RE * 2);
-    playSixteenthNote(MI * 2);
-    playSixteenthNote(FA * 2);
-    playEighthNote(MI * 2);
-    playEighthNote(RE * 2);
-    playQuarterNote(SO * 2);
+    playQuarterNote(LA);
+    playEighthNote(LA);
+    playEighthNote(RE);
+    playSixteenthNote(MI);
+    playSixteenthNote(FA);
+    playEighthNote(MI);
+    playEighthNote(RE);
+    playQuarterNote(SO);
     
-    playEighthNote(LA * 2);
-    playEighthNote(RE * 2);
-    playSixteenthNote(MI * 2);
-    playSixteenthNote(FA * 2);
-    playEighthNote(MI * 2);
-    playEighthNote(RE * 2);
-    playEighthNote(DO * 2);
+    playEighthNote(LA);
+    playEighthNote(RE);
+    playSixteenthNote(MI);
+    playSixteenthNote(FA);
+    playEighthNote(MI);
+    playEighthNote(RE);
+    playEighthNote(DO);
     
-    playQuarterNote(LA * 2);
-    playEighthNote(LA * 2);
-    playEighthNote(RE * 2);
-    playSixteenthNote(MI * 2);
-    playSixteenthNote(FA * 2);
-    playEighthNote(MI * 2);
-    playEighthNote(RE * 2);
-    playEighthNote(SO * 2);
+    playQuarterNote(LA);
+    playEighthNote(LA);
+    playEighthNote(RE);
+    playSixteenthNote(MI);
+    playSixteenthNote(FA);
+    playEighthNote(MI);
+    playEighthNote(RE);
+    playEighthNote(SO);
     
     for(uint8_t i = 0; i < 12; i++) { // repetition of same note for 12 half bars
         playEighthNote(MI);
@@ -191,24 +427,10 @@ void Piezo::gucciGang() {
 }
 
 /**
- * \brief plays a vroom vroom sound
+ * \brief getter for frequency_
+ * \return frequency_
  */
-void Piezo::vroomVroom() {
+uint16_t Piezo::getFrequency() {
     
-    for(uint16_t i = 30; i < 1030; i++) { // rev up sound
-        
-        playFastNote(i);
-    }
-    for(uint16_t j = 1030; i > 30; j--) { // rev down sound
-        
-        playFastNote(j);
-}
-
-/**
- * \brief getter for pwmFrequency_
- * \return pwmFrequency_
- */
-uint16_t Piezo::getPwmFrequency() {
-    
-    return pwmFrequency_;
+    return frequency_;
 }

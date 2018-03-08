@@ -1,6 +1,6 @@
 /*****************************************************************************\
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
- * Name:        Led.h
+ * Name:        Button.h
  * Description: Simplify the use of a button
  * Version: 1.1
 \******************************************************************************/
@@ -10,7 +10,7 @@
 /**
  * \brief constructor for the Button; the DDRx register will be set to enable
  *        input on the appropriate pins. 
- *        The EIMSK register will be set to enable corresponding INTx_VECT 
+ *        The EIMSK register will be set to enable corresponding intxVect 
  *        to make external interrupts. 
  *        The EICRA register is set to control the behavior of the interrupt 
  *        vector. Value 01 corresponds to any logical change generating an 
@@ -63,9 +63,9 @@ Button::~Button(){
  * \param intxVect the interrupt vector that is to be initialized,
  *                 value between 0-2
  */
-void Led::setIntxVect(uint8_t intxVect) {
+void Button::setIntxVect(uint8_t intxVect) {
     
-    xVect_ = INTx_VECT;
+    xVect_ = intxVect;
     
     switch(xVect_) {
         case 0 :                        // corresponds to INT0_VECT
@@ -98,7 +98,7 @@ void Led::setIntxVect(uint8_t intxVect) {
  *                            while button is open (not pressed),
  *                            value between 0-1
  */
-void Led::setValueWhenButtonOpen(uint8_t valueWhenButtonOpen) {
+void Button::setValueWhenButtonOpen(uint8_t valueWhenButtonOpen) {
     
     openValue_ = valueWhenButtonOpen;
 }
@@ -107,7 +107,7 @@ void Led::setValueWhenButtonOpen(uint8_t valueWhenButtonOpen) {
  * \brief getter for xVect_
  * \return xVect_
  */
-uint8_t Led::getIntxVect() {
+uint8_t Button::getIntxVect() {
     
     return xVect_;
 }
@@ -116,7 +116,7 @@ uint8_t Led::getIntxVect() {
  * \brief getter for valueWhenButtonOpen
  * \return valueWhenButtonOpen
  */
-uint8_t Led::getValueWhenButtonOpen() {
+uint8_t Button::getValueWhenButtonOpen() {
     
     return openValue_;
 }

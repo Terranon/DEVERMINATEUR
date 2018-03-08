@@ -16,15 +16,9 @@ public:
     /**
     * \brief constructor for the Led; the DDRx register will be set to enable
     *        output on the appropriate pins
-    * \param posLead the pin on which the positive lead of the LED is connected,
-    *                value between 0-7
-    * \param negLead the pin on which the negative lead of the LED is connected,
-    *                value between 0-7
-    * \param port the port on which the LED is connected, can be Led::A, Led::B,
-    *             Led::C or Led::D
     * \return an Led
     */
-    Led(uint8_t posLead, uint8_t negLead, uint8_t port);
+    Led();
     
     /**
     * \brief destructor for the Led

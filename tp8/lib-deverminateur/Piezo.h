@@ -6,6 +6,7 @@
 \******************************************************************************/
 
 #include <avr/io.h>
+#define F_CPU 8000000UL
 #include <avr/delay.h>
 
 #ifndef PIEZO_H
@@ -17,98 +18,98 @@ public:
     /**
     * \brief constructor for the Led; the DDRC register will be set to enable
     *        output on the appropriate pins
-    * \param pwmFreq sets begining frequency of the pwm in Hz
+    * \param freq sets begining frequency of Piezo
+    *             ; uses preset notes in chromatic scale
+    *                LA to SOSHARP
     * \return a Piezo
     */
-    Piezo(uint16_t pwmFreq);
+    Piezo(uint16_t freq);
     
     /**
     * \brief destructor for the Piezo
     */
-    Piezo::~Piezo();
+    ~Piezo();
 
     /**
-    * \brief sets pwmFrequency_ to specified frequency
-    * \param pwmFreq frequency that pwmFrequency_ will be set to
-    *                ; can use preset notes in chromatic scale
+    * \brief sets frequency_ to specified frequency
+    * \param freq frequency that frequency_ will be set to
+    *                ; uses preset notes in chromatic scale
     *                LA to SOSHARP
     */
-    void Piezo::setPwmFrequency(uint16_t pwmFreq);
-
-    /**
-    * \brief plays tone set in pwmFrequency_ for 500 miliseconds
-    */
-    void Piezo::playTone();
+    void setFrequency(uint16_t freq);
 
     /**
     * \brief plays a note for one milisecond
-    * \param pwmFreq frequency that the Piezo will play; can use preset notes
+    * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void Piezo::playFastNote(uint16_t pwmFreq);
+    void playFastNote(uint16_t note);
 
     /**
     * \brief plays a note for one 250 miliseconds or one sixteenth note
-    * \param pwmFreq frequency that the Piezo will play; can use preset notes
+    * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void Piezo::playSixteenthNote(uint16_t pwmFreq);
+    void playSixteenthNote(uint16_t note);
 
     /**
     * \brief plays a note for one 500 miliseconds or one eighth note
-    * \param pwmFreq frequency that the Piezo will play; can use preset notes
+    * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void Piezo::playEighthNote(uint16_t pwmFreq);
+    void playEighthNote(uint16_t note);
 
     /**
     * \brief plays a note for one 1000 miliseconds or one quarter note
-    * \param pwmFreq frequency that the Piezo will play; can use preset notes
+    * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void Piezo::playQuarterNote(uint16_t pwmFreq);
+    void playQuarterNote(uint16_t note);
 
     /**
     * \brief plays melody of the song Gucci Gang
     */
-    void Piezo::gucciGang();
+    void gucciGang();
 
     /**
-    * \brief plays a vroom vroom sound
+    * \brief getter for frequency_
+    * \return frequency_
     */
-    void Piezo::vroomVroom();
-
-    /**
-    * \brief getter for pwmFrequency_
-    * \return pwmFrequency_
-    */
-    uint16_t Piezo::getPwmFrequency();
+    uint16_t getFrequency();
     
-    /** 
-     * \brief These constants defines the frequencies of pwmFrequency_
+    /**
+     * \brief These constants define the periods of the delays in microseconds
      */
-    static const uint16_t LA = 440;
-    static const uint16_t LASHARP = 466;
-    static const uint16_t SI = 494;
-    static const uint16_t DO = 523;
-    static const uint16_t DOSHARP = 554;
-    static const uint16_t RE = 587;
-    static const uint16_t RESHARP = 622;
-    static const uint16_t MI = 659;
-    static const uint16_t FA = 698;
-    static const uint16_t FASHARP = 740;
-    static const uint16_t SO = 784;
-    static const uint16_t SOSHARP = 831;
+    static const uint16_t LA = 4545;
+    static const uint16_t LASHARP = 4291;
+    static const uint16_t SI = 4048;
+    static const uint16_t DO = 3824;
+    static const uint16_t DOSHARP = 3610;
+    static const uint16_t RE = 3407;
+    static const uint16_t RESHARP = 3215;
+    static const uint16_t MI = 3044;
+    static const uint16_t FA = 2865;
+    static const uint16_t FASHARP = 2702;
+    static const uint16_t SO = 2551;
+    static const uint16_t SOSHARP = 2408;
+    
+    /**
+     * \brief These constants define the lengths of the tones in miliseconds
+     */
+    static const uint16_t QUARTER = 1000;
+    static const uint16_t EIGHTH = 500;
+    static const uint16_t SIXTEENTH = 250;
+    static const uint16_t FAST = 1;
     
     /** 
-     * \brief These constants defines the polarity of the amplitude of the piezo
+     * \brief These constants define the polarity of the amplitude of the piezo
      */
     static const uint8_t posAmplitude = 1;
     static const uint8_t negAmplitude = 2;
     
 private:
 
-    uint16_t pwmFrequency_;
+    uint16_t frequency_;
 };
     
 #endif // PIEZO_H

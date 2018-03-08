@@ -1,6 +1,6 @@
 /*****************************************************************************\
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
- * Name:        Led.h
+ * Name:        Button.h
  * Description: Simplify the use of a button
  * Version: 1.1
 \******************************************************************************/
