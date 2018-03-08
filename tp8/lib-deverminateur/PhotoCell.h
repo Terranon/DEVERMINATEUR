@@ -30,11 +30,15 @@ public:
  * \return none
  */
 	uint8_t getValeurIntensite();
-	uint8_t position = 0;
+	
+	
+	void setPosition();
+	
 	
 private:
 	uint8_t valeurIntensite_;
 	Adc convertisseur_;
+	uint8_t position_;
 
 };
 #endif
