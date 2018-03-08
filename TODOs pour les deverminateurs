@@ -4,10 +4,10 @@ read pour registres
 Makefile // Jerry
 class button  // Max
 class PhotoCell // Tomdri
-class timer // Jerry
+class timer // Jerry Timer 1
 class pwm   -led // Max utilise
             -piezo // Max utilise Timer 0
-            -moteurs // Will utilise Timer 1
+            -moteurs // Will utilise Timer 2
 
             
 class interupt  // peut etre
