@@ -11,7 +11,7 @@
  */
 int main () {
     
-    Led led(1, 3, Led::C);
+    Led led;
     Adc adc;
     
     // Pin on which the photoresistor module is connected
