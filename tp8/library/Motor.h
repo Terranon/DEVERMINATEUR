@@ -1,7 +1,7 @@
 /*****************************************************************************\
  * Author:      William Chartrand
  * Name:        Motor.h
- * Description: General use of motors able to go forward and backward
+ * Description: General use of motors
  * Version: 1.0
 \******************************************************************************/
 
@@ -29,13 +29,13 @@ public:
 
 	/**
 	 * \brief Constuctor with parameters : initialize private attributes of an object from the class Motor
-	 * by passing a direction FRWD(forward) and BACK(backward), and a speed (between 0 and 255) 
+	 * by passing a direction, FRWD(forward) or BACK(backward), and a speed (between 0 and 255) 
 	 * \return a Motor having a direction and a speed decided by the user
 	 */
 	Motor(uint8_t direction, uint8_t speed);
 	
 	/**
-	 * \brief Destructor : destroy an object from the class motor and reset all its private attributes
+	 * \brief Destructor : destroy an object from the class motor and resets all its private attributes
 	 * \param direction and speed 
 	 */
 	~Motor();
@@ -53,7 +53,7 @@ public:
 	void setSpeed(uint8_t speed);
 	
 	/**
-	 * \brief function driveMotors initialize the mechanism of the motors by starting Timer 2 who create
+	 * \brief function driveMotors initializes the mechanism of the motors by starting Timer 2 that creates
 	 * a PWM permitting to have two output activating each motor to a certain speed
 	 */
 	void driveMotors();

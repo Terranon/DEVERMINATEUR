@@ -1,7 +1,7 @@
 /*****************************************************************************\
  * Author:      William Chartrand
  * Name:        Motor.cpp
- * Description: General use of motors able to go forward and backward
+ * Description: General use of motors
  * Version: 1.0
 \******************************************************************************/
 #include "Motor.h"
@@ -75,10 +75,10 @@ void Motor::driveMotors()
 
 	DDRD = PORT_SORTIE_MOTEURS;
 
-	//DIRECTION OF THE MOTOR 
+	//DIRECTION OF MOTORS 
 	PORTD = direction_;
 
-	//SPEED OF THE MOTOR
+	//SPEED OF MOTORS
 	OCR2A = speed_;	//OC2A 
 	OCR2B = speed_; //OC2B 
 }
