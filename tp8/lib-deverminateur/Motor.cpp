@@ -73,7 +73,7 @@ void Motor::driveMotors()
 	TCCR2B |= ((WGM2_val >> 2) << WGM22);
 	
 
-	DDRD = PORT_SORTIE;
+	DDRD = PORT_SORTIE_MOTEURS;
 
 	//DIRECTION OF THE MOTOR 
 	PORTD = direction_;

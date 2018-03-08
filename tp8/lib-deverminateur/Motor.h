@@ -15,7 +15,7 @@
 #include <avr/io.h> 
 const uint8_t FRWD = 0x00; 
 const uint8_t BACK = 0x30; 
-const uint8_t PORT_SORTIE = 0xff;
+const uint8_t PORT_SORTIE_MOTEURS = 0xf0;
 
 class Motor{
 public:
@@ -36,16 +36,19 @@ public:
 	
 	/**
 	 * \brief Destructor : destroy an object from the class motor and reset all its private attributes
+	 * \param direction and speed 
 	 */
 	~Motor();
 
 	/**
 	 * \brief function setDirection changes the direction of the motor
+	 * \param direction
 	 */
 	void setDirection(uint8_t direction);
 	
 	/**
 	 * \brief function setSpeed changes the speed of the motor between 0 and 255
+	 * \param speed
 	 */
 	void setSpeed(uint8_t speed);
 	
