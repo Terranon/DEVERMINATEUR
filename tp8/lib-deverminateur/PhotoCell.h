@@ -34,7 +34,7 @@ public:
 	
 private:
 	uint8_t valeurIntensite_;
-	can convertisseur_;
+	Adc convertisseur_;
 	uint8_t position_;
 
 };
