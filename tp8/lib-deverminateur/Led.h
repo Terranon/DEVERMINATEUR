@@ -16,12 +16,15 @@ public:
     
     /**
     * \brief constructor for the Led; the DDRC register will 
-    *        be set to enable output
+    *        be set to enable output on the appropriate pins
     * \param pwmFreq sets begining frequency of the pwm in Hz
     * \return an Led
     */
     Led(uint16_t pwmFreq);
     
+    /**
+    * \brief destructor for the Led
+    */
     ~Led();
     
     /**
@@ -49,6 +52,18 @@ public:
      *        Has no effect if the LED is off.
      */
     void toggleColor();
+    
+    /**
+    * \brief gets value of color_
+    * \return a color_
+    */
+    uint8_t getColor();
+    
+    /**
+    * \brief gets value of pwmFrequency_
+    * \return a pwmFrequency_
+    */
+    uint16_t getPwmFrequency()
     
     /** 
      * \brief These constants define the value of color_
