@@ -102,10 +102,9 @@ public:
     static const uint16_t FAST = 1;
     
     /** 
-     * \brief These constants define the polarity of the amplitude of the piezo
+     * \brief This constant defines the polarity of the amplitude of the piezo
      */
     static const uint8_t posAmplitude = 1;
-    static const uint8_t negAmplitude = 2;
     
 private:
 

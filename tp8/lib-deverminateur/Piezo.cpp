@@ -15,8 +15,8 @@
 *             LA to SOSHARP
  * \return a Piezo
  */
-Piezo::Piezo(uint16_t freq)
-      : frequency_(freq) {
+Piezo::Piezo(uint16_t freq) {
+        frequency_ = freq;
           
         DDRC |= (1 << DDC0); // sets PORTC0 to output
         DDRC |= (1 << DDC1); // sets PORTC1 to output
@@ -50,74 +50,98 @@ void Piezo::playFastNote(uint16_t note) {
         switch(note) {
             case LA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LA);
                 break;
             case LASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LASHARP);
                 break;
             case SI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SI);
                 break;
             case DO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DO);
                 break;
             case DOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DOSHARP);
                 break;
             case RE:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RE);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RE);
                 break;
             case RESHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RESHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RESHARP);
                 break;
             case MI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(MI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(MI);
                 break;
             case FA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FA);
                 break;
             case FASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FASHARP);
                 break;
             case SO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SO);
                 break;
             case SOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SOSHARP);
                 break;
         }
@@ -135,74 +159,98 @@ void Piezo::playSixteenthNote(uint16_t note) {
         switch(note) {
             case LA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LA);
                 break;
             case LASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LASHARP);
                 break;
             case SI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SI);
                 break;
             case DO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DO);
                 break;
             case DOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DOSHARP);
                 break;
             case RE:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RE);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RE);
                 break;
             case RESHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RESHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RESHARP);
                 break;
             case MI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(MI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(MI);
                 break;
             case FA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FA);
                 break;
             case FASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FASHARP);
                 break;
             case SO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SO);
                 break;
             case SOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SOSHARP);
                 break;
         }
@@ -220,74 +268,98 @@ void Piezo::playEighthNote(uint16_t note) {
         switch(note) {
             case LA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LA);
                 break;
             case LASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LASHARP);
                 break;
             case SI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SI);
                 break;
             case DO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DO);
                 break;
             case DOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DOSHARP);
                 break;
             case RE:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RE);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RE);
                 break;
             case RESHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RESHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RESHARP);
                 break;
             case MI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(MI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(MI);
                 break;
             case FA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FA);
                 break;
             case FASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FASHARP);
                 break;
             case SO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SO);
                 break;
             case SOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SOSHARP);
                 break;
         }
@@ -305,74 +377,98 @@ void Piezo::playQuarterNote(uint16_t note) {
         switch(note) {
             case LA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LA);
                 break;
             case LASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(LASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(LASHARP);
                 break;
             case SI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SI);
                 break;
             case DO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DO);
                 break;
             case DOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(DOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(DOSHARP);
                 break;
             case RE:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RE);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RE);
                 break;
             case RESHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(RESHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(RESHARP);
                 break;
             case MI:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(MI);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(MI);
                 break;
             case FA:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FA);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FA);
                 break;
             case FASHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(FASHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(FASHARP);
                 break;
             case SO:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SO);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SO);
                 break;
             case SOSHARP:
                 PORTC |= (posAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC1);
                 _delay_us(SOSHARP);
-                PORTC |= (negAmplitude << DDC0);
+                PORTC &= ~(posAmplitude << DDC0);
+                PORTC |= (posAmplitude << DDC1);
                 _delay_us(SOSHARP);
                 break;
         }
