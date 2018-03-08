@@ -32,8 +32,21 @@ Led::~Led() {
 void Led::setColor(uint8_t color) {
     
     color_ = color;
-    
-    PORTC |= (color << DDC2);
+    switch (color_) {
+        case OFF:
+            PORTC &= ~(1 << DDC2);
+            PORTC &= ~(1 << DDC3);
+            break;
+        case GREEN:
+            PORTC |= (1 << DDC2);
+            PORTC &= ~(1 << DDC3);
+            break;
+        case RED:
+            PORTC &= ~(1 << DDC2);
+            PORTC |= (1 << DDC3);
+            break;
+    }
+            
 }
 
 /**

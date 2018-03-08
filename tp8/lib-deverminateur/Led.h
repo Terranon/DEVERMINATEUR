@@ -10,6 +10,8 @@
 #ifndef LED_H
 #define LED_H
 
+
+
 class Led {
 public:
     
@@ -38,8 +40,8 @@ public:
     void toggleColor();
     
     /**
-     * \brief these constants represent the value of the LED; either OFF, GREEN or RED
-     */
+    * \brief these constants represent the value of the LED; either OFF, GREEN or RED
+    */
     static const uint8_t OFF = 0;
     static const uint8_t GREEN = 1;
     static const uint8_t RED = 2;
