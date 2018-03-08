@@ -1,0 +1,5 @@
+Changé le commentaire d'entête
+PRJSRC= $(wildcard *.cpp) pour inclure tous les fichiers cpp dans le dossier
+Traduction des commentaires
+Explication des CFLAGS et LDFLAGS en commentaire
+Ajout de -D F_CPU=8000000UL dans les CFLAGS

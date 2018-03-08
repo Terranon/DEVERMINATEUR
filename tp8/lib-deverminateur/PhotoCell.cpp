@@ -6,15 +6,14 @@
 \******************************************************************************/
 
 #include "PhotoCell.h"
-#include "can.h"
 
 /**
  * \brief default constructor for the intensity of the Led
  * \param valeurIntensite_ sets the Led's color
  * \return none
  */
- 
-PhotoCell::PhotoCell(uint8_t valeurIntensite_ = 0){
+PhotoCell::PhotoCell():
+	valeurIntensite_(0){
 }
 
 /**
@@ -22,8 +21,7 @@ PhotoCell::PhotoCell(uint8_t valeurIntensite_ = 0){
  * \param none
  * \return none
  */
- 
-void PhotoCell::allumerDelAmbree(){
+void PhotoCell::allumeDelAmbree() const{
 	PORTC = DEL_ROUGE;
 	_delay_ms(5);
 	PORTC = DEL_VERT;
@@ -36,29 +34,20 @@ void PhotoCell::allumerDelAmbree(){
  * \param valeurIntensite_ determines color of Led
  * \return none
  */
- 
-void PhotoCell::SetCouleurLed(valeurIntensite_){
+void PhotoCell::SetCouleurLed(){
 	
+	Adc convertisseur;
 	while(1){
 		
-	valeurIntensite_ = convertisseur.lecture(position) >> 2;
+	valeurIntensite_ = convertisseur.read(position) >> 2;
 	
 	if (valeurIntensite_ < intensiteFaible)
 		PORTC = DEL_VERT;
 
     else if (valeurIntensite_ < intensiteMoyenne)  
-		allumerDelAmbree();
+		allumeDelAmbree();
 
 	else 
 		PORTC = DEL_ROUGE;
 	}
-}
-
-/**
- * \brief destructor for the Led
- * \param pwmFreq sets begining frequency of the pwm in Hz
- * \return an Led
- */
- 
-PhotoCell::~PhotoCell{
 }
