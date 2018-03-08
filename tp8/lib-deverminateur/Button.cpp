@@ -2,7 +2,7 @@
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
  * Name:        Led.h
  * Description: Simplify the use of a button
- * Version: 1.0
+ * Version: 1.1
 \******************************************************************************/
 
 #include "Button.h"
@@ -55,7 +55,7 @@ Button::Button(uint8_t intxVect, uint8_t valueWhenButtonOpen)
 /**
  * \brief destructor for Button
  */
-~Button::Button(){
+Button::~Button(){
 }
 
 /**

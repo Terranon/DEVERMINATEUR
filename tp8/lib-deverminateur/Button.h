@@ -2,7 +2,7 @@
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
  * Name:        Led.h
  * Description: Simplify the use of a button
- * Version: 1.0
+ * Version: 1.1
 \******************************************************************************/
 
 #include <avr/io.h>
@@ -64,8 +64,8 @@ public:
     
 private:
 
-    xVect_;
-    openValue_;
+    uint8_t xVect_;
+    uint8_t openValue_;
 };
 
 #endif // BUTTON_H

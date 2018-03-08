@@ -2,7 +2,7 @@
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
  * Name:        Led.h
  * Description: Simplify the use of an LED
- * Version: 1.1
+ * Version: 1.2s
 \******************************************************************************/
 
 #include <avr/io.h>
@@ -50,44 +50,9 @@ public:
     static const uint8_t GREEN = 1;
     static const uint8_t RED = 2;
     
-    /**
-     * \brief these constants set the value of the possible ports; either A, B, C or D
-     */
-    static const uint8_t A = 0;
-    static const uint8_t B = 1;
-    static const uint8_t C = 2;
-    static const uint8_t D = 3;
-    
 private:
-    
-    /**
-    * \brief changes the color of an LED in PORTA
-    * \param color color of the LED, can be OFF, GREEN or RED
-    */
-    void setPORTA(uint8_t color);
-    
-    /**
-    * \brief changes the color of an LED in PORTB
-    * \param color color of the LED, can be OFF, GREEN or RED
-    */
-    void setPORTB(uint8_t color);
-    
-    /**
-    * \brief changes the color of an LED in PORTC
-    * \param color color of the LED, can be OFF, GREEN or RED
-    */
-    void setPORTC(uint8_t color);
-    
-    /**
-    * \brief changes the color of an LED in PORTD
-    * \param color color of the LED, can be OFF, GREEN or RED
-    */
-    void setPORTD(uint8_t color);
-    
+        
     uint8_t color_;
-    uint8_t positiveLead_;
-    uint8_t negativeLead_;
-    uint8_t port_;
 };
 
 #endif // LED_H
