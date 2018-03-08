@@ -30,6 +30,7 @@ public:
  * \return none
  */
 	uint8_t getValeurIntensite();
+	uint8_t position = 0;
 	
 private:
 	uint8_t valeurIntensite_;
