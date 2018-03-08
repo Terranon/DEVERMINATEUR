@@ -30,7 +30,7 @@ PROJECTNAME=project
 PRJSRC=project.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
-INC=-I../libdeverminateur
+INC=-I../library
 
 # Additional directories where the linker should look for libraries
 LDINC=$(patsubst -I%,-L%,$(INC))
