@@ -35,7 +35,7 @@ void PhotoCell::allumeDelAmbree() const{
  * \param valeurIntensite_ determines color of Led
  * \return none
  */
-void PhotoCell::SetCouleurLed(){
+void PhotoCell::setCouleurLed(){
 	
 	Adc convertisseur;
 	while(1){
