@@ -1,180 +1,175 @@
-########       AVR Project Makefile       ########
-#####                                        #####
-#####      Makefile produit et ecrit par     #####
-#####   Simon Barrette & Jerome Collin pour  #####
-#####           INF1995 - 2016               #####
-#####                                        #####
-#####         Inspire de Pat Deegan -        #####
-#####  Psychogenic Inc (www.psychogenic.com) #####
-##################################################
+################################################################################
+# Description: Makefile for the library lib-deverminateur                      #
+#                                                                              #
+# Authors: Jean-Raphael Matte, Maximilien Bianchi,                             #
+#          Thomas Dufour & William Chartrand                                   #
+# Inspired by: Simon Barrette & Jerome Collin                                  #
+# Version: 1.0                                                                 #
+################################################################################
 
-# Ce Makefile vous permet de compiler des projets
-# pour les microcontroleurs Atmel AVR sur 
-# Linux ou Unix, en utilisant l'outil AVR-GCC. 
-# Ce Makefile supporte C & C++
+# This Makefile allows the compilation of libraries developped for Atmel AVR
+# microcontrollers, under Linux or Unix, using the AVR-GCC tool.
+# This Makefile supports C and C++
 
-
-#####      Details specifique a la cible       #####
-#####  Vous devez les adapter a votre projet   #####
-
-# Nom du microcontroleur cible
-# (exemple: 'at90s8515')
+# Microcontroller name
+# ex: 'at90s8515')
 MCU=atmega324pa
 
-# Nom de votre projet
-# (utilisez un seul mot, exemple: 'monprojet')
-PROJECTNAME=main
+# Name of you project
+# (use a single word, ex: "myproject")
+PROJECTNAME=lib-deverminateur
 
-# Fichiers sources
-# Utilisez le suffixe .cpp pour les fichiers C++
-# Listez tous les fichiers a compiler, separes par
-# un espace. exemple: 'tp1.c tp2.cpp':
-PRJSRC= $(wildcard *.cpp)
+# Source files
+# Use the .cpp suffix for c++ files
+# List all source file to compile, separated by a whitespace,
+# or use '$(wildcard *.cpp)' to include all .cpp files in the current directory
+# ex: 'tp1.c tp2.cpp':
+PRJSRC=$(wildcard *.cpp)
 
-# Inclusions additionnels (ex: -I/path/to/mydir)
+# Additional inclusions (ex: -I/path/to/mydir)
 INC=
 
-# Libraires a lier (ex: -lmylib)
+# Libraries to link (ex: -lmylib)
 LIBS=
 
-# Niveau d'optimization
+# Optimization level
 # Utilisez s (size opt), 1, 2, 3 ou 0 (off)
 OPTLEVEL=s
 
-# Programmer ID - Ne pas changer 
-# Liste complete des IDs disponible avec avrdude
+# Programmer ID - Do not change 
+# Complete list of Programmer IDs available with AVRdude
 AVRDUDE_PROGRAMMERID=usbasp
 
 
 
-####################################################
-#####         Configuration terminee           #####
-#####                                          #####
-#####  Le reste de cette section contient les  #####
-##### details d'implementation vous permettant #####
-##### de mieux comprendre le fonctionnement de ##### 
-#####   ce Makefile en vue de sa modification  #####
-####################################################
+# End of configuration
 
 
 
-####### variables #######
+# Variables
 
-#compilateur utilise
+# Compiler
 CC=avr-gcc
-#pour copier le contenu d'un fichier objet vers un autre
+
+# Object copy command
 OBJCOPY=avr-objcopy
-#pour permettre le transfert vers le microcontroleur
+
+# AVRdude command
 AVRDUDE=avrdude
-#pour supprimer les fichiers lorsque l'on appel make clean
+
+# Command to remove files
 REMOVE=rm -f
-# HEXFORMAT -- format pour les fichiers produient .hex
+
+
 HEXFORMAT=ihex
 
 
+# Compiler options
 
-####### Options de compilation #######
+# Flags for the C compiler
+CFLAGS= -I . \
+	-MMD \
+	$(INC) \
+	-g \
+	-mmcu=$(MCU) \
+	-O$(OPTLEVEL) \
+	-fpack-struct \
+	-fshort-enums \
+	-funsigned-bitfields \
+	-funsigned-char \
+	-Wall
 
-# Flags pour le compilateur en C
-CFLAGS=-I. -MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
-	-fpack-struct -fshort-enums             \
-	-funsigned-bitfields -funsigned-char    \
-	-Wall                                        
+# -I . : Add the current directory (.) to the list of directories to be searched 
+#        for header files.
+# -MMD : Instead of outputting the result of preprocessing, output a make rule 
+#        describing the dependencies of the source file. This file will have the 
+#        same name as the source file, with a .d suffixe.
+# $(INC) : Should be specified as a list of '-I/path/to/my/dir' corresponding to 
+#          other directories to include
+# -g : generate debug information to be used by GDB debugger.
+# -mmcu=$(MCU) : Specify ATMEL AVR MCU type
+# -O$(OPTLEVEL) : Set optimizaton level
+# -fpack-struct : Pack all structure members together without holes
+# -fshort-enums : Allocate to an "enum" type only as many bytes as it needs for 
+#                 the declared range of possible values.  Specifically, the 
+#                 "enum" type will be equivalent to the smallest integer type 
+#                 which has enough room.
+# -funsigned-bitfields : bit-fields are unsigned by default
+# -funsigned-char : chars are unsigned by default
+# -Wall : Turn on some optional warnings
 
-# Flags pour le compilateur en C++
-CXXFLAGS=-fno-exceptions     
+# Flags for the C++ compiler 
+CXXFLAGS=-fno-exceptions
 
-# Linker pour lier les librairies utilisees
-LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
+# -fno-exceptions : disable try-catch blocks
+
+# Linker to link libraries
+LDFLAGS=-Wl,-Map,$(TRG).map \
+	-mmcu=$(MCU)
+
+# -Wl,-Map,$(TRG).map : give -Map $(TRG).map as options to the linker
+# -mmcu=$(MCU) : Specify ATMEL AVR MCU type
 
 
+# Targets
 
-####### Cible (Target) #######
-
-#Nom des cibles par defaut
+# Default target names
 TRG=$(PROJECTNAME).out
 HEXROMTRG=$(PROJECTNAME).hex
 HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 
 
+# Definition of all object files
 
-####### Definition de tout les fichiers objets #######
-
-# Cette fonction permet de differencier les fichiers .c
-# des fichiers .cpp
-# Fichier C
+# These functions allow discrimination of .c and .cpp files
+# C files
 CFILES=$(filter %.c, $(PRJSRC))
-# Fichier C++
+# C++ files
 CPPFILES=$(filter %.cpp, $(PRJSRC))
 
-# Liste de tout les fichiers objet que nous devons creer
-OBJDEPS=$(CFILES:.c=.o) \
-	$(CPPFILES:.cpp=.o)
-	
-# Pour plus d'information sur cette section, consulter :
-# http://bit.ly/257R53E	
-# Les fonctions $(filter patternâ€¦,text) &
-# $(patsubst pattern,replacement,text) sont pertinentes
-	
+# List of all object files to be created
+OBJDEPS=$(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 
 
-####### Creation des commandes du Makefile ####### 
+# make commands 
 
-# Creation des cibles Phony (Phony Target)
-# En plus de la commande make qui permet de compiler
-# votre projet, vous pouvez utilisez les commandes
-# make all, make install et make clean
-.PHONY: all install clean 
+# Phony Targets
+.PHONY: all install clean
 
-# Make all permet simplement de compiler le projet
-#
+# 'make all' compiles the project
 all: $(TRG)
 
-# Implementation de la cible
+# Linking
 $(TRG): $(OBJDEPS)
-	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) \
-	-lm $(LIBS)
+	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) -lm $(LIBS)
 
-# Production des fichiers object
-# De C a objet
+# -lm : link the math library
+# $(LIBS) : should be specified as a list of -l'mylib' flags, where 
+#           'mylib' is replaced with the name of a library (ex: -lmylib)
+
+# Object files
+# C file -> object file
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
-# De C++ a objet
+# C++ file -> object file
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(CXXFLAGS) -c $<
 
-# Verification des dependances (header dependencies)
+# Header dependencies
+# Includes the make commands contained .d files generated during compilation
 -include *.d
 
-# Pour plus d'information sur cette section, consulter:
-# http://bit.ly/2580FU8
-
-# Production des fichiers hex a partir des fichiers elf
+# creation of hex files from elf files
 %.hex: %.out
-	$(OBJCOPY) -j .text -j .data \
-		-O $(HEXFORMAT) $< $@
+	$(OBJCOPY) -j .text -j .data -O $(HEXFORMAT) $< $@
 
-# Make install permet de compiler le projet puis
-# d'ecrire le programme en memoire flash dans votre
-# microcontroleur. Celui-ci doit etre branche par cable USB
-install: $(HEXROMTRG)				
-	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
-	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
+# make install allows compilation of the project and installation on the chip
+install: $(HEXROMTRG)
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) \
+		-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
-# Make clean permet d'effacer tout les fichiers generes
-# lors de la compilation
+# make clean removes all files created by compilation
 clean:
 	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
 
-# Pour plus d'information sur les phony target, consulter:
-# http://bit.ly/1WBQe61
-
-# De plus, pour mieux comprendre les makefiles et 
-# leur fonctionnement, consulter la documentation de GNU Make:
-# http://bit.ly/23Vpk8s
-
-# Finalement, ce tutoriel en ligne constitut une bonne 
-# introduction au Makefile:
-# http://bit.ly/1XvxsN3
-
-#####                    EOF                   #####
+# EOF
