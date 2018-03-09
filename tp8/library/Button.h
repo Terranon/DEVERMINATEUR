@@ -36,6 +36,12 @@ public:
     ~Button();
     
     /**
+    * \brief checks if Button is pressed
+    * \return a uint8_t
+    */
+    uint8_t isPressed();
+    
+    /**
     * \brief setter for which vector the button will activate
     * \param intxVect the interrupt vector that is to be initialized,
     *                 value between 0-2
