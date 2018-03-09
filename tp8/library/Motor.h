@@ -2,6 +2,10 @@
  * Author:      William Chartrand
  * Name:        Motor.h
  * Description: General use of motors
+ * 							Using JM1D : PD4
+ * 										JM1E : PD6
+ * 										JM2D : PD5
+ * 										JM2E : PD7
  * Version: 1.0
 \******************************************************************************/
 

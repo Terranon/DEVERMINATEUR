@@ -1,7 +1,11 @@
 /*****************************************************************************\
  * Author:      William Chartrand
  * Name:        Motor.cpp
- * Description: General use of motors
+ * Description: General use of motors 
+ * 							Using JM1D : PD4
+ * 										JM1E : PD6
+ * 										JM2D : PD5
+ * 										JM2E : PD7
  * Version: 1.0
 \******************************************************************************/
 #include "Motor.h"
