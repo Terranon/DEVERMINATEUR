@@ -5,10 +5,10 @@
  * Version: 1.1
 \******************************************************************************/
 
-#include <avr/io.h>
-
 #ifndef BUTTON_H
 #define BUTTON_H
+
+#include <avr/io.h>
 
 class Button {
 public:

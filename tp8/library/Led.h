@@ -5,12 +5,10 @@
  * Version: 1.2s
 \******************************************************************************/
 
-#include <avr/io.h>
-
 #ifndef LED_H
 #define LED_H
 
-
+#include <avr/io.h>
 
 class Led {
 public:

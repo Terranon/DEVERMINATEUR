@@ -1,7 +1,7 @@
 /*****************************************************************************\
  * Authors: Jean-Raphael Matte, Maximilien Bianchi, Thomas Dufour, William Chartrand
  * Name: PhotoCell.h
- * Description:
+ * Description: PINA0
  * Version: 1.0
 \******************************************************************************/
 

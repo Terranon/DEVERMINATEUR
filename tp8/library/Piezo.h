@@ -5,12 +5,11 @@
  * Version: 1.0
 \******************************************************************************/
 
-#include <avr/io.h>
-#define F_CPU 8000000UL
-#include <avr/delay.h>
-
 #ifndef PIEZO_H
 #define PIEZO_H
+
+#include <avr/io.h>
+#include <util/delay.h>
     
 class Piezo {
 public:

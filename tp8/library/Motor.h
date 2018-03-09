@@ -8,17 +8,14 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#ifndef F_CPU
-#define F_CPU 8000000UL
-#endif
-
 #include <avr/io.h> 
-const uint8_t FRWD = 0x00; 
-const uint8_t BACK = 0x30; 
-const uint8_t PORT_SORTIE_MOTEURS = 0xf0;
 
-class Motor{
+class Motor {
 public:
+    
+	static const uint8_t FRWD = 0x00; 
+	static const uint8_t BACK = 0x30; 
+	static const uint8_t PORT_SORTIE_MOTEURS = 0xf0;
 
 	/**
 	* \brief Default Constructor : initialize private attributes of an object from the class Motor

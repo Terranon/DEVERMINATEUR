@@ -13,8 +13,8 @@
  *
  */
 
-#ifndef CAN_H
-#define CAN_H
+#ifndef ADC_H
+#define ADC_H
 
 #include <avr/io.h> 
 
@@ -44,4 +44,4 @@ private:
 
 };
 
-#endif /* CAN_H */
+#endif /* ADC_H */
