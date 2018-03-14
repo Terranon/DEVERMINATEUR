@@ -45,8 +45,8 @@ int main () {
     Motor wheels;           // initialize Motor class
     Piezo alarm(Piezo::LA); // initialize Piezo class with initial note LA: 440Hz
     
-    const uint8_t LOW_THRESHOLD = 200;   // Fixed variables for comparison
-    const uint8_t HIGH_THRESHOLD = 220;
+    const uint8_t LOW_THRESHOLD = 200;   // fixed variables for comparison with
+    const uint8_t HIGH_THRESHOLD = 220;  // input from PhotoCell
     
     uint8_t sensorReading;  // this variable will hold the value of the intensity
                             // set by PhotoCell class
