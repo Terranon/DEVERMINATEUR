@@ -2,7 +2,7 @@
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi
  * Name:        Piezo.h
  * Description: Simplify the use of a Piezo
- * Version: 1.0
+ * Version: 2.0
 \******************************************************************************/
 
 #ifndef PIEZO_H
@@ -19,10 +19,10 @@ public:
     *        output on the appropriate pins
     * \param freq sets begining frequency of Piezo
     *             ; uses preset notes in chromatic scale
-    *                LA to SOSHARP
+    *                LA to LA
     * \return a Piezo
     */
-    Piezo(uint16_t freq);
+    Piezo();
     
     /**
     * \brief destructor for the Piezo
@@ -30,67 +30,91 @@ public:
     ~Piezo();
 
     /**
-    * \brief sets frequency_ to specified frequency
-    * \param freq frequency that frequency_ will be set to
-    *                ; uses preset notes in chromatic scale
-    *                LA to SOSHARP
-    */
-    void setFrequency(uint16_t freq);
-
-    /**
     * \brief plays a note for one milisecond
     * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void playFastNote(uint16_t note);
+    void playFastNote(Note note);
 
     /**
     * \brief plays a note for one 250 miliseconds or one sixteenth note
     * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void playSixteenthNote(uint16_t note);
+    void playSixteenthNote(Note note);
 
     /**
     * \brief plays a note for one 500 miliseconds or one eighth note
     * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void playEighthNote(uint16_t note);
+    void playEighthNote(Note note);
 
     /**
     * \brief plays a note for one 1000 miliseconds or one quarter note
     * \param freq frequency that the Piezo will play; can use preset notes
     *                in chromatic scale LA to SOSHARP
     */
-    void playQuarterNote(uint16_t note);
+    void playQuarterNote(Note note);
 
     /**
     * \brief plays melody of the song Gucci Gang
     */
     void gucciGang();
-
-    /**
-    * \brief getter for frequency_
-    * \return frequency_
-    */
-    uint16_t getFrequency();
     
     /**
-     * \brief These constants define the periods of the delays in microseconds
+     * \brief this struct represents a note with appropriate values
+     *        using CTC mode for timer2
      */
-    static const uint16_t LA = 4545;
-    static const uint16_t LASHARP = 4291;
-    static const uint16_t SI = 4048;
-    static const uint16_t DO = 3824;
-    static const uint16_t DOSHARP = 3610;
-    static const uint16_t RE = 3407;
-    static const uint16_t RESHARP = 3215;
-    static const uint16_t MI = 3044;
-    static const uint16_t FA = 2865;
-    static const uint16_t FASHARP = 2702;
-    static const uint16_t SO = 2551;
-    static const uint16_t SOSHARP = 2408;
+    struct Note{
+        uint8_t prescalerMode;
+        uint8_t eightBitValue;
+    }
+    
+    /**
+     * \brief These constants define the respective value to set OCR2A to
+     *        the appropriate note
+     */    
+    static const Note LA_ONE = {6,141};
+    static const Note LASHARP_ONE = {6,133};
+    static const Note SI_ONE = {5,252};
+    static const Note DO_ONE = {5,238};
+    static const Note DOSHARP_ONE = {7,27};
+    static const Note RE_ONE = {5,212};
+    static const Note RESHARP_ONE = {7,24};
+    static const Note MI_ONE = {6,94};
+    static const Note FA_ONE = {5,178};
+    static const Note FASHARP_ONE = {5,168};
+    static const Note SO_ONE = {7,19};
+    static const Note SOSHARP_ONE = {7,18};
+    
+    static const Note LA_TWO = {6,70};
+    static const Note LASHARP_TWO = {6,68};
+    static const Note SI_TWO = {4,252}
+    static const Note DO_TWO = {7,14};
+    static const Note DOSHARP_TWO = {7,13};
+    static const Note RE_TWO = {4,212};
+    static const Note RESHARP_TWO = {4,200};
+    static const Note MI_TWO = {7,11};
+    static const Note FA_TWO = {4,178};
+    static const Note FASHARP_TWO = {4,168};
+    static const Note SO_TWO = {7,9};
+    static const Note SOSHARP_TWO = {5,74};
+    
+    static const Note LA_THREE = {5,70};
+    static const Note LASHARP_THREE = {5,66};
+    static const Note SI_THREE = {7,7};
+    static const Note DO_THREE = {3,238};
+    static const Note DOSHARP_THREE = {7,6};
+    static const Note RE_THREE = {3,212};
+    static const Note RESHARP_THREE = {6,24};
+    static const Note MI_THREE = {7,5};
+    static const Note FA_THREE = {3,178};
+    static const Note FASHARP_THREE = {3,168};
+    static const Note SO_THREE = {7,4};
+    static const Note SOSHARP_THREE {6,18};
+    
+    static const Note LA_FOUR = {5,71};
     
     /**
      * \brief These constants define the lengths of the tones in miliseconds
@@ -98,16 +122,12 @@ public:
     static const uint16_t QUARTER = 1000;
     static const uint16_t EIGHTH = 500;
     static const uint16_t SIXTEENTH = 250;
-    static const uint16_t FAST = 1;
-    
-    /** 
-     * \brief This constant defines the polarity of the amplitude of the piezo
-     */
-    static const uint8_t posAmplitude = 1;
+    static const uint16_t FAST = 10;
     
 private:
 
-    uint16_t frequency_;
+    uint8_t prescalerMode_;
+    uint8_t eightBitValue_;
 };
     
 #endif // PIEZO_H
