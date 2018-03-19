@@ -2,7 +2,14 @@
  * Author:      Jean-Raphael Matte
  * Name:        Timer.cpp
  * Description: General purpose 16 bit CTC timer/counter
- * Version: 1.0
+ * Version: 1.1
+ * 
+ * Wiring : 
+ *                  
+ *   PORTD : 1 3(5)7
+ *              |||-Jumper            
+ *           0 2(4)6
+ *                                                         
 \******************************************************************************/
 
 #include "Timer.h"
@@ -56,20 +63,6 @@ Timer::Timer()
     // 1 | Toggle OC1x on Compare Match.
     // 2 | Clear OC1x on Compare Match (Set output to low level).
     // 3 | Set OC1x on Compare Match (Set output to high level).
-    //
-    // Fast PWM
-    // v | behavior
-    // 0 | Normal port operation, OC1x disconnected.
-    // 1 | WGM1 14-15: Toggle OC1A on Compare Match, OC1B disconnected.
-    // 2 | Clear OC1x on Compare Match, set OC1x at BOTTOM (non-inverting)
-    // 3 | Set OC1x on Compare Match, clear OC1x at BOTTOM (inverting mode)
-    //
-    // Phase correct and phase and frequency correct PWM
-    // v | behavior
-    // 0 | Normal port operation, OC1x disconnected.
-    // 1 | WGM1 9-11: Toggle OC1A on Compare Match, OC1B disconnected.
-    // 2 | Clear OC1x when up-count match. Set OC1x when downcount match.
-    // 3 | Set OC1x when up-count match. Clear OC1x when downcount match.
     
     // The A flag will be used to verifiy if the timer has expired.
     TCCR1A &= ~(3 << COM1A0);

@@ -2,7 +2,7 @@
  * Author:      Jean-Raphael Matte
  * Name:        Timer.h
  * Description: General purpose 16 bit timer/counter
- * Version: 1.0
+ * Version: 1.1
 \******************************************************************************/
 
 #ifndef TIMER_H
