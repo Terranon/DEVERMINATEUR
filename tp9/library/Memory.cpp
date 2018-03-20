@@ -17,7 +17,7 @@ Memory::Memory()
 Memory::~Memory() {
 }
 
-Memory::read(uint16_t address) {
+uint8_t Memory::read(uint16_t address) {
 	uint8_t byteRead = 0;
 	eeprom.lecture(address, &byteRead);
 	return byteRead;

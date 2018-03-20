@@ -23,7 +23,7 @@ Interpreter::Interpreter()
 	: bytecode() {
 	uint8_t sizeH = bytecode.read(0);
 	uint8_t sizeL = bytecode.read(1);
-	bytecodeSize = (sizeH << 16) & sizeL;
+	bytecodeSize = (sizeH << 8) | sizeL;
 	currentAddress = 2;
 }
 
@@ -47,6 +47,7 @@ void Interpreter::execute() {
 }
 
 void Interpreter::executeInstruction(uint8_t instruction, uint8_t operand) {
+	
 	if (instruction == DBT) {
 		begin();
 	} else if (beginningFound) {
@@ -67,7 +68,7 @@ void Interpreter::executeInstruction(uint8_t instruction, uint8_t operand) {
 				playSound(operand);
 				break;
 			case SAR:
-				stopSound(operand);
+				stopSound();
 				break;
 			case MAR: // fallthrough
 			case MAR2:
@@ -94,10 +95,9 @@ void Interpreter::executeInstruction(uint8_t instruction, uint8_t operand) {
 			case FIN:
 				end();
 				break;
-			default:
-				// Illegal instruction
 		}
 	}
+	
 }
 
 void Interpreter::begin() {

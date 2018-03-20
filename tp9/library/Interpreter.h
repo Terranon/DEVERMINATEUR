@@ -199,7 +199,7 @@ private:
 	static const uint8_t MRE = 0x63;
 	static const uint8_t TRD = 0x64;
 	static const uint8_t TRG = 0x65;
-	static const uint8_t DBC = 0xC0
+	static const uint8_t DBC = 0xC0;
 	static const uint8_t FBC = 0xC1;
 	static const uint8_t FIN = 0xFF;
 	

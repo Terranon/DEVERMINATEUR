@@ -1,4 +1,4 @@
-/******************************************************************************/
+﻿/******************************************************************************/
 /*                                                                            */
 /* Isidore Lauzier - 9 juillet 2005                                           */
 /*                                                                            */
@@ -13,7 +13,7 @@
 /* Modifications mineures:                                                    */
 /*   - Pour refaire l'indentation - ete 2007 - Jerome Collin                  */
 /*   - Pour preciser les broches utilisees - novembre 2008 - Jerome Collin    */
-/*   - ajouts de commentaires - septembre 2017 - Jerome Collin
+/*   - ajouts de commentaires - septembre 2017 - Jerome Collin                */
 /*                                                                            */
 /******************************************************************************/
 

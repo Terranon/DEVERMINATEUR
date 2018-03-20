@@ -38,3 +38,5 @@ private:
 	Memoire24CXXX eeprom;
 	
 };
+
+#endif
