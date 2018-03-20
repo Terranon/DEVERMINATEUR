@@ -1,4 +1,4 @@
-/*****************************************************************************\
+﻿/*****************************************************************************\
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi, Thomas Dufour,
  *              William Chartrand
  * Name:        project.cpp
@@ -20,36 +20,35 @@
  * Version: 1.0
 \******************************************************************************/
 
-#include <fstream>
-using namespace std;
-
 /******************************************************************************\
  * Main
 \******************************************************************************/
+
+#include <memoire_24.h>
 
 /**
  * \brief main function
  * \return exit code
  */
- 
 int main () {
-    uint16_t tailleTableau = 78;
-    uint8_t tab[tailleTableau] = {};
-    ifstream fichierEntree;
-    fichierEntree.open("fichierDeSortie", ios::binary);
-	fichierEntree.seekg(0, ios::beg);
-		
-    while(fichier.peek != eof){
-			for(uint16_t i = 0; i < tailleTableau; i++){
-					uint8_t octet;
-					fichierEntree.read((char *) &octet, sizeof(uint8_t));
-					tab[i] = octet;			 
-			}
-		}
-		
+	
+	const uint16_t tailleTableau = 78;
+	const uint8_t tab[tailleTableau] = {
+		0x00, 0x4e, 0x01, 0x00, 0x44, 0x01, 0x48, 0x30,
+		0x02, 0x0a, 0x48, 0x34, 0x02, 0x0a, 0x48, 0x37,
+		0x02, 0x0a, 0x45, 0x00, 0x09, 0x00, 0xc0, 0x01,
+		0x62, 0xdc, 0x02, 0x50, 0x61, 0x00, 0x65, 0x00,
+		0x63, 0xdc, 0x02, 0x50, 0x61, 0x00, 0x64, 0x00,
+		0x63, 0xdc, 0x02, 0x50, 0x61, 0x00, 0x65, 0x00,
+		0x62, 0xdc, 0x02, 0x50, 0x61, 0x00, 0x64, 0x00,
+		0xc1, 0x00, 0x44, 0x01, 0x48, 0x37, 0x02, 0x0a,
+		0x48, 0x34, 0x02, 0x0a, 0x48, 0x30, 0x02, 0x0a,
+		0x45, 0x00, 0x09, 0x00, 0xff, 0x00
+	};
+	
 	Memoire24CXXX mem;
-	for(uint16_t i = 0; i < tailleTableau; i++){
-		mem.ecriture(i, tab[i]);
-	}
+	mem.ecriture(0, (uint8_t*)&tab, 78);
+	
     return 0;
 }
+
