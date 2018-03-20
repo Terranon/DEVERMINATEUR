@@ -15,58 +15,49 @@ class Piezo {
 public:
     
     /**
-     * \brief this struct represents a note with appropriate values
-     *        using CTC mode for timer2
-     */
-    struct Note{
-        uint8_t prescalerMode;
-        uint8_t eightBitValue;
-    };
-    
-    /**
      * \brief These constants define the respective value to set OCR2A to
      *        the appropriate note
      */    
-    Note LA_ONE = {6,141};
-    Note LASHARP_ONE = {6,133};
-    Note SI_ONE = {5,252};
-    Note DO_ONE = {5,238};
-    Note DOSHARP_ONE = {5,224};
-    Note RE_ONE = {5,212};
-    Note RESHARP_ONE = {5,200};
-    Note MI_ONE = {5,189};
-    Note FA_ONE = {5,178};
-    Note FASHARP_ONE = {5,168};
-    Note SO_ONE = {5,158};
-    Note SOSHARP_ONE = {5,149};
+    static const uint8_t LA_ONE = 141;
+    static const uint8_t LASHARP_ONE = 133;
+    static const uint8_t SI_ONE = 252;
+    static const uint8_t DO_ONE = 238;
+    static const uint8_t DOSHARP_ONE = 224;
+    static const uint8_t RE_ONE = 212;
+    static const uint8_t RESHARP_ONE = 200;
+    static const uint8_t MI_ONE = 189;
+    static const uint8_t FA_ONE = 178;
+    static const uint8_t FASHARP_ONE = 168;
+    static const uint8_t SO_ONE = 158;
+    static const uint8_t SOSHARP_ONE = 149;
     
-    Note LA_TWO = {5,141};
-    Note LASHARP_TWO = {5,133};
-    Note SI_TWO = {4,252};
-    Note DO_TWO = {4,238};
-    Note DOSHARP_TWO = {4,224};
-    Note RE_TWO = {4,212};
-    Note RESHARP_TWO = {4,200};
-    Note MI_TWO = {4,189};
-    Note FA_TWO = {4,178};
-    Note FASHARP_TWO = {4,168};
-    Note SO_TWO = {4,158};
-    Note SOSHARP_TWO = {4,149};
+    static const uint8_t LA_TWO = 141;
+    static const uint8_t LASHARP_TWO = 133;
+    static const uint8_t SI_TWO = 252;
+    static const uint8_t DO_TWO = 238;
+    static const uint8_t DOSHARP_TWO = 224;
+    static const uint8_t RE_TWO = 212;
+    static const uint8_t RESHARP_TWO = 200;
+    static const uint8_t MI_TWO = 189;
+    static const uint8_t FA_TWO = 178;
+    static const uint8_t FASHARP_TWO = 168;
+    static const uint8_t SO_TWO = 158;
+    static const uint8_t SOSHARP_TWO = 149;
     
-    Note LA_THREE = {4,141};
-    Note LASHARP_THREE = {4,133};
-    Note SI_THREE = {3,252};
-    Note DO_THREE = {3,238};
-    Note DOSHARP_THREE = {3,224};
-    Note RE_THREE = {3,212};
-    Note RESHARP_THREE = {3,200};
-    Note MI_THREE = {3,189};
-    Note FA_THREE = {3,178};
-    Note FASHARP_THREE = {3,168};
-    Note SO_THREE = {3,158};
-    Note SOSHARP_THREE {3,149};
+    static const uint8_t LA_THREE = 141;
+    static const uint8_t LASHARP_THREE = 133;
+    static const uint8_t SI_THREE = 252;
+    static const uint8_t DO_THREE = 238;
+    static const uint8_t DOSHARP_THREE = 224;
+    static const uint8_t RE_THREE = 212;
+    static const uint8_t RESHARP_THREE = 200;
+    static const uint8_t MI_THREE = 189;
+    static const uint8_t FA_THREE = 178;
+    static const uint8_t FASHARP_THREE = 168;
+    static const uint8_t SO_THREE = 158;
+    static const uint8_t SOSHARP_THREE 149;
     
-    Note LA_FOUR = {3,141};
+    static const uint8_t LA_FOUR = 141;
     
     /**
     * \brief constructor for the Led; the DDRC register will be set to enable
