@@ -221,6 +221,11 @@ private:
 	// Counts down, keeps track of how many times the loop has been executed
 	uint8_t loopCounter_;
 	
+	Timer timer_;
+	Led led_;
+	Piezo piezo_;
+	Motor motor_;
+	Memory memory_;
 };
 
 #endif
