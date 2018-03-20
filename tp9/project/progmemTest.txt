@@ -1,5 +1,5 @@
 DBT ;		#debut
-DAL 0 ;		#allumer del
+DAL 1 ;		#allumer del
 SGO 48 ;	#note do
 ATT 10 ;	#attend 250 ms
 SGO 52 ;	#note mi
@@ -26,7 +26,7 @@ ATT 80 ;	#attendre 2 secondes
 MAR ;		#arret des moteurs
 TRD ;		#virage de 90 degres vers la droite
 FBC ;		#fin de la boucle
-DAL 0 ;		#allumer del
+DAL 1 ;		#allumer del
 SGO 55 ;	#note sol
 ATT 10 ;	#attend 250 ms
 SGO 52 ;	#note mi
