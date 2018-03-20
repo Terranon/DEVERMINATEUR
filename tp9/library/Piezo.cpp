@@ -12,13 +12,13 @@
  *        output on the appropriate pins
  * \return a Piezo
  */
-Piezo::Piezo() {
-      : prescalerMode_()
-        eightBitValue_() ;
-          
+Piezo::Piezo() :
+		prescalerMode_(),
+        eightBitValue_() 
+        {  
         DDRC |= (1 << DDC6); // sets PORTC6 to output
         DDRC |= (1 << DDC7); // sets PORTC7 to output
-        PORTC &= ~(1 << DDC6); // sets output value of PORTC7 to zero
+        PORTC &= ~(1 << DDC6); // sets output value of PORTC6 to zero
         
         TCCR2A &= ~(1 << COM2A1); // non-pwm, toggle OC2A on Compare Match
         TCCR2A |=  (1 << COM2A0);
@@ -395,7 +395,7 @@ void Piezo::africaToto() {
         
         playNote(LA_ONE);
         _delay_ms(612);
-        stopPlayingNote;
+        stopPlayingNote();
         _delay_ms(612);
         playNote(LA_ONE);
         _delay_ms(612);
@@ -433,7 +433,7 @@ void Piezo::africaToto() {
         _delay_ms(612);
         playNote(SI_TWO);
         _delay_ms(612);
-        playNote(DOSHARP_TWO):
+        playNote(DOSHARP_TWO);
         _delay_ms(612);
         playNote(MI_TWO);
         _delay_ms(612);

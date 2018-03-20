@@ -7,7 +7,7 @@
 
 #ifndef PIEZO_H
 #define PIEZO_H
-
+#define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
     
@@ -55,7 +55,7 @@ public:
     static const uint8_t FA_THREE = 77;
     static const uint8_t FASHARP_THREE = 78;
     static const uint8_t SO_THREE = 79;
-    static const uint8_t SOSHARP_THREE 80;
+    static const uint8_t SOSHARP_THREE = 80;
     
     static const uint8_t LA_FOUR = 81;
 
