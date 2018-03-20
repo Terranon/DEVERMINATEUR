@@ -18,46 +18,47 @@ public:
      * \brief These constants define the respective value to set OCR2A to
      *        the appropriate note
      */    
-    static const uint8_t LA_ONE = 141;
-    static const uint8_t LASHARP_ONE = 133;
-    static const uint8_t SI_ONE = 252;
-    static const uint8_t DO_ONE = 238;
-    static const uint8_t DOSHARP_ONE = 224;
-    static const uint8_t RE_ONE = 212;
-    static const uint8_t RESHARP_ONE = 200;
-    static const uint8_t MI_ONE = 189;
-    static const uint8_t FA_ONE = 178;
-    static const uint8_t FASHARP_ONE = 168;
-    static const uint8_t SO_ONE = 158;
-    static const uint8_t SOSHARP_ONE = 149;
+    static const uint8_t LA_ONE = 45;
+    static const uint8_t LASHARP_ONE = 46;
+    static const uint8_t SI_ONE = 47;
+    static const uint8_t DO_ONE = 48;
+    static const uint8_t DOSHARP_ONE = 49;
+    static const uint8_t RE_ONE = 50;
+    static const uint8_t RESHARP_ONE = 51;
+    static const uint8_t MI_ONE = 52;
+    static const uint8_t FA_ONE = 53;
+    static const uint8_t FASHARP_ONE = 54;
+    static const uint8_t SO_ONE = 55;
+    static const uint8_t SOSHARP_ONE = 56;
     
-    static const uint8_t LA_TWO = 141;
-    static const uint8_t LASHARP_TWO = 133;
-    static const uint8_t SI_TWO = 252;
-    static const uint8_t DO_TWO = 238;
-    static const uint8_t DOSHARP_TWO = 224;
-    static const uint8_t RE_TWO = 212;
-    static const uint8_t RESHARP_TWO = 200;
-    static const uint8_t MI_TWO = 189;
-    static const uint8_t FA_TWO = 178;
-    static const uint8_t FASHARP_TWO = 168;
-    static const uint8_t SO_TWO = 158;
-    static const uint8_t SOSHARP_TWO = 149;
+    static const uint8_t LA_TWO = 57;
+    static const uint8_t LASHARP_TWO = 58;
+    static const uint8_t SI_TWO = 59;
+    static const uint8_t DO_TWO = 60;
+    static const uint8_t DOSHARP_TWO = 61;
+    static const uint8_t RE_TWO = 62;
+    static const uint8_t RESHARP_TWO = 63;
+    static const uint8_t MI_TWO = 64;
+    static const uint8_t FA_TWO = 65;
+    static const uint8_t FASHARP_TWO = 66;
+    static const uint8_t SO_TWO = 67;
+    static const uint8_t SOSHARP_TWO = 68;
     
-    static const uint8_t LA_THREE = 141;
-    static const uint8_t LASHARP_THREE = 133;
-    static const uint8_t SI_THREE = 252;
-    static const uint8_t DO_THREE = 238;
-    static const uint8_t DOSHARP_THREE = 224;
-    static const uint8_t RE_THREE = 212;
-    static const uint8_t RESHARP_THREE = 200;
-    static const uint8_t MI_THREE = 189;
-    static const uint8_t FA_THREE = 178;
-    static const uint8_t FASHARP_THREE = 168;
-    static const uint8_t SO_THREE = 158;
-    static const uint8_t SOSHARP_THREE = 149;
+    static const uint8_t LA_THREE = 69;
+    static const uint8_t LASHARP_THREE = 70;
+    static const uint8_t SI_THREE = 71;
+    static const uint8_t DO_THREE = 72;
+    static const uint8_t DOSHARP_THREE = 73;
+    static const uint8_t RE_THREE = 74;
+    static const uint8_t RESHARP_THREE = 75;
+    static const uint8_t MI_THREE = 76;
+    static const uint8_t FA_THREE = 77;
+    static const uint8_t FASHARP_THREE = 78;
+    static const uint8_t SO_THREE = 79;
+    static const uint8_t SOSHARP_THREE 80;
     
-    static const uint8_t LA_FOUR = 141;
+    static const uint8_t LA_FOUR = 81;
+
     
     /**
     * \brief constructor for the Led; the DDRC register will be set to enable

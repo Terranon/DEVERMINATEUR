@@ -47,6 +47,11 @@ void Piezo::stopPlayingNote() {
  * \param note frequency that the Piezo will play; can use preset notes
  *             in chromatic scale LA_ONE:110Hz to LA_FOUR:880Hz
  */
+/**
+ * \brief starts the playback of a note
+ * \param note frequency that the Piezo will play; can use preset notes
+ *             in chromatic scale LA_ONE:110Hz to LA_FOUR:880Hz
+ */
 void Piezo::playNote(uint8_t note) {
     
     TCCR2B &= ~(7 << CS20); // sets all bits to 0
@@ -54,231 +59,231 @@ void Piezo::playNote(uint8_t note) {
     switch(note) {
         case LA_ONE:
             prescalerMode_ = 6;
-            eightBitValue_ = LA_ONE;
+            eightBitValue_ = 141;
             TCCR2B |= (6 << CS20);
-            OCR2A = LA_ONE;
+            OCR2A = 141;
             break;
         case LASHARP_ONE:
             prescalerMode_ = 6;
-            eightBitValue_ = LASHARP_ONE;
+            eightBitValue_ = 133;
             TCCR2B |= (6 << CS20);
-            OCR2A = LASHARP_ONE;
+            OCR2A = 133;
             break;
         case SI_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = SI_ONE;
+            eightBitValue_ = 252;
             TCCR2B |= (5 << CS20);
-            OCR2A = SI_ONE;
+            OCR2A = 252;
             break;
         case DO_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = DO_ONE;
+            eightBitValue_ = 238;
             TCCR2B |= (5 << CS20);
-            OCR2A = DO_ONE;
+            OCR2A = 238;
             break;
         case DOSHARP_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = DOSHARP_ONE;
+            eightBitValue_ = 224;
             TCCR2B |= (5 << CS20);
-            OCR2A = DOSHARP_ONE;
+            OCR2A = 224;
             break;
         case RE_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = RE_ONE;
+            eightBitValue_ = 212;
             TCCR2B |= (5 << CS20);
-            OCR2A = RE_ONE;
+            OCR2A = 212;
             break;
         case RESHARP_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = RESHARP_ONE;
+            eightBitValue_ = 200;
             TCCR2B |= (5 << CS20);
-            OCR2A = RESHARP_ONE;
+            OCR2A = 200;
             break;
         case MI_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = MI_ONEe;
+            eightBitValue_ = 189;
             TCCR2B |= (5 << CS20);
-            OCR2A = MI_ONE;
+            OCR2A = 189;
             break;
         case FA_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = FA_ONE;
+            eightBitValue_ = 178;
             TCCR2B |= (5<< CS20);
-            OCR2A = FA_ONE;
+            OCR2A = 178;
             break;
         case FASHARP_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = FASHARP_ONE;
+            eightBitValue_ = 168;
             TCCR2B |= (5 << CS20);
-            OCR2A = FASHARP_ONE;
+            OCR2A = 168;
             break;
         case SO_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = SO_ONE;
+            eightBitValue_ = 158;
             TCCR2B |= (5 << CS20);
-            OCR2A = SO_ONE;
+            OCR2A = 158;
             break;
         case SOSHARP_ONE:
             prescalerMode_ = 5;
-            eightBitValue_ = SOSHARP_ONE;
+            eightBitValue_ = 149;
             TCCR2B |= (5 << CS20);
-            OCR2A = SOSHARP_ONE;
+            OCR2A = 149;
             break;
         
             
         case LA_TWO:
             prescalerMode_ = 5;
-            eightBitValue_ = LA_TWO;
+            eightBitValue_ = 141;
             TCCR2B |= (5 << CS20);
-            OCR2A = LA_TWO;
+            OCR2A = 141;
             break;
         case LASHARP_TWO:
             prescalerMode_ = 5;
-            eightBitValue_ = LASHARP_TWO;
+            eightBitValue_ = 133;
             TCCR2B |= (5 << CS20);
-            OCR2A = LASHARP_TWO;
+            OCR2A = 133;
             break;
         case SI_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = SI_TWO;
+            eightBitValue_ = 252;
             TCCR2B |= (4 << CS20);
-            OCR2A = SI_TWO;
+            OCR2A = 252;
             break;
         case DO_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = DO_TWO;
+            eightBitValue_ = 238;
             TCCR2B |= (4 << CS20);
-            OCR2A = DO_TWO;
+            OCR2A = 238;
             break;
         case DOSHARP_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = DOSHARP_TWO;
+            eightBitValue_ = 224;
             TCCR2B |= (4 << CS20);
-            OCR2A = DOSHARP_TWO;
+            OCR2A = 224;
             break;
         case RE_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = RE_TWO;
+            eightBitValue_ = 212;
             TCCR2B |= (4 << CS20);
-            OCR2A = RE_TWO;
+            OCR2A = 212;
             break;
         case RESHARP_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = RESHARP_TWO;
+            eightBitValue_ = 200;
             TCCR2B |= (4 << CS20);
-            OCR2A = RESHARP_TWO;
+            OCR2A = 200;
             break;
         case MI_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = MI_TWO;
+            eightBitValue_ = 189;
             TCCR2B |= (4 << CS20);
-            OCR2A = MI_TWO;
+            OCR2A = 189;
             break;
         case FA_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = FA_TWO;
+            eightBitValue_ = 178;
             TCCR2B |= (4 << CS20);
-            OCR2A = FA_TWO;
+            OCR2A = 178;
             break;
         case FASHARP_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = FASHARP_TWO;
+            eightBitValue_ = 168;
             TCCR2B |= (4 << CS20);
-            OCR2A = FASHARP_TWO;
+            OCR2A = 168;
             break;
         case SO_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = SO_TWO;
+            eightBitValue_ = 158;
             TCCR2B |= (4 << CS20);
-            OCR2A = SO_TWO;
+            OCR2A = 158;
             break;
         case SOSHARP_TWO:
             prescalerMode_ = 4;
-            eightBitValue_ = SOSHARP_TWO;
+            eightBitValue_ = 149;
             TCCR2B |= (4 << CS20);
-            OCR2A = SOSHARP_TWO;
+            OCR2A = 149;
             break;
             
             
         case LA_THREE:
             prescalerMode_ = 4;
-            eightBitValue_ = LA_THREE;
+            eightBitValue_ = 141;
             TCCR2B |= (4 << CS20);
-            OCR2A = LA_THREE;
+            OCR2A = 141;
             break;
         case LASHARP_THREE:
             prescalerMode_ = 4;
-            eightBitValue_ = LASHARP_THREE;
+            eightBitValue_ = 133;
             TCCR2B |= (4 << CS20);
-            OCR2A = LASHARP_THREE;
+            OCR2A = 133;
             break;
         case SI_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = SI_THREE;
+            eightBitValue_ = 252;
             TCCR2B |= (3 << CS20);
-            OCR2A = SI_THREE;
+            OCR2A = 252;
             break;
         case DO_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = DO_THREE;
+            eightBitValue_ = 238;
             TCCR2B |= (3 << CS20);
-            OCR2A = DO_THREE;
+            OCR2A = 238;
             break;
         case DOSHARP_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = DOSHARP_THREE;
+            eightBitValue_ = 224;
             TCCR2B |= (3 << CS20);
-            OCR2A = DOSHARP_THREE;
+            OCR2A = 224;
             break;
         case RE_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = RE_THREE;
+            eightBitValue_ = 212;
             TCCR2B |= (3 << CS20);
-            OCR2A = RE_THREE;
+            OCR2A = 212;
             break;
         case RESHARP_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = RESHARP_THREE;
+            eightBitValue_ = 200;
             TCCR2B |= (3 << CS20);
-            OCR2A = RESHARP_THREE;
+            OCR2A = 200;
             break;
         case MI_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = MI_THREE;
+            eightBitValue_ = 189;
             TCCR2B |= (3 << CS20);
-            OCR2A = MI_THREE;
+            OCR2A = 189;
             break;
         case FA_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = FA_THREE;
+            eightBitValue_ = 178;
             TCCR2B |= (3 << CS20);
-            OCR2A = FA_THREE;
+            OCR2A = 178;
             break;
         case FASHARP_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = FASHARP_THREE;
+            eightBitValue_ = 168;
             TCCR2B |= (3 << CS20);
-            OCR2A = FASHARP_THREE;
+            OCR2A = 168;
             break;
         case SO_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = SO_THREE;
+            eightBitValue_ = 158;
             TCCR2B |= (3 << CS20);
-            OCR2A = SO_THREE;
+            OCR2A = 158;
             break;
         case SOSHARP_THREE:
             prescalerMode_ = 3;
-            eightBitValue_ = SOSHARP_THREE;
+            eightBitValue_ = 149;
             TCCR2B |= (3 << CS20);
-            OCR2A = SOSHARP_THREE;
+            OCR2A = 149;
             break;
             
             
         case LA_FOUR:
             prescalerMode_ = 3;
-            eightBitValue_ = LA_FOUR;
+            eightBitValue_ = 141;
             TCCR2B |= (3 << CS20);
-            OCR2A = LA_FOUR;
+            OCR2A = 141;
             break;
     }
 }
