@@ -40,14 +40,14 @@ void Interpreter::execute() {
 	uint8_t instruction = 0;
 	uint8_t operand = 0;
 	
-	while (currentAddress < bytecodeSize) {
+	while (currentAddress_ < bytecodeSize_) {
 		
-		instruction = bytecode.read(currentAddress);
-		operand = bytecode.read(currentAddress+1);
+		instruction = bytecode_.read(currentAddress_);
+		operand = bytecode_.read(currentAddress_+1);
 		
 		executeInstruction(instruction, operand);
 		
-		currentAddress += 2;
+		currentAddress_ += 2;
 		
 	}
 	
@@ -108,7 +108,7 @@ void Interpreter::executeInstruction(uint8_t instruction, uint8_t operand) {
 }
 
 void Interpreter::begin() {
-	beginningFound = 1;
+	beginningFound_ = 1;
 }
 
 void Interpreter::wait(uint8_t time) {
