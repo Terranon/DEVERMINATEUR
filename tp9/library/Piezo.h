@@ -58,7 +58,7 @@ public:
     struct Note{
         uint8_t prescalerMode;
         uint8_t eightBitValue;
-    }
+    };
     
     /**
      * \brief These constants define the respective value to set OCR2A to
