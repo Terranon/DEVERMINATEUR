@@ -24,12 +24,17 @@ Interpreter::Interpreter()
 	  beginningFound_(0),
 	  currentAddress_(2),
 	  loopBeginningAddress_(2),
-	  loopCounter_(0) {
+	  loopCounter_(0),
+	  timer_(),
+	  led_(),
+	  piezo_(),
+	  motor_(),
+	  memory_() {
 	
 	uint8_t sizeH = bytecode_.read(0);
 	uint8_t sizeL = bytecode_.read(1);
 	bytecodeSize_ = (sizeH << 8) | sizeL;
-	
+
 }
 
 Interpreter::~Interpreter() {
@@ -112,46 +117,45 @@ void Interpreter::begin() {
 }
 
 void Interpreter::wait(uint8_t time) {
-	Timer t;
-	t.schedule(((uint16_t)time)*25);
+	timer_.schedule(((uint16_t)time)*25);
 	while (!t.isExpired()) {
 	}
 }
 
 void Interpreter::turnOnLed(uint8_t ledArray) {
-	
+	led_.setColor(Led::GREEN);
 }
 
 void Interpreter::turnOffLed(uint8_t ledArray) {
-	
+	led_.setColor(Led::OFF);
 }
 
 void Interpreter::playSound(uint8_t note) {
-	
+	piezo_.playNote(note);
 }
 
 void Interpreter::stopSound() {
-	
+	piezo_.stopPlayingNote();
 }
 
 void Interpreter::stopMotors() {
-	
+	motor_.stopMotors();
 }
 
 void Interpreter::moveForward(uint8_t speed) {
-	
+	motor_.goFRWD(speed);
 }
 
 void Interpreter::moveBackward(uint8_t speed) {
-	
+	motor_.goBACK(speed);
 }
 
 void Interpreter::turnRight() {
-	
+	motor_.turnRight();
 }
 
 void Interpreter::turnLeft() {
-	
+	motor_.turnLeft();
 }
 
 void Interpreter::beginLoop(uint8_t nIterations) {
