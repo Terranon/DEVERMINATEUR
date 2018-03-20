@@ -24,7 +24,7 @@
 #include <util/delay.h>
 
 #include "Led.h"
-// #include "Piezo.h"
+#include "Piezo.h"
 #include "Timer.h"
 #include "Motor.h"
 #include "Memory.h"
@@ -223,7 +223,7 @@ private:
 	
 	Timer timer_;
 	Led led_;
-	// Piezo piezo_;
+	Piezo piezo_;
 	Motor motor_;
 	Memory memory_;
 };

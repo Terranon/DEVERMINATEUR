@@ -55,7 +55,7 @@ public:
     static const uint8_t FA_THREE = 178;
     static const uint8_t FASHARP_THREE = 168;
     static const uint8_t SO_THREE = 158;
-    static const uint8_t SOSHARP_THREE 149;
+    static const uint8_t SOSHARP_THREE = 149;
     
     static const uint8_t LA_FOUR = 141;
     
@@ -84,7 +84,7 @@ public:
     * \param note frequency that the Piezo will play; can use preset notes
     *             in chromatic scale LA_ONE:110Hz to LA_FOUR:880Hz
     */
-    void playNote(Note note);
+    void playNote(uint8_t note);
 
     /**
     * \brief plays melody of the song Gucci Gang

@@ -3,10 +3,10 @@
  * Name:        Motor.cpp
  * Description: General use of motors 
  * 						Using 
- * 						JM1D : 
- * 						JM1E : 
- * 						JM2D : 
- * 						JM2E : 
+ * 						JM1D : PORTB5 
+ * 						JM1E : PORTB3
+ * 						JM2D : PORTB6
+ * 						JM2E : PORTB4
  * Version: 1.0
 \******************************************************************************/
 #include "Motor.h"

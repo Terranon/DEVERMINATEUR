@@ -20,7 +20,7 @@ PROJECTNAME=deverminateur
 # List all source file to compile, separated by a whitespace,
 # or use '$(wildcard *.cpp)' to include all .cpp files in the current directory
 # ex: 'tp1.c tp2.cpp':
-PRJSRC=$(wildcard *.cpp)
+PRJSRC=Interpreter.cpp Led.cpp memoire_24.cpp Memory.cpp Motor.cpp Timer.cpp
 
 # Additional inclusions (ex: -I/path/to/mydir)
 INC=

@@ -27,7 +27,7 @@ Interpreter::Interpreter()
 	  loopCounter_(0),
 	  timer_(),
 	  led_(),
-	  // piezo_(),
+	  piezo_(),
 	  motor_(),
 	  memory_() {
 	
@@ -131,11 +131,11 @@ void Interpreter::turnOffLed(uint8_t ledArray) {
 }
 
 void Interpreter::playSound(uint8_t note) {
-	// piezo_.playNote(note);
+	piezo_.playNote(note);
 }
 
 void Interpreter::stopSound() {
-	// piezo_.stopPlayingNote();
+	piezo_.stopPlayingNote();
 }
 
 void Interpreter::stopMotors() {

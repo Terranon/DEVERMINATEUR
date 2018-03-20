@@ -13,7 +13,7 @@
  * \return an Led
  */
 Led::Led()
-    : color_(OFF),
+    : color_(OFF)
       {
           
         DDRC |= (1 << DDC2); // sets PORTC2 to output

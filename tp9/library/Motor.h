@@ -4,10 +4,10 @@
  * Description: General use of motors able to set a speed between 0 and 255, and a 
  * 							direction FRWD or BACK to the bot  
  * 						Using 
- * 						JM1D : 
- * 						JM1E : 
- * 						JM2D : 
- * 						JM2E : 
+ * 						JM1D : PORTB5 
+ * 						JM1E : PORTB3
+ * 						JM2D : PORTB6
+ * 						JM2E : PORTB4
  * Version: 1.0
 \******************************************************************************/
 

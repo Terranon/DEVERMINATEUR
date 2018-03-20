@@ -20,24 +20,13 @@
  * Version: 1.0
 \******************************************************************************/
 
-#include <fstream>
-using namespace std;
+#include <Interpreter.h>
 
 /******************************************************************************\
  * Main
 \******************************************************************************/
 int main(){
-	Memory mem;
-	Interpreter inter;
-	uint16_t nbInstructions = 78;
-	uint16_t adresseEEPROM = 0;
-	uint8_t instruction;
-	uint8_t operand
-	
-	for(adresseEEPROM; adresseEEPROM < nbInstructions; adresseEEPROM++){   
-		instruction = mem.read(adresseEEPROM);
-		adresseEEPROM++;
-		operand = mem.read(adresseEEPROM);
-			
-		inter.executeInstruction(instruction,operand);
+
+    Interpreter inter;
+    inter.execute();
 }
