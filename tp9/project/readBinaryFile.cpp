@@ -26,18 +26,31 @@ using namespace std;
 /******************************************************************************\
  * Main
 \******************************************************************************/
-int main(){
-	Memory mem;
-	Interpreter inter;
-	uint16_t nbInstructions = 78;
-	uint16_t adresseEEPROM = 0;
-	uint8_t instruction;
-	uint8_t operand
-	
-	for(adresseEEPROM; adresseEEPROM < nbInstructions; adresseEEPROM++){   
-		instruction = mem.read(adresseEEPROM);
-		adresseEEPROM++;
-		operand = mem.read(adresseEEPROM);
-			
-		inter.executeInstruction(instruction,operand);
+
+/**
+ * \brief main function
+ * \return exit code
+ */
+ /*
+int main () {
+    uint16_t tailleTableau = 78;
+    uint8_t tab[tailleTableau] = {};
+    ifstream fichierEntree;
+    fichierEntree.open("fichierDeSortie", ios::binary);
+		fichierEntree.seekg(0, ios::beg);
+		
+    while(fichier.peek != eof){
+			for(uint16_t i = 0; i < tailleTableau; i++){
+					uint8_t octet;
+					fichierEntree.read((char *) &octet, sizeof(uint8_t));
+					tab[i] = octet;			 
+			}
+		}
+		
+		Memoire24CXXX mem;
+		for(uint16_t i = 0; i < tailleTableau; i++){
+			mem.ecriture(i, tab[i]);
+		}
+    return 0;
 }
+*/
