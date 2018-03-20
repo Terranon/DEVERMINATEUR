@@ -35,7 +35,7 @@ public:
 	
 private:
 	
-	Memoire24CXXX eeprom;
+	Memoire24CXXX eeprom_;
 	
 };
 
