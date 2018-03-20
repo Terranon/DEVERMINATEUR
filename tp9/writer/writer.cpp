@@ -36,8 +36,8 @@ void init() {
 	UCSR0B = 0x18;
 	UCSR0C = 0x06;
 
-	UBRR0H = 0b1001;
-	UBRR0L = 0b01100000;
+	UBRR0H = 0;
+	UBRR0L = 0xCF;
 }
 
 uint8_t readUSB() {
@@ -63,7 +63,9 @@ int main () {
 	for (uint16_t i = 0; i < nbInstructions; i++) {
 
 		uint8_t data = readUSB();
-		mem.ecriture(i,&data,1);
+		PORTA = i;
+		mem.ecriture(i, &data, 1);
+		
 	}
 	PORTA = 0b01010101;
 	
