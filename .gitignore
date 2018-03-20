@@ -1,7 +1,8 @@
-*.a
+﻿*.a
 *.d
 *.hex
 *.o
 *.out
 *.out.map
 *.makesetting
+*.bin
