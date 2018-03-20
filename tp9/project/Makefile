@@ -1,4 +1,4 @@
-################################################################################
+﻿################################################################################
 # Description: Makefile for an executable project                              #
 #                                                                              #
 # Authors: Jean-Raphael Matte, Maximilien Bianchi,                             #
@@ -56,8 +56,8 @@ LDFLAGS=$(LDINC) \
 	-Wl,-Map,$(TRG).map \
 	-mmcu=$(MCU)
 
-# $(LDINC) : Should be specified as a list of '-L/path/to/my/dir' corresponding to 
-#          other directories to include
+# $(LDINC) : Should be specified as a list of '-L/path/to/my/dir' corresponding 
+# to other directories to include
 # -Wl,-Map,$(TRG).map : give -Map $(TRG).map as options to the linker
 # -mmcu=$(MCU) : Specify ATMEL AVR MCU type
 
