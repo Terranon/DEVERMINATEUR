@@ -13,12 +13,13 @@
  * \return a Piezo
  */
 Piezo::Piezo() :
-		prescalerMode_(),
-        eightBitValue_() 
-        {  
-        DDRC |= (1 << DDC6); // sets PORTC6 to output
-        DDRC |= (1 << DDC7); // sets PORTC7 to output
-        PORTC &= ~(1 << DDC6); // sets output value of PORTC6 to zero
+		prescalerMode_(0),
+        eightBitValue_(0) 
+        {	  
+        DDRD |= (1 << DDD6); // sets PORTC6 to output
+        DDRD |= (1 << DDD7); // sets PORTC7 to output
+        
+        PORTD &= ~(1 << PORTD6); // sets output value of PORTC6 to zero
         
         TCCR2A &= ~(1 << COM2A1); // non-pwm, toggle OC2A on Compare Match
         TCCR2A |=  (1 << COM2A0);
@@ -26,6 +27,7 @@ Piezo::Piezo() :
         TCCR2A |=  (1 << WGM21); // CTC, TOP = OCR2A
         TCCR2A &= ~(1 << WGM20);
         TCCR2B &= ~(1 << WGM22);
+
 }
 
 /**

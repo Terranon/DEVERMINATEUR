@@ -13,4 +13,3 @@ Dans le Makefile de la library:
 	Modification de la regle clean pour qu'elle ne supprime pas l'archive
 	Ajout de la regle mrproper qui enleve aussi l'archive
 Dans le Makefile pour l'executable:
-	

@@ -31,13 +31,13 @@ using namespace std;
  * \brief main function
  * \return exit code
  */
- /*
+ 
 int main () {
     uint16_t tailleTableau = 78;
     uint8_t tab[tailleTableau] = {};
     ifstream fichierEntree;
     fichierEntree.open("fichierDeSortie", ios::binary);
-		fichierEntree.seekg(0, ios::beg);
+	fichierEntree.seekg(0, ios::beg);
 		
     while(fichier.peek != eof){
 			for(uint16_t i = 0; i < tailleTableau; i++){
@@ -47,10 +47,9 @@ int main () {
 			}
 		}
 		
-		Memoire24CXXX mem;
-		for(uint16_t i = 0; i < tailleTableau; i++){
-			mem.ecriture(i, tab[i]);
-		}
+	Memoire24CXXX mem;
+	for(uint16_t i = 0; i < tailleTableau; i++){
+		mem.ecriture(i, tab[i]);
+	}
     return 0;
 }
-*/
