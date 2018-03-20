@@ -20,11 +20,16 @@
 #include "Interpreter.h"
 
 Interpreter::Interpreter() 
-	: bytecode() {
-	uint8_t sizeH = bytecode.read(0);
-	uint8_t sizeL = bytecode.read(1);
-	bytecodeSize = (sizeH << 8) | sizeL;
-	currentAddress = 2;
+	: bytecode_(),
+	  beginningFound_(0),
+	  currentAddress_(2),
+	  loopBeginningAddress_(2),
+	  loopCounter_(0) {
+	
+	uint8_t sizeH = bytecode_.read(0);
+	uint8_t sizeL = bytecode_.read(1);
+	bytecodeSize_ = (sizeH << 8) | sizeL;
+	
 }
 
 Interpreter::~Interpreter() {
@@ -36,12 +41,14 @@ void Interpreter::execute() {
 	uint8_t operand = 0;
 	
 	while (currentAddress < bytecodeSize) {
+		
 		instruction = bytecode.read(currentAddress);
 		operand = bytecode.read(currentAddress+1);
 		
 		executeInstruction(instruction, operand);
 		
 		currentAddress += 2;
+		
 	}
 	
 }
@@ -50,7 +57,7 @@ void Interpreter::executeInstruction(uint8_t instruction, uint8_t operand) {
 	
 	if (instruction == DBT) {
 		begin();
-	} else if (beginningFound) {
+	} else if (beginningFound_ == 1) {
 		switch (instruction) {
 			case DBT:
 				begin();
@@ -101,11 +108,14 @@ void Interpreter::executeInstruction(uint8_t instruction, uint8_t operand) {
 }
 
 void Interpreter::begin() {
-	
+	beginningFound = 1;
 }
 
 void Interpreter::wait(uint8_t time) {
-	
+	Timer t;
+	t.schedule(((uint16_t)time)*25);
+	while (!t.isExpired()) {
+	}
 }
 
 void Interpreter::turnOnLed(uint8_t ledArray) {
@@ -145,13 +155,17 @@ void Interpreter::turnLeft() {
 }
 
 void Interpreter::beginLoop(uint8_t nIterations) {
-	
+	loopBeginningAddress_ = currentAddress_;
+	loopCounter_ = nIterations;
 }
 
 void Interpreter::endLoop() {
-	
+	if (loopCounter_ > 0) {
+		currentAddress_ = loopBeginningAddress_;
+		loopCounter_--;
+	}
 }
 
 void Interpreter::end() {
-	
+	currentAddress_ = bytecodeSize_;
 }

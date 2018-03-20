@@ -204,22 +204,22 @@ private:
 	static const uint8_t FIN = 0xFF;
 	
 	// The object through which the bytecode is obtained
-	Memory bytecode;
+	Memory bytecode_;
 	
 	// Size of the program, including the 16 bit used to store the size
-	uint16_t bytecodeSize;
+	uint16_t bytecodeSize_;
 	
 	// Boolean value, indicates if the dbt instruction has been found.
-	uint8_t beginningFound;
+	uint8_t beginningFound_;
 	
 	// Keeps track of the current address
-	uint16_t currentAddress;
+	uint16_t currentAddress_;
 	
 	// Keeps track of the address of the beginning of the loop
-	uint16_t loopBeginningAddress;
+	uint16_t loopBeginningAddress_;
 	
 	// Counts down, keeps track of how many times the loop has been executed
-	uint8_t loopCounter;
+	uint8_t loopCounter_;
 	
 };
 
