@@ -37,6 +37,7 @@
  */
 int main () {
     
+    /*
     DDRA |= (1 << DDA0);
     DDRA |= (1 << DDA1);
     
@@ -57,6 +58,12 @@ int main () {
         led.toggleColor();
         
     }
+    */
+    
+    
+    
+    
+    
     
         
     return 0;

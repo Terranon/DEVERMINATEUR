@@ -118,7 +118,7 @@ void Interpreter::begin() {
 
 void Interpreter::wait(uint8_t time) {
 	timer_.schedule(((uint16_t)time)*25);
-	while (!t.isExpired()) {
+	while (!timer_.isExpired()) {
 	}
 }
 
