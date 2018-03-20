@@ -79,7 +79,7 @@ HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 all: $(TRG)
 
 # Common lines
-include ../Makefile.common
+include ../common.mk
 
 # Linking
 $(TRG): $(OBJDEPS)

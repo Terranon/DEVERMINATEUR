@@ -24,10 +24,14 @@
  * Main
 \******************************************************************************/
 
+#include <avr/io.h>
 #include <memoire_24.h>
 
 void init() {
-
+	
+	DDRD &= ~(1 << DDD0);
+	DDRD |= (1 << DDD1);
+	
 	UCSR0A = 0x02;
 	UCSR0B = 0x18;
 	UCSR0C = 0x06;
@@ -38,7 +42,8 @@ void init() {
 
 uint8_t readUSB() {
 
-	while (!(UCSR0A & (1 << RXC)));
+	while (!(UCSR0A & (1 << RXC0))) {
+	}
 	return UDR0;
 }
 
@@ -47,6 +52,9 @@ uint8_t readUSB() {
  * \return exit code
  */
 int main () {
+	
+	DDRA = 0xFF;
+	init();
 	
 	Memoire24CXXX mem;
 
@@ -57,6 +65,7 @@ int main () {
 		uint8_t data = readUSB();
 		mem.ecriture(i,&data,1);
 	}
+	PORTA = 0b01010101;
 	
     return 0;
 }

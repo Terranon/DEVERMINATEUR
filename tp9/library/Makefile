@@ -61,7 +61,7 @@ TRG=lib$(PROJECTNAME).a
 all: $(TRG)
 
 # Common lines
-include ../Makefile.common
+include ../common.mk
 
 # Archiving
 $(TRG): $(OBJDEPS)

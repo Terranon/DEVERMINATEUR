@@ -20,7 +20,7 @@ PROJECTNAME=project
 # List all source file to compile, separated by a whitespace,
 # or use '$(wildcard *.cpp)' to include all .cpp files in the current directory
 # ex: 'tp1.c tp2.cpp':
-PRJSRC=writer.cpp
+PRJSRC=$(wildcard *.cpp)
 
 # Additional inclusions (ex: -I/path/to/mydir)
 INC=-I../library
@@ -79,7 +79,7 @@ HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 all: $(TRG)
 
 # Common lines
-include ../Makefile.common
+include ../common.mk
 
 # Linking
 $(TRG): $(OBJDEPS)
