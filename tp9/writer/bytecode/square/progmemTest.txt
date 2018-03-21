@@ -12,19 +12,27 @@ DBC 1 ;		#la boucle va etre executee 2 fois
 MAV 220 ;	#avancer avec une vitesse de 86%
 ATT 80 ;	#attendre 2 secondes
 MAR ;		#arret des moteurs
+ATT 40 ;	#attendre 1 seconde
 TRG ;		#virage de 90 degres vers la gauche
+ATT 40 ;	#attendre 1 seconde
 MRE 220 ;	#recule avec une vitesse de 86%
 ATT 80 ; 	#attendre 2 secondes
 MAR ;		#arret des moteurs
+ATT 40 ;	#attendre 1 seconde
 TRD ;		#virage de 90 degres vers la droite
+ATT 40 ;	#attendre 1 seconde
 MRE 220 ;	#recule avec une vitesse de 86%
 ATT 80 ; 	#attendre 2 secondes
 MAR ;		#arret des moteurs
+ATT 40 ;	#attendre 1 seconde
 TRG ;		#virage de 90 degres vers la gauche
+ATT 40 ;	#attendre 1 seconde
 MAV 220 ;	#avance avec une vitesse de 86%
 ATT 80 ;	#attendre 2 secondes
 MAR ;		#arret des moteurs
+ATT 40 ;	#attendre 1 seconde
 TRD ;		#virage de 90 degres vers la droite
+ATT 40 ;	#attendre 1 seconde
 FBC ;		#fin de la boucle
 DAL 0 ;		#allumer del
 SGO 55 ;	#note sol
