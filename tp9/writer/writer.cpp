@@ -23,6 +23,7 @@ void init() {
 	UCSR0B = 0x18;		//Receiver Enable, Transmitter Enable
 	UCSR0C = 0x06;		//Asynchronous USART, none Parity, stop bit(s) 1-bit
 										//character size -- 8 bit 
+
 	UBRR0H = 0;
 	UBRR0L = 0xCF;
 }
@@ -40,21 +41,21 @@ uint8_t readUSB() {
  */
 int main () {
 	
-	DDRA = 0xFF;
 	init();
 	
 	Memoire24CXXX mem;
 
-	const uint16_t nbInstructions = 78;
+	uint8_t sizeH = readUSB();
+	uint8_t sizeL = readUSB();
 	
-	for (uint16_t i = 0; i < nbInstructions; i++) {
+	uint16_t size = (8 << sizeH) | sizeL;
+	
+	for (uint16_t i = 2; i < size; i++) {
 
 		uint8_t data = readUSB();
-		PORTA = i;
 		mem.ecriture(i, &data, 1);
 		
 	}
-	PORTA = 0b01010101;
 	
     return 0;
 }
