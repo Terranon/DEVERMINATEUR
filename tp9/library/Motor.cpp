@@ -76,7 +76,8 @@ void Motor::turnLeft(){
 	uint8_t oldSpeedLM = getSpeedLM();
 	uint8_t oldSpeedRM = getSpeedRM();
 	stopMotors();
-	
+	_delay_ms(500);
+		
 	//set the speed and the direction of both motors
 	setDirectionRM(FRWD);
 	setDirectionLM(BACK);		//LM going backward
@@ -87,6 +88,7 @@ void Motor::turnLeft(){
 	driveMotors();
 	_delay_ms(1000);
 	stopMotors();
+	_delay_ms(500);
 
 	//set their old speed
 	setSpeedLM(oldSpeedLM);
@@ -97,6 +99,7 @@ void Motor::turnRight(){
 	uint8_t oldSpeedLM = getSpeedLM();
 	uint8_t oldSpeedRM = getSpeedRM();
 	stopMotors();
+	_delay_ms(500);
 	
 	setDirectionRM(BACK);		//RM going backward
 	setDirectionLM(FRWD);		
@@ -106,6 +109,7 @@ void Motor::turnRight(){
 	driveMotors();
 	_delay_ms(1000);
 	stopMotors();
+	_delay_ms(500);
 	
 	setSpeedLM(oldSpeedLM);
 	setSpeedRM(oldSpeedRM);
