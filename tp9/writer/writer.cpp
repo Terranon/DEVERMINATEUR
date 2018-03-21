@@ -32,7 +32,7 @@ void init() {
 	DDRD &= ~(1 << DDD0);
 	DDRD |= (1 << DDD1);
 	
-	UCSR0A = 0x02;
+	UCSR0A = 0x00;	
 	UCSR0B = 0x18;
 	UCSR0C = 0x06;
 

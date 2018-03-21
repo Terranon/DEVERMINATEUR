@@ -62,11 +62,6 @@ public:
 	uint8_t getSpeedLM();
 	uint8_t getSpeedRM();
 
-
-	/**
-	 * \brief function setSpeed changes the speed of the motor between 0 and 255
-	 * \param speed
-	 */
 	void turnLeft();
 	void turnRight();
 	void goFRWD(uint8_t speed);
