@@ -32,7 +32,7 @@ void init() {
 	DDRD &= ~(1 << DDD0);
 	DDRD |= (1 << DDD1);
 	
-	UCSR0A = 0x02;
+	UCSR0A = 0x00;
 	UCSR0B = 0x18;
 	UCSR0C = 0x06;
 
@@ -53,21 +53,21 @@ uint8_t readUSB() {
  */
 int main () {
 	
-	DDRA = 0xFF;
 	init();
 	
 	Memoire24CXXX mem;
 
-	const uint16_t nbInstructions = 78;
+	uint8_t sizeH = readUSB();
+	uint8_t sizeL = readUSB();
 	
-	for (uint16_t i = 0; i < nbInstructions; i++) {
+	uint16_t size = (8 << sizeH) | sizeL;
+	
+	for (uint16_t i = 2; i < size; i++) {
 
 		uint8_t data = readUSB();
-		PORTA = i;
 		mem.ecriture(i, &data, 1);
 		
 	}
-	PORTA = 0b01010101;
 	
     return 0;
 }

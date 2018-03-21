@@ -24,7 +24,28 @@
  * Main
 \******************************************************************************/
 
+#include <avr/io.h>
 #include <memoire_24.h>
+
+void init() {
+	
+	DDRD &= ~(1 << DDD0);
+	DDRD |= (1 << DDD1);
+	
+	UCSR0A = 0x00;
+	UCSR0B = 0x18;
+	UCSR0C = 0x06;
+
+	UBRR0H = 0;
+	UBRR0L = 0xCF;
+}
+
+uint8_t readUSB() {
+
+	while (!(UCSR0A & (1 << RXC0))) {
+	}
+	return UDR0;
+}
 
 /**
  * \brief main function
@@ -32,11 +53,21 @@
  */
 int main () {
 	
-	const uint16_t size = 80;
-	uint8_t nullbyte = 0;
+	init();
 	
 	Memoire24CXXX mem;
-	mem.ecriture(0, (uint8_t*)&nullbyte, size);
+
+	uint8_t sizeH = readUSB();
+	uint8_t sizeL = readUSB();
+	
+	uint16_t size = (8 << sizeH) | sizeL;
+	
+	for (uint16_t i = 2; i < size; i++) {
+
+		uint8_t data = readUSB();
+		mem.ecriture(i, &data, 1);
+		
+	}
 	
     return 0;
 }
