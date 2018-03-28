@@ -5,20 +5,23 @@
  * Version: 1.0
 \******************************************************************************/
 
-#ifndef PHOTOCELL_H
-#define PHOTOCELL_H
+#ifndef SENSOR_H
+#define SENSOR_H
 
 #include <avr/io.h>
 #include "Adc.h"
 
-class PhotoCell {
+class Sensor {
 public:
 /**
  * \brief default constructor for the intensity of the Led
  * \param none
  * \return none
  */
-	PhotoCell();
+	Sensor();
+
+
+	void setDistance(uint8_t dist);
 
 /**
  * \brief sets Led's color based on valeurIntensite_'s value. the Led's
@@ -26,7 +29,7 @@ public:
  * \param valeurIntensite_ determines color of Led
  * \return value of intensity
  */
-	uint8_t getValeurIntensite();
+	uint8_t getDistance();
 	
 /**
  * \brief sets pin's position on A port
@@ -37,7 +40,7 @@ public:
 	
 	
 private:
-	uint8_t valeurIntensite_;
+	uint8_t valeurVoltage_;
 	Adc convertisseur_;
 	uint8_t position_;
 
