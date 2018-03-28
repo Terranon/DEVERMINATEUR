@@ -35,6 +35,18 @@ Motor::~Motor()
 }
 
 //Set functions
+void Motor::setSpeed(uint8_t speedLM, uint8_t speedRM)
+{
+	speedLM_ = speedLM;
+	speedRM_ = speedRM;
+	driveMotors();	
+}
+void Motor::setDirection(uint8_t directionLM, uint8_t directionRM)
+{
+	directionLM_ = directionLM;
+	directionRM_ = directionRM;
+	driveMotors();
+}
 void Motor::setDirectionLM(uint8_t direction) 
 {
 	directionLM_ = direction;

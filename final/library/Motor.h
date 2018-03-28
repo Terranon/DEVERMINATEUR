@@ -48,6 +48,8 @@ public:
 	 * \brief set functions set the direction or the speed of a motor
 	 * \param direction or speed
 	 */
+	void setSpeed(uint8_t speedLM, uint8_t speedRM);
+	void setDirection(uint8_t directionLM, uint8_t directionRM);
 	void setDirectionLM(uint8_t direction);
 	void setDirectionRM(uint8_t direction);
 	void setSpeedLM(uint8_t speed);
@@ -70,11 +72,12 @@ public:
 	 * \brief function driveMotors initializes the mechanism of the motors by starting Timer 2 that creates
 	 * a PWM permitting to have two output activating each motor to a certain speed
 	 */
-	void driveMotors();
+
 	void stopMotors();
 	
 	
 private:
+	void driveMotors();
 	uint8_t directionLM_;
 	uint8_t directionRM_;
 	uint8_t speedLM_;
