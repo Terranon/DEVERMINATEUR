@@ -20,45 +20,29 @@
 \******************************************************************************/
 #include "Motor.h"
 #include "Sensor.h"
-#include "Path.h"
+
 Motor bot;
-Path path;
+Sensor sensor;
 
 /******************************************************************************\
  * Init
 	Initialisation 
 \******************************************************************************/
 void init(){
-
+	DDRA = 0x00; //port entree
 }
 
-/******************************************************************************\
-* TestLeCapteur
-	Fonction permettant de verifier le bon fonctionnement du capteur
-\******************************************************************************/
-void testLeCapteur() {
-
-}
 
 /******************************************************************************\
  * Loop
 	Boucle infini imposant au robot de rester a une distance de 15 cm du mur
 \******************************************************************************/
 void loop(){
-	if(distanceDroite = 15){
-		bot.setSpeed(200, 200);
-	}
-	else if(distanceDroite > 15){
+	uint8_t valeur = sensor.getValeurVoltage();
+	if(distanceDroite < 169)
 		bot.setSpeed(200, 100);
-	}
-	else if(distanceDroite < 15){
+	else 
 		bot.setSpeed(100, 200);
-	}
-	path.setNewDistance();
-	bool verification = path.authorizationToContinue();
-	if (!verification)
-		//si il detecte une fin de mur, il est pret a agir en consequence
-
 }
 
 /******************************************************************************\
