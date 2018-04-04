@@ -13,8 +13,18 @@
 #include <util/delay.h> 
 
 class Path {
-public:	
-private:
+public:
+	//constructeur par defaut qui initialise les 5 derniers cm parcourus a 0
+	Path();
+	bool authorizationToContinue();
+	void setNewDistance(double newDistance);
 
+private:
+	//pourrait aussi etre un vecteur
+	double lastCm_;
+	double lastTwoCm_;
+	double lastThreeCm_;
+	double lastFourCm_;
+	double lastFiveCm_;
 };
 #endif 

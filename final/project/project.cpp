@@ -2,36 +2,47 @@
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi, Thomas Dufour,
  *              William Chartrand
  * Name:        project.cpp
- * Description: Simple test program for the library 'deverminateur'. Robot will
- *              play a note when program first begins then will move forward
- *              when the photocell senses high luminosity and backwards when it
- *              senses low luminosity. The Led will also respond to luminosity.
+ * Description: Le programme suivant impose au robot de rester a 
+				une distance de 15 cm d'un mur a droite. Nous ne prenons pas en 
+				consideration les poteaux et les fins de murs. Ce programme  
+				utilise donc les classes Sensor et Motor.
+
+				De plus, ce programme permet au robot de changer de direction de maniere
+				fluide.
  * 
- * Pinout :                                      (- +) LED             Jumper  
- *                                                | |                       |
+ * Pinout :                                                     
+ *                                                                     
  * PORTA  1 3 5 7    PORTB  1 3 5 7    PORTC  0 1 2 3 4 5 6 7    PORTD  1 3 5 7        
- *        0 2 4 6           0 2 4 6                                         |        
- *                                                                      0 2 4 6
- *                                                                              
- * 
- *                                                
- *                
- * 
+ *        0 2 4 6           0 2 4 6                                     0 2 4 6       
+ *                                                                      
+
  * Version: 1.0
 \******************************************************************************/
 #include "Motor.h"
 #include "Sensor.h"
+#include "Path.h"
 Motor bot;
+Path path;
 
 /******************************************************************************\
  * Init
+	Initialisation 
 \******************************************************************************/
 void init(){
 
 }
 
 /******************************************************************************\
+* TestLeCapteur
+	Fonction permettant de verifier le bon fonctionnement du capteur
+\******************************************************************************/
+void testLeCapteur() {
+
+}
+
+/******************************************************************************\
  * Loop
+	Boucle infini imposant au robot de rester a une distance de 15 cm du mur
 \******************************************************************************/
 void loop(){
 	if(distanceDroite = 15){
@@ -43,6 +54,11 @@ void loop(){
 	else if(distanceDroite < 15){
 		bot.setSpeed(100, 200);
 	}
+	path.setNewDistance();
+	bool verification = path.authorizationToContinue();
+	if (!verification)
+		//si il detecte une fin de mur, il est pret a agir en consequence
+
 }
 
 /******************************************************************************\
@@ -50,6 +66,7 @@ void loop(){
 \******************************************************************************/
 int main(){
 	init();
+	testeLeCapteur();
 	while(1){
 		loop();
 	}
