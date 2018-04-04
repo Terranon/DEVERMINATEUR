@@ -7,7 +7,7 @@
 
 #include "Sensor.h"
 
-//Distances{10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80};
+int distances = {};
 
 /**
  * \brief default constructor for the intensity of the Led
@@ -17,9 +17,10 @@
 
 Sensor::Sensor() : convertisseur_()
 {
-
-	position_ = 0;
-	valeurVoltage_ = 0;
+	positionG_ = 0;
+	positionD_ = 2;
+	valeurVoltageG_ = 0;
+	valeurVoltageD_ = 0;
 }
 
 /**
@@ -28,22 +29,27 @@ Sensor::Sensor() : convertisseur_()
  * \return none
  */
  
-uint8_t Sensor::getValeurVoltage()
+uint8_t Sensor::getDistance()
 {
-	valeurVoltage_ = convertisseur_.read(position_) >> 2;
+	valeurVoltageG_ = convertisseur_.read(position_) >> 2;
 	
-	return valeurVoltage_;
+	valeurVoltageD_ = convertisseur_.read(position_) >> 2;
+	
 }
-
 
 /**
  * \brief sets pin's position on A port
  * \param position of pin on A port
  * \return none
  */
- /*
-void Sensor::setPosition(uint8_t position)
+ 
+void Sensor::setPositionGauche(uint8_t positionG)
 {
-	position_ = position;
+	positionG_ = positionG;
+	
 }
-*/
+void Sensor::setPositionDroite(uint8_t positionD)
+{
+	positionD_ = positionD;
+}
+
