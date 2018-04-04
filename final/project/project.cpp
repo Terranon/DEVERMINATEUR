@@ -22,13 +22,14 @@
 Motor bot;
 Sensor sensor;
 
+enum State {INIT, MUR_GAUCHE, MUR_DROITE};
+
 /******************************************************************************\
  * Init
 	Initialisation 
 \******************************************************************************/
 void init(){
 	DDRA = 0x00; //port entree
-	DDRC = 0xff;
 }
 
 
@@ -37,17 +38,43 @@ void init(){
 	Boucle infini imposant au robot de rester a une distance de 15 cm du mur droit
 \******************************************************************************/
 void loop(){
-	uint8_t valeur = sensor.getValeurVoltage();
-	if(valeur > 169){
-		bot.setSpeed(220, 150);
-		PORTC = 0x01;
-	}
-	else { 
-		bot.setSpeed(150, 220);
-		PORTC = 0x02;
+	uint8_t distanceDetecteurDroit = sensor.getValeurVoltage();
+	uint8_t distanceDetecteurGauche = sensor.getValeurVoltage();
+	
+	State etat = INIT;
+	
+	switch(etat){
+		
+		case INIT:
+			if(distanceDetecteurDroit < 25)
+				etat = MUR_DROITE;
+			else
+				etat = MUR_GAUCHE;
+		break;
+		
+		case MUR_GAUCHE:
+			if(distanceDetecteurDroit < 15 )
+				bot.setSpeed(220, 150);
+			else
+				bot.setSpeed(150, 220);
+			
+			//VERIFICATION D'UN POTEAU DE L'AUTRE COTE	
+			
+		break;
+		
+		case MUR_DROITE:
+		 if (distanceDetecteurGauche < 15)
+				bot.setSpeed(150, 220);
+			else
+				bot.setSpeed(220, 150);			
+			//VERIFICATION D'UN POTEAU DE L'AUTRE COTE
+		
+		break;
+	
+		
+		
 	}
 }
-
 /******************************************************************************\
  * Main
 \******************************************************************************/
