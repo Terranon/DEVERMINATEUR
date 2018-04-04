@@ -27,8 +27,8 @@ public:
  * \return value of intensity
  */
  
-
-	uint8_t getDistance();
+	uint8_t getDistanceG();
+	uint8_t getDistanceD();
 	
 /**
  * \brief sets pin's position on A port
