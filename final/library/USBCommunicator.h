@@ -66,14 +66,11 @@ private:
     uint8_t sectionNumber_;
     char[SEMESTERSIZE] semester_;
     uint8_t robotcolor_;
-    uint8_t buttonState_;
-    uint8_t leftSensorDistance_;
-    uint8_t rightSensorDistance_;
-    int8_t leftMotorSpeed_;
-    int8_t rightMotorSpeed_;
-    uint8_t ledcolor_;
-    uint8_t infoRequestSent_;
     
+    Button button_;
+    Sensor sensor_;
+    Motor motors_;
+    Led led_;
     
 };
 #endif

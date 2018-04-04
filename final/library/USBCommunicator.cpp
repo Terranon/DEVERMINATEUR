@@ -15,18 +15,15 @@
  * \return a USBCommunicator
  */
 USBCommunicator::USBCommunicator()
-    : instructionReceived_(),
-      robotName_(ROBOTNAME),
+    : robotName_(ROBOTNAME),
       teamNumber_(TEAMNUMBER),
       sectionNumber_(SECTIONNUMBER),
       semester_(SEMESTER),
       robotColor_(ROBOTCOLOUR),
-      buttonState_(0),
-      leftSensorDistance_(),
-      rightSensorDistance_(),
-      leftMotorSpeed_(0),
-      rightMotorSpeed_(0),
-      ledColor_(0),
+      button_(),
+      sensor_(),
+      motors_(),
+      led_(),
       infoRequestSent_() {
           
     DDRD &= ~(1 << DDD0);
@@ -40,9 +37,6 @@ USBCommunicator::USBCommunicator()
     UBRR0H = 0;
     UBRR0L = 0xCF;
     
-    Sensor sensor();
-    Led led();
-    Button button();
     }
 
 /**
@@ -57,15 +51,14 @@ USBCommunicator::~USBCommunicator() {
  */
 uint8_t USBCommunicator::receiveUSB() {
     
-    if(UCSR0A & (1 << RXC0) {
+    if(UCSR0A & (1 << RXC0)) {
         
-        instructionReceived_ = 1;
         return UDR0;
         
 	} else {
         
-        instructionReceived_ = 0;
         return 0;
+    }
 }
 
 /**
@@ -75,10 +68,9 @@ uint8_t USBCommunicator::receiveUSB() {
  */
 void USBCommunicator::transmitUSB(uint8_t valueTransmitted) {
     
-    if(UCSR0A & (1 << TXC0)) {
-        
-        UDR0 = valueToBeSent;
+    while(!(UCSR0A & (1 << TXC0))) {
     }
+        UDR0 = valueToBeSent;
 }
 
 /**
@@ -86,17 +78,17 @@ void USBCommunicator::transmitUSB(uint8_t valueTransmitted) {
  */
 void USBCommunicator::communicate() {
     
-    uint8_t instruction;
+    uint8_t instruction, value;
     
     while(1) {
         
         instruction = receiveUSB();
         _delay_ms(5);
         
-        if(instructionReceived_ == 1) {
+        if(instruction != 0) {
         
             switch (instruction) {
-                case 0xFB:         // info request
+                case 0xFB:          // info request
                     infoRequestSent_ = 1;
                     
                     transmitUSB(0xF0); // robot name send instruction
@@ -123,63 +115,107 @@ void USBCommunicator::communicate() {
                     transmitUSB(0xF4); // robot colour send instruction
                     transmitUSB(robotColor_);
                     
-                    setButtonState();
+                    value = button_.getState();
                     transmitUSB(0xF5); // button state send instruction
-                    transmitUSB(buttonState_);
+                    transmitUSB(value);
                     
-                    setLeftSensorDistance();
+                    value = sensor_.getDistanceG();
                     transmitUSB(0xF6); // left sensor distance send instruction
-                    transmitUSB(leftSensorDistance_);
+                    transmitUSB(value);
                     
-                    setRightSensorDistance();
+                    value = sensor_.getDistanceD();
                     transmitUSB(0xF7); // right sensor distance send instruction
-                    transmitUSB(rightSensorDistance_);
+                    transmitUSB(value);
+                    _delay_ms(5);
                     break;
-                case 0xF8:           // change speed of left motor
-                    leftMotorSpeed_ = receiveUSB();
+                case 0xF8:          // change speed of left motor
+                    
+                    value = receiveUSB();
+                    
+                    switch (value) {
+                        case 0:
+                            motors_.setSpeedLM(0);
+                            break;
+                        case -100:
+                            motors_.setDirectionLM(1);
+                            motors_.setSpeedLM(255);
+                            break;
+                        case -75:
+                            motors_.setDirectionLM(1);
+                            motors_.setSpeedLM(191);
+                            break;
+                        case -50:
+                            motors_.setDirectionLM(1);
+                            motors_.setSpeedLM(127);
+                            break;
+                        case -25:
+                            motors_.setDirectionLM(1);
+                            motors_.setSpeedLM(80);
+                            break:
+                        case 25:
+                            motors_.setDirectionLM(0);
+                            motors_.setSpeedLM(80);
+                            break;
+                        case 50:
+                            motors_.setDirectionLM(0);
+                            motors_.setSpeedLM(127);
+                            break;
+                        case 75:
+                            motors_.setDirectionLM(0);
+                            motors_.setSpeedLM(191);
+                            break;
+                        case 100:
+                            motors_.setDirectionLM(0);
+                            motors_.setSpeedLM(255);
+                            break;
+                    _delay_ms(5);
                     break;
-                case 0xF9:
-                    rightMotorSpeed_ = receiveUSB();
+                case 0xF9:          // change speed of right motor
+                    
+                    value = receiveUSB();
+                    
+                    switch (value) {
+                        case 0:
+                            motors_.setSpeedRM(0);
+                            break;
+                        case -100:
+                            motors_.setDirectionRM(1);
+                            motors_.setSpeedRM(255);
+                            break;
+                        case -75:
+                            motors_.setDirectionRM(1);
+                            motors_.setSpeedRM(191);
+                            break;
+                        case -50:
+                            motors_.setDirectionRM(1);
+                            motors_.setSpeedRM(127);
+                            break;
+                        case -25:
+                            motors_.setDirectionRM(1);
+                            motors_.setSpeedRM(80);
+                            break:
+                        case 25:
+                            motors_.setDirectionRM(0);
+                            motors_.setSpeedRM(80);
+                            break;
+                        case 50:
+                            motors_.setDirectionRM(0);
+                            motors_.setSpeedRM(127);
+                            break;
+                        case 75:
+                            motors_.setDirectionRM(0);
+                            motors_.setSpeedRM(191);
+                            break;
+                        case 100:
+                            motors_.setDirectionRM(0);
+                            motors_.setSpeedRM(255);
+                            break;
+                    _delay_ms(5);
                     break;
-                case 0xF9:
-                    ledColor_ = receiveUSB();
+                case 0xFA:          // change color of led
+                    value = receiveUSB();
+                    led_.setColor(value);
+                    _delay_ms(5);
                     break;
             }
 }
-
-/**
- * \brief sets button's state from Button Class
- */
-void USBCommunicator::setButtonState() {
-    
-    buttonState_ = button.getButtonState();
-}
-
-/**
- * \brief sets left sensor's distance from Sensor Class
- */
-void USBCommunicator::setLeftSensorDistance() {
-    
-    leftSensorDistance_ = sensor.getDistanceG();
-}
-
-/**
- * \brief sets right sensor's distance from Sensor Class
- */
-void USBCommunicator::setRightSensorDistance() {
-    
-    rightSensorDistance_ = sensor.getDistanceD();
-}
-
-
-/**
- * \brief changes the colour of the led using Led Class
- */
-void USBCommunicator::changeLedColor(uint8_t ledColor_) {
-    
-    led.setColor(ledColor_);
-}
-
-/******************************************************************************\
- * Main
-\******************************************************************************/
