@@ -10,8 +10,8 @@
 #include "USBCommunicator.h"
 
 /**
- * \brief constructor for the USBCommunicator; the DDRx register will be set to enable
- *        output and input on the appropriate pins
+ * \brief constructor for the USBCommunicator; the DDRx register will be set to
+ *        enable output and input on the appropriate pins.
  * \return a USBCommunicator
  */
 USBCommunicator::USBCommunicator()
@@ -23,16 +23,15 @@ USBCommunicator::USBCommunicator()
       button_(),
       sensor_(),
       motors_(),
-      led_(),
-      infoRequestSent_() {
+      led_(), {
           
     DDRD &= ~(1 << DDD0);
     DDRD |= (1 << DDD1);
         
     UCSR0A = 0x00;		//Multi-processor Communication Mode
     UCSR0B = 0x18;		//Receiver Enable (bit4), Transmitter Enable(bit3)
-    UCSR0C = 0x06;		//Asynchronous USART, none Parity, stop bit(s) 1-bit
-                                            //character size -- 8 bit 
+    UCSR0C = 0x06;		//Asynchronous USART, non Parity, stop bit(s) 1-bit
+                        //character size -- 8 bit 
 
     UBRR0H = 0;
     UBRR0L = 0xCF;
@@ -46,7 +45,8 @@ USBCommunicator::~USBCommunicator() {
 }
 
 /**
- * \brief receives the byte coming from the USB cable and stores it in the UDR0 register
+ * \brief receives the byte coming from the USB cable and stores it in the UDR0
+ *        register
  * \return a uint8_t
  */
 uint8_t USBCommunicator::receiveUSB() {
@@ -62,7 +62,8 @@ uint8_t USBCommunicator::receiveUSB() {
 }
 
 /**
- * \brief writes appropriate bytes to the UDR0 register and transmits it
+ * \brief waits for the Transmit Complete flag to be true then writes 
+ *        appropriate bytes to the UDR0 register and transmits it
  * \param valueTransmitted is the data value that the robot must send to the 
  *        computer
  */
@@ -89,7 +90,6 @@ void USBCommunicator::communicate() {
         
             switch (instruction) {
                 case 0xFB:          // info request
-                    infoRequestSent_ = 1;
                     
                     transmitUSB(0xF0); // robot name send instruction
                     for(uint8_t i = 0; i < NAMESIZE; i++) {
@@ -115,7 +115,7 @@ void USBCommunicator::communicate() {
                     transmitUSB(0xF4); // robot colour send instruction
                     transmitUSB(robotColor_);
                     
-                    value = button_.getState();
+                    value = button_.isPressed();
                     transmitUSB(0xF5); // button state send instruction
                     transmitUSB(value);
                     
@@ -213,7 +213,9 @@ void USBCommunicator::communicate() {
                     _delay_ms(5);
                     break;
                 case 0xFA:          // change color of led
+                    
                     value = receiveUSB();
+                    
                     led_.setColor(value);
                     _delay_ms(5);
                     break;
