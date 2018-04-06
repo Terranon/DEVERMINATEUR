@@ -21,8 +21,11 @@
 
 Motor bot;
 Sensor sensor;
+Button bouton;
+enum State {INIT, MUR_GAUCHE, MUR_DROIT,BOUTON};
 
-enum State {INIT, MUR_GAUCHE, MUR_DROITE};
+
+
 
 /******************************************************************************\
  * Init
@@ -30,49 +33,47 @@ enum State {INIT, MUR_GAUCHE, MUR_DROITE};
 \******************************************************************************/
 void init(){
 	DDRA = 0x00; //port entree
-}
 
+}
 
 /******************************************************************************\
  * Loop
 	Boucle infini imposant au robot de rester a une distance de 15 cm du mur droit
 \******************************************************************************/
 void loop(){
-	uint8_t distanceDetecteurDroit = sensor.getValeurVoltage();
-	uint8_t distanceDetecteurGauche = sensor.getValeurVoltage();
+	uint8_t distanceDetecteurDroit = sensor.getDistanceG();
+	uint8_t distanceDetecteurGauche = sensor.getDistanceD();
 	
 	State etat = INIT;
 	
 	switch(etat){
 		
-		case INIT:
-			if(distanceDetecteurDroit < 25)
-				etat = MUR_DROITE;
+		case INIT:							//detecte le mur le plus pres et va commencer a
+			if (bouton.isPressed())
+				etat = BOUTON;
+			else if(distanceDetecteurDroit < distanceDetecteurGauche)	//le suivre
+				etat = MUR_DROIT;
 			else
 				etat = MUR_GAUCHE;
 		break;
 		
-		case MUR_GAUCHE:
+		case MUR_DROIT:
 			if(distanceDetecteurDroit < 15 )
-				bot.setSpeed(220, 150);
+				bot.setSpeed(220, 130);
 			else
-				bot.setSpeed(150, 220);
-			
-			//VERIFICATION D'UN POTEAU DE L'AUTRE COTE	
-			
+				bot.setSpeed(130, 220);
 		break;
 		
-		case MUR_DROITE:
+		case MUR_GAUCHE:
 		 if (distanceDetecteurGauche < 15)
-				bot.setSpeed(150, 220);
+				bot.setSpeed(130, 220);
 			else
-				bot.setSpeed(220, 150);			
-			//VERIFICATION D'UN POTEAU DE L'AUTRE COTE
-		
+				bot.setSpeed(220, 130);					
 		break;
+
+		case BOUTON:
+			
 	
-		
-		
 	}
 }
 /******************************************************************************\
