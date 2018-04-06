@@ -9,6 +9,7 @@
 #define BUTTON_H
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 class Button {
 public:

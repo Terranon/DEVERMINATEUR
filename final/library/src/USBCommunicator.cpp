@@ -15,15 +15,15 @@
  * \return a USBCommunicator
  */
 USBCommunicator::USBCommunicator()
-    : robotName_(ROBOTNAME),
-      teamNumber_(TEAMNUMBER),
-      sectionNumber_(SECTIONNUMBER),
-      semester_(SEMESTER),
-      robotColor_(ROBOTCOLOUR),
+    : robotName_("GucciBot"),
+      teamNumber_("9397"),
+      sectionNumber_('5'),
+      semester_("18-1"),
+      robotColor_(1),
       button_(),
       sensor_(),
       motors_(),
-      led_(), {
+      led_() {
           
     DDRD &= ~(1 << DDD0);
     DDRD |= (1 << DDD1);
@@ -71,7 +71,7 @@ void USBCommunicator::transmitUSB(uint8_t valueTransmitted) {
     
     while(!(UCSR0A & (1 << TXC0))) {
     }
-        UDR0 = valueToBeSent;
+        UDR0 = valueTransmitted;
 }
 
 /**
@@ -79,7 +79,8 @@ void USBCommunicator::transmitUSB(uint8_t valueTransmitted) {
  */
 void USBCommunicator::communicate() {
     
-    uint8_t instruction, value;
+    uint8_t instruction;
+    int8_t value;
     
     while(1) {
         
@@ -151,7 +152,7 @@ void USBCommunicator::communicate() {
                         case -25:
                             motors_.setDirectionLM(1);
                             motors_.setSpeedLM(80);
-                            break:
+                            break;
                         case 25:
                             motors_.setDirectionLM(0);
                             motors_.setSpeedLM(80);
@@ -168,6 +169,7 @@ void USBCommunicator::communicate() {
                             motors_.setDirectionLM(0);
                             motors_.setSpeedLM(255);
                             break;
+                    }
                     _delay_ms(5);
                     break;
                 case 0xF9:          // change speed of right motor
@@ -193,7 +195,7 @@ void USBCommunicator::communicate() {
                         case -25:
                             motors_.setDirectionRM(1);
                             motors_.setSpeedRM(80);
-                            break:
+                            break;
                         case 25:
                             motors_.setDirectionRM(0);
                             motors_.setSpeedRM(80);
@@ -210,6 +212,7 @@ void USBCommunicator::communicate() {
                             motors_.setDirectionRM(0);
                             motors_.setSpeedRM(255);
                             break;
+                    }
                     _delay_ms(5);
                     break;
                 case 0xFA:          // change color of led
@@ -220,4 +223,6 @@ void USBCommunicator::communicate() {
                     _delay_ms(5);
                     break;
             }
+        }
+    }
 }

@@ -13,8 +13,8 @@
  * \return a Button
  */
 Button::Button()
-    :  isPressed_{
-    DDRD  &= ~(1 << DDD2);     
+    :  isPressed_(){
+    DDRD &= ~(1 << DDD2);
 }
 
 /**

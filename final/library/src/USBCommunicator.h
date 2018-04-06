@@ -11,6 +11,10 @@
 #define USBCommunicator_H
 
 #include <util/delay.h>
+#include "Button.h"
+#include "Sensor.h"
+#include "Motor.h"
+#include "Led.h"
 
 
 class USBCommunicator {
@@ -58,24 +62,11 @@ private:
     // # of characters in the semester code
     static const uint8_t SEMESTERSIZE = 4;
     
-    // GucciBot
-    static const char[NAMESIZE] ROBOTNAME = {71,117,99,99,105,66,111,116};
-    // 9397
-    static const char[NUMBERSIZE] TEAMNUMBER = {57,51,57,55};
-    // section 5
-    static const char SECTIONNUMBER = 5;
-    // 18-1
-    static const char[SEMESTERSIZE] SEMESTER = {49,56,45,49};
-    // black
-    static const uint8_t ROBOTCOLOUR = 1;
-    
-    
-    uint8_t instructionReceived_;
-    char[NAMESIZE] robotName_;
-    char[NUMBERSIZE] teamNumber_;
+    char* robotName_;
+    char* teamNumber_;
     char sectionNumber_;
-    char[SEMESTERSIZE] semester_;
-    uint8_t robotcolor_;
+    char* semester_;
+    uint8_t robotColor_;
     
     Button button_;
     Sensor sensor_;
