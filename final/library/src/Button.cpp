@@ -12,9 +12,7 @@
  *        input on the appropriate pin
  * \return a Button
  */
-Button::Button()
-    :  isPressed_(),
-       sendState_(){
+Button::Button() {
     DDRD &= ~(1 << DDD2);
 }
 
