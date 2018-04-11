@@ -116,7 +116,7 @@ void USBCommunicator::communicate() {
                     transmitUSB(0xF4); // robot colour send instruction
                     transmitUSB(robotColor_);
                     
-                    value = button_.isPressed();
+                    value = button_.sendState();
                     transmitUSB(0xF5); // button state send instruction
                     transmitUSB(value);
                     

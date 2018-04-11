@@ -27,6 +27,12 @@ public:
     ~Button();
     
     /**
+    * \brief checks if Button is pressed for diagnostic
+    * \return a uint8_t
+    */
+    uint8_t sendState();
+    
+    /**
     * \brief checks if Button is pressed
     * \return a uint8_t
     */
