@@ -22,7 +22,7 @@ projectName := deverminateur
 # or use '$(notdir $(wildcard src/*.cpp))' to include all .cpp files
 # in the src directory
 # ex: 'tp1.c tp2.cpp':
-srcFiles := $(notdir $(wildcard src/*.cpp))
+srcFiles := Adc.cpp Button.cpp Interpreter.cpp Motor.cpp Sensor.cpp Timer.cpp
 
 # Directories where make will look for prerequisites and targets
 # Each must be separated by a colon (ex: dir1:dir2:../otherdir)
