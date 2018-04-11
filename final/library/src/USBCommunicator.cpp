@@ -15,28 +15,28 @@
  * \return a USBCommunicator
  */
 USBCommunicator::USBCommunicator()
-    : robotName_("GucciBot"),
-      teamNumber_("9397"),
+    : robotName_("GucciBot     "),
+      teamNumber_("93-97    "),
       sectionNumber_('5'),
       semester_("18-1"),
       robotColor_(1),
       button_(),
-      sensor_(),
+      sensor_(0, 2),
       motors_(),
       led_() {
           
     DDRD &= ~(1 << DDD0);
     DDRD |= (1 << DDD1);
-        
-    UCSR0A = 0x00;		//Multi-processor Communication Mode
-    UCSR0B = 0x18;		//Receiver Enable (bit4), Transmitter Enable(bit3)
-    UCSR0C = 0x06;		//Asynchronous USART, non Parity, stop bit(s) 1-bit
-                        //character size -- 8 bit 
 
     UBRR0H = 0;
     UBRR0L = 0xCF;
+        
+    UCSR0A = 0x00;		// Multi-processor Communication Mode
+    UCSR0B = 0x18;		//Receiver Enable (bit4), Transmitter Enable(bit3)
+    UCSR0C = 0x06;		//Asynchronous USART, non Parity, stop bit(s) 1-bit
+                        //character size -- 8 bit 
     
-    }
+}
 
 /**
  * \brief destructor for the USBCommunicator
@@ -51,12 +51,10 @@ USBCommunicator::~USBCommunicator() {
  */
 uint8_t USBCommunicator::receiveUSB() {
     
-    if(UCSR0A & (1 << RXC0)) {
-        
+	// Only return the data in the buffer if it it full
+    if (UCSR0A & (1 << RXC0)) {
         return UDR0;
-        
 	} else {
-        
         return 0;
     }
 }
@@ -69,9 +67,16 @@ uint8_t USBCommunicator::receiveUSB() {
  */
 void USBCommunicator::transmitUSB(uint8_t valueTransmitted) {
     
+	// Clear the TXC0 flag (by writing 1 to its bit location)
+	UCSR0A |= (1 << TXC0);
+	
+	// Add the data to the data buffer register
+    UDR0 = valueTransmitted;
+	
+	// Wait for the data to be sent
     while(!(UCSR0A & (1 << TXC0))) {
     }
-        UDR0 = valueTransmitted;
+    
 }
 
 /**
@@ -80,27 +85,25 @@ void USBCommunicator::transmitUSB(uint8_t valueTransmitted) {
 void USBCommunicator::communicate() {
     
     uint8_t instruction;
-    int8_t value;
+	uint8_t unsignedValue;
+    int8_t signedValue;
     
     while(1) {
         
         instruction = receiveUSB();
-        _delay_ms(5);
         
-        if(instruction != 0) {
+        if (instruction != 0) {
         
             switch (instruction) {
                 case 0xFB:          // info request
                     
                     transmitUSB(0xF0); // robot name send instruction
                     for(uint8_t i = 0; i < NAMESIZE; i++) {
-                        
                         transmitUSB(robotName_[i]);
                     }
                     
                     transmitUSB(0xF1); // team number send instruction
                     for(uint8_t i = 0; i < NUMBERSIZE; i++) {
-                        
                         transmitUSB(teamNumber_[i]);
                     }
                     
@@ -116,24 +119,23 @@ void USBCommunicator::communicate() {
                     transmitUSB(0xF4); // robot colour send instruction
                     transmitUSB(robotColor_);
                     
-                    value = button_.sendState();
+                    unsignedValue = button_.sendState();
                     transmitUSB(0xF5); // button state send instruction
-                    transmitUSB(value);
+                    transmitUSB(unsignedValue);
                     
-                    value = sensor_.getDistanceG();
+                    unsignedValue = sensor_.getDistanceG();
                     transmitUSB(0xF6); // left sensor distance send instruction
-                    transmitUSB(value);
+                    transmitUSB(unsignedValue);
                     
-                    value = sensor_.getDistanceD();
+                    unsignedValue = sensor_.getDistanceD();
                     transmitUSB(0xF7); // right sensor distance send instruction
-                    transmitUSB(value);
-                    _delay_ms(5);
+                    transmitUSB(unsignedValue);
                     break;
                 case 0xF8:          // change speed of left motor
                     
-                    value = receiveUSB();
+                    signedValue = receiveUSB();
                     
-                    switch (value) {
+                    switch (signedValue) {
                         case 0:
                             motors_.setSpeedLM(0);
                             break;
@@ -170,13 +172,12 @@ void USBCommunicator::communicate() {
                             motors_.setSpeedLM(255);
                             break;
                     }
-                    _delay_ms(5);
                     break;
                 case 0xF9:          // change speed of right motor
                     
-                    value = receiveUSB();
+                    signedValue = receiveUSB();
                     
-                    switch (value) {
+                    switch (signedValue) {
                         case 0:
                             motors_.setSpeedRM(0);
                             break;
@@ -213,14 +214,12 @@ void USBCommunicator::communicate() {
                             motors_.setSpeedRM(255);
                             break;
                     }
-                    _delay_ms(5);
                     break;
                 case 0xFA:          // change color of led
                     
-                    value = receiveUSB();
+                    unsignedValue = receiveUSB();
                     
-                    led_.setColor(value);
-                    _delay_ms(5);
+                    led_.setColor(unsignedValue);
                     break;
             }
         }

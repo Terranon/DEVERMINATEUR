@@ -16,12 +16,12 @@
 
  * Version: 1.0
 \******************************************************************************/
-#include "USBCommunicator.h"
+#include <USBCommunicator.h>
 
 /******************************************************************************\
  * Main
 \******************************************************************************/
 int main(){
-	USBCommunicator usbCommunicator;
-    usbCommunicator.communicate();
+	USBCommunicator usb;
+	usb.communicate();
 }

@@ -56,16 +56,16 @@ public:
 private:
     
     // # of characters in the robot's name
-    static const uint8_t NAMESIZE = 8;
+    static const uint8_t NAMESIZE = 13;
     // # of characters in the team's number
-    static const uint8_t NUMBERSIZE = 4;
+    static const uint8_t NUMBERSIZE = 9;
     // # of characters in the semester code
     static const uint8_t SEMESTERSIZE = 4;
     
-    char* robotName_;
-    char* teamNumber_;
+    char robotName_[NAMESIZE+1];
+    char teamNumber_[NUMBERSIZE+1];
     char sectionNumber_;
-    char* semester_;
+    char semester_[SEMESTERSIZE+1];
     uint8_t robotColor_;
     
     Button button_;
