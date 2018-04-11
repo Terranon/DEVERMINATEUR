@@ -29,15 +29,14 @@ Button::~Button(){
  * \return a uint8_t
  */
 uint8_t Button::sendState() {
-    
+    _delay_ms(10);     // debounce time
+	uint8_t sendState;
     if(PIND & 0x04) {
-        _delay_ms(10);     // debounce time
-        sendState_ = 0x00; // button is pressed
+        sendState = 0x00; // button is pressed
     } else {
-        _delay_ms(10);     // debounce time
-        sendState_ = 0x01; // button is not pressed
+        sendState = 0x01; // button is not pressed
     }
-    return sendState_;
+    return sendState;
 }
 
 /**
@@ -45,14 +44,13 @@ uint8_t Button::sendState() {
  * \return a uint8_t
  */
 uint8_t Button::isPressed() {
-    
+    _delay_ms(10);     // debounce time
+    uint8_t isPressed;
     if(PIND & 0x04) {
-        _delay_ms(10);     // debounce time
-        isPressed_ = 0x01; // button is pressed
+        isPressed = 0x01; // button is pressed
     } else {
-        _delay_ms(10);     // debounce time
-        isPressed_ = 0x00; // button is not pressed
+        isPressed = 0x00; // button is not pressed
     }
-    return isPressed_;
+    return isPressed;
 }
 

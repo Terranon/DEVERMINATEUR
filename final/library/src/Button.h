@@ -39,8 +39,7 @@ public:
     uint8_t isPressed();
     
 private:
-    
-    uint8_t isPressed_;
+
 };
 
 #endif // BUTTON_H
