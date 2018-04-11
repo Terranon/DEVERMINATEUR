@@ -13,38 +13,25 @@
 
 class Sensor {
 public:
-/**
- * \brief default constructor for the intensity of the Led
- * \param none
- * \return none
- */
-	Sensor();
 
-/**
- * \brief sets Led's color based on valeurIntensite_'s value. the Led's
- * 		will keep his color as long as the intensity stays in the range
- * \param valeurIntensite_ determines color of Led
- * \return value of intensity
- */
+	/**
+	 * \brief default constructor for the intensity of the Led
+	 * \param pinG position of left sensor data pin
+	 * \param pinD position of right sensor data pin
+   * \return a Sensor
+   */
+	Sensor(uint8_t pinG, uint8_t pinD);
  
 	uint8_t getDistanceG();
 	uint8_t getDistanceD();
-	
-/**
- * \brief sets pin's position on A port
- * \param position of pin on A port
- * \return none
- */
-
-	void setPositionGauche(uint8_t positionG);
-	void setPositionDroite(uint8_t positionD);
 
 private:
+	
+	uint8_t getDistance(uint8_t pin);
+
 	Adc convertisseur_;
-	uint8_t valeurVoltageG_;
-	uint8_t valeurVoltageD_;
-	uint8_t positionG_;
-	uint8_t positionD_;
+	uint8_t pinG_;
+	uint8_t pinD_;
 
 };
 #endif
