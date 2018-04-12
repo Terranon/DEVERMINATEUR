@@ -13,33 +13,33 @@
 
 class Button {
 public:
-    
-    /**
-    * \brief constructor for the Button; the DDRx register will be set to enable
-    *        input on the appropriate pins
-    * \return a Button
-    */
-    Button();
-    
-    /**
-    * \brief destructor for Button
-    */
-    ~Button();
-    
-    /**
-    * \brief checks if Button is pressed for diagnostic
-    * \return a uint8_t
-    */
-    uint8_t sendState();
-    
-    /**
-    * \brief checks if Button is pressed
-    * \return a uint8_t
-    */
-    uint8_t isPressed();
-    
+	
+	/**
+	 * \brief constructor for the Button; the DDRx register will be set to enable
+	 *        input on the appropriate pins
+	 * \return a Button
+	 */
+	Button();
+	
+	/**
+	 * \brief destructor for Button
+	 */
+	~Button();
+	
+	/**
+	 * \brief checks if Button is pressed for diagnostic
+	 * \return a uint8_t
+	 */
+	uint8_t sendState();
+	
+	/**
+	 * \brief checks if Button is pressed
+	 * \return a uint8_t
+	 */
+	uint8_t isPressed();
+	
 private:
-
+	
 };
 
 #endif // BUTTON_H

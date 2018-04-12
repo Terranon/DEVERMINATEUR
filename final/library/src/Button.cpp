@@ -1,4 +1,4 @@
-/*****************************************************************************\
+/******************************************************************************\
  * Authors:     Maximilien Bianchi
  * Name:        Button.cpp
  * Description: Simplify the use of a button
@@ -13,7 +13,7 @@
  * \return a Button
  */
 Button::Button() {
-    DDRD &= ~(1 << DDD2);
+	DDRD &= ~(1 << DDD2);
 }
 
 /**
@@ -27,14 +27,20 @@ Button::~Button(){
  * \return a uint8_t
  */
 uint8_t Button::sendState() {
-    _delay_ms(10);     // debounce time
-	uint8_t sendState;
-    if(PIND & 0x04) {
-        sendState = 0x00; // button is pressed
-    } else {
-        sendState = 0x01; // button is not pressed
-    }
-    return sendState;
+	
+	// debounce time
+	_delay_ms(10);
+	
+	uint8_t state;
+	if(PIND & 0x04) {
+		// button is pressed
+	    state = 0x00;
+	} else {
+		// button is not pressed
+	    state = 0x01;
+	}
+	return state;
+	
 }
 
 /**
@@ -42,13 +48,18 @@ uint8_t Button::sendState() {
  * \return a uint8_t
  */
 uint8_t Button::isPressed() {
-    _delay_ms(10);     // debounce time
-    uint8_t isPressed;
-    if(PIND & 0x04) {
-        isPressed = 0x01; // button is pressed
-    } else {
-        isPressed = 0x00; // button is not pressed
-    }
-    return isPressed;
+	
+	// debounce time
+	_delay_ms(10);
+	
+	uint8_t isPressed;
+	if(PIND & 0x04) {
+		// button is pressed
+	    isPressed = 0x01;
+	} else {
+		// button is not pressed
+	    isPressed = 0x00;
+	}
+	return isPressed;
 }
 

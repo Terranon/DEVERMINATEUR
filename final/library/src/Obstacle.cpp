@@ -1,32 +1,75 @@
+/******************************************************************************\
+ * Authors: William Chartrand, Jean-Raphael Matte
+ * Name: Obstacle.cpp
+ * Description: this class manages a log of data recieved from the sensor
+ * 
+ * Version: 1.0
+\******************************************************************************/
+
 #include "Obstacle.h"
 
-Obstacle::Obstacle() {
-	Queue distances_();
-}
+Obstacle::Obstacle():
+distances_() {}
 
-void Queue::push(uint8_t distance) {
+void Obstacle::push(uint8_t distance) {
+	
 	distances_.push(distance);
-	if (numberOfDistances_ < 9)
+	
+	// Keep track of how many distances have been pushed if it is not enough to
+	// to draw conlcusions
+	if (numberOfDistances_ < WALL_MIN_LENGTH) {
 		numberOfDistances_++;
+	}
+	
 }
 
-uint8_t Queue::detectionObstacle() {
-	if (numberOfDistances_ < 9) {
-		return 0; // pas assez de donnees
-	} else if (distances_.get(9 - 1) == 61) {
-		if (distances_.get(9 - 2) == 61) {
-			return 0; // dans le vide
-		} else {
-			return 1; // fin de poteau
-		}
+uint8_t Obstacle::analyze() {
+	
+	// Check if enough data has been collected
+	if (numberOfDistances_ < WALL_MIN_LENGTH) {
+		
+		// Not enough data
+		return NONE;
+		
 	} else {
-		uint8_t largeurPoeau = 5;
-		for (uint8_t i = 0; i < largeurPoteau; i++) {
-			if (distances_.get(9 - (1 + i) == 61) {
-				return 0; // a trouve le debut du poteau
+		
+		// Check if there is an obstacle in sight right now
+		if (distances_.get(0) != 61) {
+			
+			// Check how long the current obstacle is
+			for (uint8_t i = 1; i < WALL_MIN_LENGTH; i++) {
+				
+				// Check if the beginning of the pole can be found
+				if (distances_.get(i) == 61) {
+					
+					// The beginning of the obstacle was found, not long enough
+					// to be a wall
+					return NONE;
+					
+				}
+				
+			}
+			
+			// Checked WALL_MIN_LENGTH distances and couldn't find the beginning
+			// of the obstacle. It is safe to assume this is a wall and not a 
+			// pole
+			return WALL;
+		
+		} else {
+			
+			// Check if there was something in sight on the previous check
+			if (distances_.get(1) != 61) {
+				
+				// End of obstacle detected, this is a pole
+				return POLE;
+				
+			} else {
+				
+				// There where no obstacle at all
+				return NONE;
+				
 			}
 		}
-		return 2; // trouve pas le debut du poteau
 	}
-			
+	
 }

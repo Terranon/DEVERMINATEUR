@@ -7,15 +7,15 @@
  * Wiring : 
  *                  
  *   PORTD : 1 3(5)7
- *              |||-Jumper            
+ *               |--Jumper            
  *           0 2(4)6
  *                                                         
 \******************************************************************************/
 
 #include "Timer.h"
 
-Timer::Timer()
-	: prescalerMode_(5) {
+Timer::Timer():
+prescalerMode_(5) {
 	
 	// disable interruptions
 	cli();
@@ -248,7 +248,7 @@ Timer::Timer()
 Timer::~Timer() {
 	
 	// Stop the timer
-	this->stop();
+	stop();
 	
 	// Disconnect OC1A
 	TCCR1A &= (3 << COM1A0);
@@ -266,7 +266,6 @@ void Timer::stop() {
 	
 	// Disconnect the clock source
 	TCCR1B &= ~(7 << CS10);
-	TCCR1B |= (0 << CS10);
 	
 }
 
@@ -302,16 +301,16 @@ uint16_t Timer::getTop() {
 void Timer::schedule(uint16_t duration) {
 	
 	// Start counting, in case the time was stopped
-	this->start();
+	start();
 
 	// Value of Timer/Counter 1, 16 bits
-	this->clear();
+	clear();
 	
 	// Reset the expired status
-	this->resetExpiration();
+	resetExpiration();
 	
 	// Output Compare Register 1 A
-	this->setTop((duration * (F_CPU >> this->getPrescalerValue())) / 1000);
+	setTop((duration * (F_CPU >> getPrescalerValue())) / 1000);
 	
 }
 

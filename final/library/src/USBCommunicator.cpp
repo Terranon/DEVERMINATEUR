@@ -14,16 +14,16 @@
  *        enable output and input on the appropriate pins.
  * \return a USBCommunicator
  */
-USBCommunicator::USBCommunicator()
-    : robotName_("GucciBot     "),
-      teamNumber_("93-97    "),
-      sectionNumber_('5'),
-      semester_("18-1"),
-      robotColor_(1),
-      button_(),
-      sensor_(0, 2),
-      motors_(),
-      led_() {
+USBCommunicator::USBCommunicator():
+robotName_("GucciBot     "),
+teamNumber_("93-97    "),
+sectionNumber_('5'),
+semester_("18-1"),
+robotColor_(1),
+button_(),
+sensor_(),
+motors_(),
+led_() {
           
     DDRD &= ~(1 << DDD0);
     DDRD |= (1 << DDD1);
@@ -116,18 +116,18 @@ void USBCommunicator::communicate() {
                         transmitUSB(semester_[i]);
                     }
                     
-                    transmitUSB(0xF4); // robot colour send instruction
+                    transmitUSB(0xF4); // robot color send instruction
                     transmitUSB(robotColor_);
                     
                     unsignedValue = button_.sendState();
                     transmitUSB(0xF5); // button state send instruction
                     transmitUSB(unsignedValue);
                     
-                    unsignedValue = sensor_.getDistanceG();
+                    unsignedValue = sensor_.getDistanceL();
                     transmitUSB(0xF6); // left sensor distance send instruction
                     transmitUSB(unsignedValue);
                     
-                    unsignedValue = sensor_.getDistanceD();
+                    unsignedValue = sensor_.getDistanceR();
                     transmitUSB(0xF7); // right sensor distance send instruction
                     transmitUSB(unsignedValue);
                     break;
