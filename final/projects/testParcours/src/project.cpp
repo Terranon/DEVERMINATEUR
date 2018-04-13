@@ -3,24 +3,25 @@
 #include "Sensor.h"
 #include "Button.h"
 #include "Obstacle.h"
+#include "Led.h"
 
 Motor bot;
 Button bouton;
+Sensor sensor;						//on initialise le sensor gauche a PA0 et le sensor droit a PA2
 Obstacle obstacle;
+								
 const uint8_t DISTANCE_OPTIMALE = 15;
-
 enum State {START, MUR_GAUCHE, MUR_DROIT, ROTATION_GAUCHE, ROTATION_DROIT, TRANSITION_GAUCHE, TRANSITION_DROIT};
-
-/******************************************************************************\
- * Loop
-	Boucle infini imposant au robot de rester a une distance de 15 cm du mur droit
-\******************************************************************************/
-void loop(){
-
-	Sensor sensor(0, 2);			//on initialise le sensor gauche a PA0 et le sensor droit a PA2
+/*
+//******************************************************************************
+//  Loop
+//	Boucle infini imposant au robot de rester a une distance de 15 cm du mur droit
+//******************************************************************************
+void loop(){			
 	State etat = START;				//on initialise etat a INIT
 	DDRC = 0xff;							//on initilise le portC en entree pour la del
-			
+	bot.setSpeed(0, 255);
+
 	while(1){
 		uint8_t distanceDetecteurDroit = sensor.getDistanceD();		//distance detectee a droite
 		uint8_t distanceDetecteurGauche = sensor.getDistanceG();	//distance detectee a gauche
@@ -119,11 +120,13 @@ void loop(){
 				etat = ROTATION_DROIT;
 		}
 	}
-	*/	
+		
 }
-/******************************************************************************\
- * Main
-\******************************************************************************/
+*/
+//******************************************************************************
+ // Main
+//******************************************************************************
 int main(){
-	loop();
+	//loop();
 }
+

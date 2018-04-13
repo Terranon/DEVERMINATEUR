@@ -216,23 +216,23 @@ void Motor::driveMotors() {
 	
 	
 	// Set left PWM
-	OCR0A = speedLM_;
+	OCR0B = speedLM_;
 	
 	// Set left direction
 	if (directionLM_ == BACK) {
-		PORTB |= (1 << PORTB5 );
-	} else {
-		PORTB &= ~(1 << PORTB5);
-	}
-	
-	// Set left PWM
-	OCR0B = speedRM_;
-	
-	// Set left direction
-	if (directionRM_ == BACK) {
 		PORTB |= (1 << PORTB6 );
 	} else {
 		PORTB &= ~(1 << PORTB6);
+	}
+	
+	// Set left PWM
+	OCR0A = speedRM_;
+	
+	// Set left direction
+	if (directionRM_ == BACK) {
+		PORTB |= (1 << PORTB5 );
+	} else {
+		PORTB &= ~(1 << PORTB5);
 	}
 	
 }
