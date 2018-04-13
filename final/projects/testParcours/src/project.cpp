@@ -16,9 +16,10 @@ enum State {START, MUR_GAUCHE, MUR_DROIT, ROTATION_GAUCHE, ROTATION_DROIT, TRANS
 	Boucle infini imposant au robot de rester a une distance de 15 cm du mur droit
 \******************************************************************************/
 void loop(){
+
 	Sensor sensor(0, 2);			//on initialise le sensor gauche a PA0 et le sensor droit a PA2
 	State etat = START;				//on initialise etat a INIT
-	DDRC = 0xff;
+	DDRC = 0xff;							//on initilise le portC en entree pour la del
 			
 	while(1){
 		uint8_t distanceDetecteurDroit = sensor.getDistanceD();		//distance detectee a droite
@@ -117,7 +118,8 @@ void loop(){
 			else
 				etat = ROTATION_DROIT;
 		}
-	}	
+	}
+	*/	
 }
 /******************************************************************************\
  * Main
