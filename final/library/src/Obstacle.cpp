@@ -8,7 +8,7 @@
 
 #include "Obstacle.h"
 
-Obstacle::Obstacle(): {}
+Obstacle::Obstacle() {}
 
 void Obstacle::push(uint8_t distance) {
 	

@@ -62,9 +62,9 @@ void loop(){
 				led.setColor(Led::RED); 					//allume rouge si un mur a droite
 				bot.setDirection(Motor::FRWD, Motor::FRWD);
 				if(distanceDetecteurDroit < DISTANCE_OPTIMALE)
-					bot.setSpeed(100, 160);
+					bot.setSpeed(90, 160);
 				else
-					bot.setSpeed(160, 100);
+					bot.setSpeed(160, 90);
 				if(!detecterMur)
 					obstacle.push(distanceDetecteurGauche);			//On push la distance observe par le capteur oppose
 			break;
@@ -74,9 +74,9 @@ void loop(){
 				led.setColor(Led::GREEN);  					//allume vert si un mur a gauche
 				bot.setDirection(Motor::FRWD, Motor::FRWD);
 				if (distanceDetecteurGauche < DISTANCE_OPTIMALE)
-					bot.setSpeed(160, 100);
+					bot.setSpeed(160, 90);
 				else
-					bot.setSpeed(100, 160);
+					bot.setSpeed(90, 160);
 				if(!detecterMur)
 					obstacle.push(distanceDetecteurDroit);			//On push la distance observe par le capteur oppose		
 			break;
@@ -107,7 +107,7 @@ void loop(){
 	
 			case TRANSITION_GAUCHE:			//effectue une transition vers la gauche vers un mur
 				led.setColor(Led::OFF);
-				bot.setSpeed(110, 160);
+				bot.setSpeed(100, 160);
 				if(distanceDetecteurGauche < DISTANCE_OPTIMALE)
 				{
 					etat = MUR_GAUCHE;
@@ -117,7 +117,7 @@ void loop(){
 			
 			case TRANSITION_DROIT:			//effectue une transition vers la droite vers un mur
 				led.setColor(Led::OFF); 
-				bot.setSpeed(160, 110);
+				bot.setSpeed(160, 100);
 				if(distanceDetecteurDroit < DISTANCE_OPTIMALE)
 				{
 					etat = MUR_DROIT;
@@ -135,7 +135,7 @@ void loop(){
 		//s'informe sur ce qui se passe avec l'autre sensor
 		if (etat != TRANSITION_DROIT && etat != TRANSITION_GAUCHE && !detecterMur){
 			uint8_t detectionObstacle = obstacle.analyze();
-			//if(detectionObstacle == Obstacle::POLE)			//il s'agit d'un poteau
+			if(detectionObstacle == Obstacle::POLE)			//il s'agit d'un poteau
 				//inserer se que fait le robot lorsquon detecte un poteau
 			if(detectionObstacle == Obstacle::WALL){			//2 == Obstacle::WALL
 				if (etat == MUR_GAUCHE)
