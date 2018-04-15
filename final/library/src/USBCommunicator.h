@@ -15,6 +15,7 @@
 #include "Sensor.h"
 #include "Motor.h"
 #include "Led.h"
+#include "memoire_24.h"
 
 class USBCommunicator {
 
@@ -31,6 +32,12 @@ public:
 	 * \brief start the communication protocol
 	 */
 	void communicate();
+    
+    /**
+	 * \brief transmit data
+	 * \param valueTransmitted the data to be sent
+	 */
+	void transmit(uint8_t data);
 
 private:
 
@@ -41,21 +48,17 @@ private:
 	 */
 	uint8_t receive();
 
-	/**
-	 * \brief transmit data
-	 * \param valueTransmitted the data to be sent
-	 */
-	void transmit(uint8_t data);
+	
 
 	/**
 	 * \brief answer a MSG_WHEEL_L message; catch the operand and change the 
-	 *        speed of the left motor accordingly
+	 *        direction and speed of the left motor accordingly
 	 */
 	void answerWheelL();
 
 	/**
 	 * \brief answer a MSG_WHEEL_R message; catch the operand and change the 
-	 *        speed of the right motor accordingly
+	 *        direction and speed of the right motor accordingly
 	 */
 	void answerWheelR();
 
@@ -159,17 +162,19 @@ private:
 
 	// # of characters in the semester code
 	static const uint8_t SEMESTERSIZE = 4;
-
+    
 	char robotName_[NAMESIZE+1];
 	char teamNumber_[NUMBERSIZE+1];
 	char sectionNumber_;
 	char semester_[SEMESTERSIZE+1];
 	uint8_t robotColor_;
 
+    Memoire24CXXX mem;
 	Button button_;
 	Sensor sensors_;
 	Motor motors_;
 	Led led_;
+    uint16_t adresseEEPROM_;
 
 };
 #endif

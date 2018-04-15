@@ -18,7 +18,8 @@ robotColor_(BASECOLOR_BLACK),
 button_(),
 sensors_(),
 motors_(),
-led_() {
+led_(),
+adresseEEPROM_(0) {
 
 	UBRR0H = 0;
 	UBRR0L = 0xCF;
@@ -51,79 +52,109 @@ uint8_t USBCommunicator::receive() {
 	} else {
 		return 0;
 	}
-
 }
 
 void USBCommunicator::transmit(uint8_t data) {
 
-	// Clear the TXC0 flag (by writing 1 to its bit location)
-	UCSR0A |= (1 << TXC0);
-	
-	// Add the data to the data buffer register
-	UDR0 = data;
-	
-	// Wait for the data to be sent
-	while(!(UCSR0A & (1 << TXC0))) {
+	// Wait for the buffer to be empty
+	while ( !(UCSR0A & (1 << UDRE0)) ) {
 	}
+
+	// Put the data into the data buffer register and send
+	UDR0 = data;
 
 }
 
 void USBCommunicator::answerWheelL() {
 
 	// catch the operand
-	uint8_t speedData = receive();
-
-	// store the sign; 0 if positive, 1 if negative
-	uint8_t sign = speedData >> 7;
-
-	// absolute value of the speed (in percentage)
-	uint8_t absSpeed;
-	if (sign == 0) {
-		absSpeed = speedData;
-	} else {
-		absSpeed = (~speedData)+1;
-	}
-
-	// speed sent to the pwm
-	uint8_t minPwmSpeed = 60;
-	uint8_t pwmSpeed = (( 255 - minPwmSpeed ) * absSpeed / 100) + minPwmSpeed;
-
-	if (sign == 0) {
-		motors_.setDirectionLM(Motor::FRWD);
-	} else {
-		motors_.setDirectionLM(Motor::BACK);
-	}
-	motors_.setSpeedLM(pwmSpeed);
-
+	uint8_t operand = receive();
+    int8_t* directionAndSpeed = (int8_t*) &operand;
+    
+    
+    switch(*directionAndSpeed) {
+        case -100:
+            motors_.setDirectionLM(Motor::BACK);
+            motors_.setSpeedLM(255);
+            break;
+        case -75:
+            motors_.setDirectionLM(Motor::BACK);
+            motors_.setSpeedLM(191);
+            break;
+        case -50:
+            motors_.setDirectionLM(Motor::BACK);
+            motors_.setSpeedLM(127);
+            break;
+        case -25:
+            motors_.setDirectionLM(Motor::BACK);
+            motors_.setSpeedLM(80);
+            break;
+        case 0:
+            motors_.setSpeedLM(0);
+            break;
+        case 25:
+            motors_.setDirectionLM(Motor::FRWD);
+            motors_.setSpeedLM(80);
+            break;
+        case 50:
+            motors_.setDirectionLM(Motor::FRWD);
+            motors_.setSpeedLM(127);
+            break;
+        case 75:
+            motors_.setDirectionLM(Motor::FRWD);
+            motors_.setSpeedLM(191);
+            break;
+        case 100:
+            motors_.setDirectionLM(Motor::FRWD);
+            motors_.setSpeedLM(255);
+            break;
+    }
 }
 
 void USBCommunicator::answerWheelR() {
 	
 	// catch the operand
-	uint8_t speedData = receive();
-
-	// store the sign; 0 if positive, 1 if negative
-	uint8_t sign = speedData >> 7;
-
-	// absolute value of the speed (in percentage)
-	uint8_t absSpeed;
-	if (sign == 0) {
-		absSpeed = speedData;
-	} else {
-		absSpeed = (~speedData)+1;
-	}
-
-	// speed sent to the pwm
-	uint8_t minPwmSpeed = 60;
-	uint8_t pwmSpeed = (( 255 - minPwmSpeed ) * absSpeed / 100) + minPwmSpeed;
-
-	if (sign == 0) {
-		motors_.setDirectionRM(Motor::FRWD);
-	} else {
-		motors_.setDirectionRM(Motor::BACK);
-	}
-	motors_.setSpeedRM(pwmSpeed);
-
+	uint8_t operand = receive();
+    int8_t* directionAndSpeed = (int8_t*) &operand;
+    
+    
+    switch(*directionAndSpeed) {
+        case -100:
+            motors_.setDirectionRM(Motor::BACK);
+            motors_.setSpeedRM(255);
+            break;
+        case -75:
+            motors_.setDirectionRM(Motor::BACK);
+            motors_.setSpeedRM(191);
+            break;
+        case -50:
+            motors_.setDirectionRM(Motor::BACK);
+            motors_.setSpeedRM(127);
+            break;
+        case -25:
+            motors_.setDirectionRM(Motor::BACK);
+            motors_.setSpeedRM(80);
+            break;
+        case 0:
+            motors_.setSpeedRM(0);
+            break;
+        case 25:
+            motors_.setDirectionRM(Motor::FRWD);
+            motors_.setSpeedRM(80);
+            break;
+        case 50:
+            motors_.setDirectionRM(Motor::FRWD);
+            motors_.setSpeedRM(127);
+            break;
+        case 75:
+            motors_.setDirectionRM(Motor::FRWD);
+            motors_.setSpeedRM(191);
+            break;
+        case 100:
+            motors_.setDirectionRM(Motor::FRWD);
+            motors_.setSpeedRM(255);
+            break;
+    }
 }
 
 void USBCommunicator::answerLed() {
@@ -211,8 +242,8 @@ void USBCommunicator::sendSensorR() {
 
 void USBCommunicator::updateInfo() {
 	sendSensorL();
-	sendSensorR();
-	sendButton();
+    sendSensorR();
+    sendButton();
 }
 
 void USBCommunicator::checkAndAnswer() {
