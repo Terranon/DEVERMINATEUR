@@ -51,6 +51,9 @@ const uint8_t DISTANCE_ARRET_ROTATION = 17;
 const uint8_t DISTANCE_MAXIMALE = 60;
 const uint8_t NB_BOUCLE_DECREMENTION = 20;
 
+const uint8_t LO_SPEED = 120;
+const uint8_t HI_SPEED = 220;
+
 enum State {
 	START,
 	MUR_GAUCHE,
@@ -128,10 +131,10 @@ void loop() {
 				// si on est trop proche
 				if (distanceDetecteurDroit < DISTANCE_OPTIMALE) {
 					// on s'eloigne
-					bot.setSpeed(90, 160);
+					bot.setSpeed(LO_SPEED, HI_SPEED);
 				} else {
 					// on se rapproche
-					bot.setSpeed(160, 90);
+					bot.setSpeed(HI_SPEED, LO_SPEED);
 				}
 
 				// Si on a fait une transition et qu'il n'y a pas eu 
@@ -160,10 +163,10 @@ void loop() {
 				// si on est trop proche
 				if (distanceDetecteurGauche < DISTANCE_OPTIMALE) {
 					// on s'eloigne
-					bot.setSpeed(160, 90);
+					bot.setSpeed(HI_SPEED, LO_SPEED);
 				} else {
 					// on se rapproche
-					bot.setSpeed(90, 160);
+					bot.setSpeed(LO_SPEED, HI_SPEED);
 				}
 
 				// Si on a fait une transition et qu'il n'y a pas eu 
@@ -191,7 +194,7 @@ void loop() {
 
 				// on tourne sur nous meme a gauche
 				bot.setDirection(Motor::BACK, Motor::FRWD);
-				bot.setSpeed(120, 120);
+				bot.setSpeed(LO_SPEED, LO_SPEED);
 
 				// on arrete de tourner lorsque la distance est bonne
 				if (distanceDetecteurGauche < DISTANCE_ARRET_ROTATION) {
@@ -209,7 +212,7 @@ void loop() {
 
 				// on tourne sur nous meme a droite
 				bot.setDirection(Motor::FRWD, Motor::BACK);
-				bot.setSpeed(120, 120);
+				bot.setSpeed(LO_SPEED, LO_SPEED);
 
 				// on arrete de tourner lorsque la distance est bonne
 				if (distanceDetecteurDroit < DISTANCE_ARRET_ROTATION) {
@@ -242,10 +245,10 @@ void loop() {
 				// si on est trop proche
 				if (distanceDetecteurGauche < distanceTransition) {
 					// on s'eloigne
-					bot.setSpeed(160, 90);
+					bot.setSpeed(HI_SPEED, LO_SPEED);
 				} else {
 					// on se rapproche
-					bot.setSpeed(90, 160);
+					bot.setSpeed(LO_SPEED, HI_SPEED);
 				}
 
 				// Enregistrer la transition
@@ -281,10 +284,10 @@ void loop() {
 				// si on est trop proche
 				if (distanceDetecteurDroit < distanceTransition) {
 					// on s'eloigne
-					bot.setSpeed(90, 160);
+					bot.setSpeed(LO_SPEED, HI_SPEED);
 				} else {
 					// on se rapproche
-					bot.setSpeed(160, 90);
+					bot.setSpeed(HI_SPEED, LO_SPEED);
 				}
 
 				// Enregistrer la transition
