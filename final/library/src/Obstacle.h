@@ -34,6 +34,11 @@ public:
 	 *         Obstacle::WALL if a wall is detected
 	 */
 	uint8_t analyze();
+
+	/**
+	 * \brief reset numberOfDistances_
+	 */
+	void clear();
 	
 	static const uint8_t NONE = 0;
 	static const uint8_t POLE = 1;

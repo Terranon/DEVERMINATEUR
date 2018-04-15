@@ -72,3 +72,7 @@ uint8_t Obstacle::analyze() {
 	}
 	
 }
+
+void Obstacle::clear() {
+	numberOfDistances_ = 0;
+}
