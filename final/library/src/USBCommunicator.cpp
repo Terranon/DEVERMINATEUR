@@ -68,92 +68,44 @@ void USBCommunicator::transmit(uint8_t data) {
 void USBCommunicator::answerWheelL() {
 
 	// catch the operand
-	uint8_t operand = receive();
-    int8_t* directionAndSpeed = (int8_t*) &operand;
+	int8_t percentage = receive();
+    uint8_t speed;
     
-    
-    switch(*directionAndSpeed) {
-        case -100:
-            motors_.setDirectionLM(Motor::BACK);
-            motors_.setSpeedLM(255);
-            break;
-        case -75:
-            motors_.setDirectionLM(Motor::BACK);
-            motors_.setSpeedLM(191);
-            break;
-        case -50:
-            motors_.setDirectionLM(Motor::BACK);
-            motors_.setSpeedLM(127);
-            break;
-        case -25:
-            motors_.setDirectionLM(Motor::BACK);
-            motors_.setSpeedLM(80);
-            break;
-        case 0:
-            motors_.setSpeedLM(0);
-            break;
-        case 25:
-            motors_.setDirectionLM(Motor::FRWD);
-            motors_.setSpeedLM(80);
-            break;
-        case 50:
-            motors_.setDirectionLM(Motor::FRWD);
-            motors_.setSpeedLM(127);
-            break;
-        case 75:
-            motors_.setDirectionLM(Motor::FRWD);
-            motors_.setSpeedLM(191);
-            break;
-        case 100:
-            motors_.setDirectionLM(Motor::FRWD);
-            motors_.setSpeedLM(255);
-            break;
+    if(percentage < 0){
+        motors_.setDirectionLM(Motor::BACK);
+        speed = (((-1) * percentage * 256)/ 100) - 1;
+        motors_.setSpeedLM(speed);
+    } 
+    else if(percentage > 0) {
+        motors_.setDirectionLM(Motor::FRWD);
+        speed = ((percentage * 256)/ 100) - 1;
+        motors_.setSpeedLM(speed);
+    }
+    else {
+        vitess = 0;
+        motors_.setSpeedLM(speed);
     }
 }
 
 void USBCommunicator::answerWheelR() {
 	
 	// catch the operand
-	uint8_t operand = receive();
-    int8_t* directionAndSpeed = (int8_t*) &operand;
+	int8_t percentage = receive();
+    uint8_t speed;
     
-    
-    switch(*directionAndSpeed) {
-        case -100:
-            motors_.setDirectionRM(Motor::BACK);
-            motors_.setSpeedRM(255);
-            break;
-        case -75:
-            motors_.setDirectionRM(Motor::BACK);
-            motors_.setSpeedRM(191);
-            break;
-        case -50:
-            motors_.setDirectionRM(Motor::BACK);
-            motors_.setSpeedRM(127);
-            break;
-        case -25:
-            motors_.setDirectionRM(Motor::BACK);
-            motors_.setSpeedRM(80);
-            break;
-        case 0:
-            motors_.setSpeedRM(0);
-            break;
-        case 25:
-            motors_.setDirectionRM(Motor::FRWD);
-            motors_.setSpeedRM(80);
-            break;
-        case 50:
-            motors_.setDirectionRM(Motor::FRWD);
-            motors_.setSpeedRM(127);
-            break;
-        case 75:
-            motors_.setDirectionRM(Motor::FRWD);
-            motors_.setSpeedRM(191);
-            break;
-        case 100:
-            motors_.setDirectionRM(Motor::FRWD);
-            motors_.setSpeedRM(255);
-            break;
+    if(percentage < 0){
+        motors_.setDirectionRM(Motor::BACK);
+        speed = (((-1) * percentage * 256)/ 100) - 1;
+        motors_.setSpeedRM(speed);
+    } 
+    else if(percentage > 0) {
+        motors_.setDirectionRM(Motor::FRWD);
+        speed = ((percentage * 256)/ 100) - 1;
+        motors_.setSpeedRM(speed);
+    }
+    else {
+        vitess = 0;
+        motors_.setSpeedRM(speed);
     }
 }
 
