@@ -3,14 +3,14 @@
  * Name: Obstacle.cpp
  * Description: this class manages a log of data recieved from the sensor
  * 
- * Version: 1.1
+ * Version: 1.0
 \******************************************************************************/
 
 #include "Obstacle.h"
 
 Obstacle::Obstacle() {}
 
-void Obstacle::push(uint16_t distance) {
+void Obstacle::push(uint8_t distance) {
 	
 	distances_.push(distance);
 	
@@ -33,13 +33,13 @@ uint8_t Obstacle::analyze() {
 	} else {
 		
 		// Check if there is an obstacle in sight right now
-		if (distances_.get(0) <= MAX_DISTANCE) {
+		if (distances_.get(0) != 61) {
 			
 			// Check how long the current obstacle is
 			for (uint8_t i = 1; i < WALL_MIN_LENGTH; i++) {
 				
 				// Check if the beginning of the pole can be found
-				if (distances_.get(i) > MAX_DISTANCE) {
+				if (distances_.get(i) == 61) {
 					
 					// The beginning of the obstacle was found, not long enough
 					// to be a wall
@@ -57,7 +57,7 @@ uint8_t Obstacle::analyze() {
 		} else {
 			
 			// Check if there was something in sight on the previous check
-			if (distances_.get(1) <= MAX_DISTANCE) {
+			if (distances_.get(1) != 61) {
 				
 				// End of obstacle detected, this is a pole
 				return POLE;

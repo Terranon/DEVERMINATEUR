@@ -3,7 +3,7 @@
  * Name: Obstacle.h
  * Description: this class manages a log of data recieved from the sensor
  * 
- * Version: 1.1
+ * Version: 1.0
 \******************************************************************************/
 
 #ifndef OBSTACLE_H
@@ -25,7 +25,7 @@ public:
 	 * \brief Add a distance to the data log
 	 * \param distance the distance to push
 	 */
-	void push(uint16_t distance);
+	void push(uint8_t distance);
 	
 	/**
 	 * \brief Analyze the accumulated data to see if an obstacle is detected
@@ -56,8 +56,6 @@ private:
 	// Number of consecutive readings before it is concluded that the obstacle
 	// is a wall and not a pole
 	static const uint8_t WALL_MIN_LENGTH = 30;
-
-	static const uint16_t MAX_DISTANCE = 600;
 	
 };
 
