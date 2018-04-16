@@ -17,7 +17,7 @@ semester_("18-1"),
 robotColor_(BASECOLOR_BLACK),
 button_(),
 sensors_(),
-motors_(),
+motors_(Motor::FRWD,0),
 led_(),
 adresseEEPROM_(0) {
 
@@ -84,7 +84,7 @@ void USBCommunicator::answerWheelL() {
     else {
         speed = 0;
         motors_.setSpeedLM(speed);
-    }
+        }
 }
 
 void USBCommunicator::answerWheelR() {

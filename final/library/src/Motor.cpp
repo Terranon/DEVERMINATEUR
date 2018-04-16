@@ -62,18 +62,22 @@ void Motor::setDirection(uint8_t directionLM, uint8_t directionRM) {
 
 void Motor::setDirectionLM(uint8_t direction) {
 	directionLM_ = direction;
+    driveMotors();
 }
 
 void Motor::setDirectionRM(uint8_t direction) {
 	directionRM_ = direction;
+    driveMotors();
 }
 
 void Motor::setSpeedLM(uint8_t speed) {
 	speedLM_ = speed;
+    driveMotors();
 }
 
 void Motor::setSpeedRM(uint8_t speed) {
 	speedRM_ = speed;
+    driveMotors();
 }
 
 //Getters
