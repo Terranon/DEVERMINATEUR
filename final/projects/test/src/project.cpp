@@ -49,10 +49,10 @@ Timer timer;
 const uint8_t DISTANCE_OPTIMALE = 15;
 const uint8_t DISTANCE_ARRET_ROTATION = 17;
 const uint8_t DISTANCE_MAXIMALE = 60;
-const uint8_t NB_BOUCLE_DECREMENTION = 20;
+const uint8_t NB_BOUCLE_DECREMENTION = 30;
 
-const uint8_t LO_SPEED = 120;
-const uint8_t HI_SPEED = 220;
+const uint8_t LO_SPEED = 90;
+const uint8_t HI_SPEED = 150;
 
 enum State {
 	START,
@@ -387,7 +387,7 @@ void loop() {
 		}
 
 		// Delai sur la boucle principale
-		_delay_ms(30);
+		_delay_ms(50);
 
 	}
 
