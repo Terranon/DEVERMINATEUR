@@ -73,18 +73,30 @@ void USBCommunicator::answerWheelL() {
     
     if(percentage < 0){
         motors_.setDirectionLM(Motor::BACK);
-        speed = (((-1) * percentage * 256)/ 100) - 1;
-        motors_.setSpeedLM(speed);
-    } 
-    else if(percentage > 0) {
+        speed = ((-1) * percentage);
+    } else if(percentage > 0) {
         motors_.setDirectionLM(Motor::FRWD);
-        speed = ((percentage * 256)/ 100) - 1;
-        motors_.setSpeedLM(speed);
-    }
-    else {
+        speed = percentage;
+    } else {
         speed = 0;
-        motors_.setSpeedLM(speed);
-        }
+    }
+    switch(speed) {
+        case 0:
+            motors_.setSpeedLM(0);
+            break;
+        case 25:
+            motors_.setSpeedLM(80);
+            break;
+        case 50:
+            motors_.setSpeedLM(127);
+            break;
+        case 75:
+            motors_.setSpeedLM(191);
+            break;
+        case 100:
+            motors_.setSpeedLM(255);
+            break;
+    }
 }
 
 void USBCommunicator::answerWheelR() {
@@ -95,17 +107,29 @@ void USBCommunicator::answerWheelR() {
     
     if(percentage < 0){
         motors_.setDirectionRM(Motor::BACK);
-        speed = (((-1) * percentage * 256)/ 100) - 1;
-        motors_.setSpeedRM(speed);
-    } 
-    else if(percentage > 0) {
+        speed = ((-1) * percentage);
+    } else if(percentage > 0) {
         motors_.setDirectionRM(Motor::FRWD);
-        speed = ((percentage * 256)/ 100) - 1;
-        motors_.setSpeedRM(speed);
-    }
-    else {
+        speed = percentage;
+    } else {
         speed = 0;
-        motors_.setSpeedRM(speed);
+    }
+    switch(speed) {
+        case 0:
+            motors_.setSpeedRM(0);
+            break;
+        case 25:
+            motors_.setSpeedRM(80);
+            break;
+        case 50:
+            motors_.setSpeedRM(127);
+            break;
+        case 75:
+            motors_.setSpeedRM(191);
+            break;
+        case 100:
+            motors_.setSpeedRM(255);
+            break;
     }
 }
 
@@ -193,9 +217,9 @@ void USBCommunicator::sendSensorR() {
 }
 
 void USBCommunicator::updateInfo() {
-    sendButton();
 	sendSensorL();
     sendSensorR();
+    sendButton();
 }
 
 void USBCommunicator::checkAndAnswer() {

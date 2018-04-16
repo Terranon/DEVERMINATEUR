@@ -32,14 +32,14 @@ public:
 	 * \brief start the communication protocol
 	 */
 	void communicate();
+
+private:
     
     /**
 	 * \brief transmit data
 	 * \param valueTransmitted the data to be sent
 	 */
 	void transmit(uint8_t data);
-
-private:
 
 	/**
 	 * \brief return any unread data in the receive buffer, if any
