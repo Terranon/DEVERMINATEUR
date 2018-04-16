@@ -193,9 +193,9 @@ void USBCommunicator::sendSensorR() {
 }
 
 void USBCommunicator::updateInfo() {
+    sendButton();
 	sendSensorL();
     sendSensorR();
-    sendButton();
 }
 
 void USBCommunicator::checkAndAnswer() {

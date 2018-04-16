@@ -169,13 +169,10 @@ private:
 	char semester_[SEMESTERSIZE+1];
 	uint8_t robotColor_;
 
-    Memoire24CXXX mem;
 	Button button_;
 	Sensor sensors_;
 	Motor motors_;
 	Led led_;
-    uint16_t adresseEEPROM_;
-
 };
 #endif
 
