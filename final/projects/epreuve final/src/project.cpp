@@ -42,16 +42,12 @@ const uint8_t PATH = 0;
 /******************************************************************************\
 * Constants for sensors
 \******************************************************************************/
-const uint8_t DISTANCE_OPTIMALE = 15;
-const uint8_t DISTANCE_ARRET_ROTATION = 17;
-const uint8_t DISTANCE_MAXIMALE = 60;
-const uint8_t NB_BOUCLE_DECREMENTION = 30;
+
 
 /******************************************************************************\
 * Constants for speed regulation
 \******************************************************************************/
-const uint8_t LO_SPEED = 90;
-const uint8_t HI_SPEED = 150;
+
 
 /******************************************************************************\
 * supporting functions
