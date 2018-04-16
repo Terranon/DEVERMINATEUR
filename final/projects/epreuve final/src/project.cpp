@@ -4,12 +4,20 @@
  * Name:        project.cpp
  * Description: 
  * 
- * Pinout :                                                     
- *                                                                     
- * PORTA  1 3 5 7    PORTB  1 3 5 7    PORTC  0 1 2 3 4 5 6 7    PORTD  1 3 5 7        
- *        0 2 4 6           0 2 4 6                                     0 2 4 6       
- *                                                                      
-
+ * Pinout :
+ *         Sensors ( L R )       RightMotor ( E   D )
+ *                   | |                      |   |
+ *PORTA  1 2 3 4 5 6 7 8       PORTB  1 2 3 4 5 6 7 8         VCC---( power )
+ *                                          |   |                   (  for  )
+ *                              LeftMotor ( E   D )           GND---(Sensors)
+ * 
+ * 
+ *      LED ( - + )                     Piezo ( - + )
+ *            | |                               | |
+ * PORTC  1 2 3 4 5 6 7 8    PORTD  1 2 3 4 5 6 7 8
+ *                                          | |
+ *                         Jumper for Timer \_/
+ * 
  * Version: 1.0
 \******************************************************************************/
 
