@@ -10,8 +10,8 @@ long distance (float volt) {
     long rv = (26.977 / volt) - 2.4973;
     if (rv < 0) {
         rv = 0;
-    } else if (rv > 60) {
-        rv = 61;
+    } else if (rv > 80) {
+        rv = 80;
     }
     return rv;
 }

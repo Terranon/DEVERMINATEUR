@@ -85,7 +85,7 @@ void USBCommunicator::answerWheelL() {
             motors_.setSpeedLM(0);
             break;
         case 25:
-            motors_.setSpeedLM(80);
+            motors_.setSpeedLM(100);
             break;
         case 50:
             motors_.setSpeedLM(127);
@@ -119,7 +119,7 @@ void USBCommunicator::answerWheelR() {
             motors_.setSpeedRM(0);
             break;
         case 25:
-            motors_.setSpeedRM(80);
+            motors_.setSpeedRM(100);
             break;
         case 50:
             motors_.setSpeedRM(127);

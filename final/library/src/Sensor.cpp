@@ -10,13 +10,7 @@
 #include "Sensor.h"
 
 Sensor::Sensor(){
-	/*
-	DDRA &= ~(1 << PIN_L);
-	DDRA &= ~(1 << PIN_R);
-	*/
 	DDRA = 0x00;
-	PIN_R = 0;
-	PIN_L = 2;
 }
  
 uint8_t Sensor::getDistanceL() {
