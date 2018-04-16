@@ -17,7 +17,7 @@
 \******************************************************************************/
 
 #include "Motor.h"
-#include "Sensor.h"
+#include "SensorMM.h"
 #include "Button.h"
 #include "Obstacle.h"
 #include "Led.h"
@@ -32,7 +32,7 @@ Motor bot;
 Button bouton;
 
 // on initialise le sensor gauche a PA0 et le sensor droit a PA2
-Sensor sensor;
+SensorMM sensor;
 
 // on ititialise la led au portC
 Led led;
@@ -46,10 +46,10 @@ Piezo piezo;
 // On utilise le timer pour gerer le timing de la musique
 Timer timer;
 
-const uint8_t DISTANCE_OPTIMALE = 15;
-const uint8_t DISTANCE_ARRET_ROTATION = 17;
-const uint8_t DISTANCE_MAXIMALE = 60;
-const uint8_t NB_BOUCLE_DECREMENTION = 30;
+const uint8_t DISTANCE_OPTIMALE = 150;
+const uint8_t DISTANCE_ARRET_ROTATION = 170;
+const uint8_t DISTANCE_MAXIMALE = 600;
+const uint8_t NB_BOUCLE_DECREMENTION = 5;
 
 const uint8_t LO_SPEED = 90;
 const uint8_t HI_SPEED = 150;
@@ -86,7 +86,7 @@ void loop() {
 	SoundState musique = OFF;
 
 	// distance que le robot doit maintenir durant la transition
-	uint8_t distanceTransition = 0;
+	uint16_t distanceTransition = 0;
 
 	// compteur qui garde en memoire le nombre d'executions de la boucle depuis
 	// la derniere decrementation de distance
@@ -96,13 +96,13 @@ void loop() {
 	bool postTransition = false;
 
 	// Boucle principale
-	while(1){
+	while(1) {
 
 		// distance detectee a droite
-		uint8_t distanceDetecteurDroit = sensor.getDistanceR();
+		uint16_t distanceDetecteurDroit = sensor.getDistanceR();
 
 		// distance detectee a gauche
-		uint8_t distanceDetecteurGauche = sensor.getDistanceL();
+		uint16_t distanceDetecteurGauche = sensor.getDistanceL();
 			
 		// SWITCH CASE
 
@@ -232,20 +232,22 @@ void loop() {
 				// on avance
 				bot.setDirection(Motor::FRWD, Motor::FRWD);
 
-				// on incremente le compteur
-				compteurReductionDistance++;
-
-				// Si le compteur est assez grand, on decremente la distance
-				if ( compteurReductionDistance >= NB_BOUCLE_DECREMENTION &&
-					distanceTransition >= DISTANCE_OPTIMALE ) {
-					compteurReductionDistance = 0;
-					distanceTransition--;
-				}
-
 				// si on est trop proche
 				if (distanceDetecteurGauche < distanceTransition) {
+
 					// on s'eloigne
 					bot.setSpeed(HI_SPEED, LO_SPEED);
+
+					// on incremente le compteur
+					compteurReductionDistance++;
+
+					// Si le compteur est assez grand, on decremente la distance
+					if ( compteurReductionDistance >= NB_BOUCLE_DECREMENTION &&
+						distanceTransition >= DISTANCE_OPTIMALE ) {
+						compteurReductionDistance = 0;
+						distanceTransition--;
+					}
+
 				} else {
 					// on se rapproche
 					bot.setSpeed(LO_SPEED, HI_SPEED);
@@ -271,18 +273,20 @@ void loop() {
 				// on avance
 				bot.setDirection(Motor::FRWD, Motor::FRWD);
 
-				// on incremente le compteur
-				compteurReductionDistance++;
-
-				// Si le compteur est assez grand, on decremente la distance
-				if ( compteurReductionDistance >= NB_BOUCLE_DECREMENTION &&
-					distanceTransition >= DISTANCE_OPTIMALE ) {
-					compteurReductionDistance = 0;
-					distanceTransition--;
-				}
 
 				// si on est trop proche
 				if (distanceDetecteurDroit < distanceTransition) {
+
+					// on incremente le compteur
+					compteurReductionDistance++;
+
+					// Si le compteur est assez grand, on decremente la distance
+					if ( compteurReductionDistance >= NB_BOUCLE_DECREMENTION &&
+						distanceTransition >= DISTANCE_OPTIMALE ) {
+						compteurReductionDistance = 0;
+						distanceTransition--;
+					}
+
 					// on s'eloigne
 					bot.setSpeed(LO_SPEED, HI_SPEED);
 				} else {

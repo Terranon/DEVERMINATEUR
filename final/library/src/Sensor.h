@@ -80,10 +80,8 @@ private:
 
 	Adc adc_;
 	
-	//static const uint8_t PIN_L = 0;
-	//static const uint8_t PIN_R = 2;
-	uint8_t PIN_R;
-	uint8_t PIN_L;
+	static const uint8_t PIN_L = 6;
+	static const uint8_t PIN_R = 7;
 
 };
 
