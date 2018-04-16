@@ -5,7 +5,7 @@
  * Description: 
  * 
  * Pinout :
- *         Sensors ( L R )       RightMotor ( E   D )
+ *   Sensor inputs ( L R )       RightMotor ( E   D )
  *                   | |                      |   |
  *PORTA  1 2 3 4 5 6 7 8       PORTB  1 2 3 4 5 6 7 8         VCC---( power )
  *                                          |   |                   (  for  )
