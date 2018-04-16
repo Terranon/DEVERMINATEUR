@@ -82,7 +82,7 @@ void USBCommunicator::answerWheelL() {
         motors_.setSpeedLM(speed);
     }
     else {
-        vitess = 0;
+        speed = 0;
         motors_.setSpeedLM(speed);
     }
 }
@@ -104,7 +104,7 @@ void USBCommunicator::answerWheelR() {
         motors_.setSpeedRM(speed);
     }
     else {
-        vitess = 0;
+        speed = 0;
         motors_.setSpeedRM(speed);
     }
 }
