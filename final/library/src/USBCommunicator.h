@@ -11,6 +11,7 @@
 #define USBCommunicator_H
 
 #include <util/delay.h>
+
 #include "Button.h"
 #include "Sensor.h"
 #include "Motor.h"
@@ -168,8 +169,6 @@ private:
 	char sectionNumber_;
 	char semester_[SEMESTERSIZE+1];
 	uint8_t robotColor_;
-
-	uint8_t adresseEEPROM_;
 
 	Button button_;
 	Sensor sensors_;
