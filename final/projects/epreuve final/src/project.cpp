@@ -6,9 +6,6 @@
  *              (Diagnostic ou Path) en utilisant la memoire EEPROM.
  * Pinout :
  * 
- * VCC(PORTB & C)---( power for )
- * GND--------------(  sensors  )
- * 
  *   Sensor inputs ( L R )       RightMotor ( E   D )
  *                   | |                      |   |
  *PORTA  1 2 3 4 5 6 7 8       PORTB  1 2 3 4 5 6 7 8
