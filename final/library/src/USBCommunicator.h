@@ -169,6 +169,8 @@ private:
 	char semester_[SEMESTERSIZE+1];
 	uint8_t robotColor_;
 
+	uint8_t adresseEEPROM_;
+
 	Button button_;
 	Sensor sensors_;
 	Motor motors_;

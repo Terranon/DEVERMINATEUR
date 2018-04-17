@@ -15,11 +15,11 @@ teamNumber_("93-97    "),
 sectionNumber_('5'),
 semester_("18-1"),
 robotColor_(BASECOLOR_BLACK),
+adresseEEPROM_(0),
 button_(),
 sensors_(),
 motors_(Motor::FRWD,0),
-led_(),
-adresseEEPROM_(0) {
+led_() {
 
 	UBRR0H = 0;
 	UBRR0L = 0xCF;
