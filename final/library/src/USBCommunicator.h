@@ -32,14 +32,14 @@ public:
 	 * \brief start the communication protocol
 	 */
 	void communicate();
+
+private:
     
     /**
 	 * \brief transmit data
 	 * \param valueTransmitted the data to be sent
 	 */
 	void transmit(uint8_t data);
-
-private:
 
 	/**
 	 * \brief return any unread data in the receive buffer, if any
@@ -169,13 +169,10 @@ private:
 	char semester_[SEMESTERSIZE+1];
 	uint8_t robotColor_;
 
-    Memoire24CXXX mem;
 	Button button_;
 	Sensor sensors_;
 	Motor motors_;
 	Led led_;
-    uint16_t adresseEEPROM_;
-
 };
 #endif
 
