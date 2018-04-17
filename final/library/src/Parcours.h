@@ -29,15 +29,36 @@
 #include "Piezo.h"
 #include "Timer.h"
 
+/*
+		case XXXX:
+			if (premiereFois_) {
+
+
+
+				premiereFois_ = false;
+			}
+
+			
+
+			break;
+*/
+
 enum State {
 	START,
-	MUR,
+	MUR_INIT,
+	MUR_IDEAL,
+	MUR_AJUSTE,
+	MUR_FINDHOME,
+	MUR_REAJUSTE,
+	MUR_PERDU,
+	MUR_VIRAGESERRE,
 	ROTATION,
+	TRANSITION_INIT,
 	TRANSITION_TOURNE,
 	TRANSITION_CORRECT,
 	TRANSITION_COLLECT,
 	TRANSITION_FONCE,
-	TRANSITION_REDRESSE,
+	TRANSITION_REDRESSE
 };
 
 enum StateBouton {
@@ -95,22 +116,31 @@ private:
 	bool getAlarmMusique();
 
 	const uint8_t DISTANCE_OPTIMALE = 15;
-	const uint8_t DISTANCE_FIN_TRANSITION = 20;
+	const uint8_t DISTANCE_FIN_TRANSITION = 19;
 	const uint8_t DISTANCE_ARRET_ROTATION = 17;
 	const uint8_t DISTANCE_MAXIMALE = 60;
+
+	const uint8_t LONGUEUR_FINDHOME = 2;
+
+	const uint8_t LARGEUR_MIN_MUR = 20;
 
 	const uint8_t DELTA_D_OPTIMAL = 1;
 	const uint8_t NB_LOOP_COLLECT = 20;
 
-	const uint8_t LO_SPEED = 110;
-	const uint8_t HI_SPEED = 150;
+	const uint8_t LO_SPEED = 120;
+	const uint8_t HI_SPEED = 160;
+
+	const uint8_t ROTATION_SPEED = 120;
 
 	const uint8_t DELTA_T = 50;
+
+	uint8_t longeurAjustement_;
 
 	uint8_t detectionObstacle_;
 
 	bool postTransition_;
 
+	uint8_t compteurRotationTransition_;
 	uint8_t ancienneDistance_;
 	uint8_t deltaD_;
 	
@@ -119,7 +149,10 @@ private:
 
 	uint16_t loopCounter_;
 
+	bool suitUnMur_;
+
 	Side side_;
+	bool tropLoin_;
 
 	State etat_;
 	bool premiereFois_;

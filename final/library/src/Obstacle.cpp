@@ -8,7 +8,8 @@
 
 #include "Obstacle.h"
 
-Obstacle::Obstacle() {}
+Obstacle::Obstacle(uint8_t length):
+wallMinLength_(length) {}
 
 void Obstacle::push(uint8_t distance) {
 	
@@ -16,7 +17,7 @@ void Obstacle::push(uint8_t distance) {
 	
 	// Keep track of how many distances have been pushed if it is not enough to
 	// to draw conlcusions
-	if (numberOfDistances_ < WALL_MIN_LENGTH) {
+	if (numberOfDistances_ < wallMinLength_) {
 		numberOfDistances_++;
 	}
 	
@@ -25,7 +26,7 @@ void Obstacle::push(uint8_t distance) {
 uint8_t Obstacle::analyze() {
 	
 	// Check if enough data has been collected
-	if (numberOfDistances_ < WALL_MIN_LENGTH) {
+	if (numberOfDistances_ < wallMinLength_) {
 		
 		// Not enough data
 		return NONE;
@@ -36,7 +37,7 @@ uint8_t Obstacle::analyze() {
 		if (distances_.get(0) <= MAX_DISTANCE) {
 			
 			// Check how long the current obstacle is
-			for (uint8_t i = 1; i < WALL_MIN_LENGTH; i++) {
+			for (uint8_t i = 1; i < wallMinLength_; i++) {
 				
 				// Check if the beginning of the pole can be found
 				if (distances_.get(i) > MAX_DISTANCE) {
@@ -64,7 +65,7 @@ uint8_t Obstacle::analyze() {
 				
 			} else {
 				
-				// There where no obstacle at all
+				// There was no obstacle at all
 				return NONE;
 				
 			}

@@ -19,11 +19,11 @@
 #include "Parcours.h"
 
 Parcours::Parcours():
-postTransition_(false), 
+postTransition_(false),
 etat_(START),
 etatBouton_(RELEASED),
-etatMusique_(OFF) {
-
+etatMusique_(OFF),
+obstacle_(LARGEUR_MIN_MUR) {
 }
 
 void Parcours::start() {
@@ -39,13 +39,46 @@ void Parcours::start() {
 
 		runMachineMusique();
 
+		runMachineBouton();
+
 		//SCRUTATION
 
-		// SECTION DETECTION BOUTON
+		// DETECTION D'OBSTACLE
 
-		// si le bouton est appuye
-		if ( bouton_.isPressed() ) {
-			changeState(State::ROTATION);
+		// Si on suit un mur
+		if (suitUnMur_) {
+
+			// Si on a fait une transition et qu'il n'y a pas eu 
+			// d'interruption dans l'ancien mur, on attends de trouver un 
+			// trou
+			if (postTransition_) {
+
+				if (getDistObstacle() > DISTANCE_MAXIMALE) {
+					postTransition_ = false;
+				}
+
+			} else {
+
+				//On push la distance observe par le capteur oppose
+				obstacle_.push(getDistObstacle());
+
+			}
+
+			// verifier si on doit agir par rapport aux obstacles de l'autre 
+			// cote
+			detectionObstacle_ = obstacle_.analyze();
+
+			// il s'agit d'un poteau
+			if (detectionObstacle_ == Obstacle::POLE) {
+				// faire jouer le piezo
+				changeStateMusique(StateMusique::TONE1);
+			}
+
+			// il s'agit d'un mur
+			if (detectionObstacle_ == Obstacle::WALL) {
+				changeSide();
+				changeState(State::TRANSITION_INIT);
+			}
 		}
 
 		// Augmente le compteur de boucle
@@ -136,14 +169,16 @@ void Parcours::runMachine() {
 				side_ = G;
 			}
 
-			changeState(State::MUR);
+			changeState(State::MUR_INIT);
 
 			break;
 
-		// suit un mur
-		case MUR:
-
+		case MUR_INIT:
 			if (premiereFois_) {
+
+				obstacle_.clear();
+
+				suitUnMur_ = true;
 
 				switch (side_) {
 					case D:
@@ -159,48 +194,162 @@ void Parcours::runMachine() {
 				// on avance
 				bot_.setDirection(Motor::FRWD, Motor::FRWD);
 
-				// on redemarre la detection d'obstacle
-				obstacle_.clear();
+				premiereFois_ = false;
+			}
+
+			changeState(State::MUR_IDEAL);
+
+			break;
+
+		case MUR_IDEAL:
+			if (premiereFois_) {
+
+				// tout droit
+				setSpeedCoteMur(HI_SPEED);
+				setSpeedCoteOppose(HI_SPEED);
+
+				premiereFois_ = false;
+			}
+			
+			// si on sort de la distance optimale
+			if (getDistMur() != DISTANCE_OPTIMALE) {
+
+				// si on est trop proche
+				if (getDistMur() < DISTANCE_OPTIMALE) {
+					tropLoin_ = false;
+				} else {
+					tropLoin_ = true;
+				}
+
+				longeurAjustement_ = 0;
+				changeState(State::MUR_AJUSTE);
+
+			}
+
+			break;
+
+		case MUR_AJUSTE:
+			if (premiereFois_) {
+				if (tropLoin_) {
+					setSpeedCoteMur(0);
+					setSpeedCoteOppose(HI_SPEED);
+				} else {
+					setSpeedCoteMur(HI_SPEED);
+					setSpeedCoteOppose(0);
+				}
+
+				setAlarm(longeurAjustement_);
 
 				premiereFois_ = false;
 			}
 
-			// si on est trop proche
-			if (getDistMur() < DISTANCE_OPTIMALE) {
-				// on s'eloigne
+			// Si on trouve la distance optimale, on se replace droit
+			if (getDistMur() == DISTANCE_OPTIMALE) {
+				changeState(State::MUR_REAJUSTE);
+			}
+
+			// Essaie de retrouver la distance optimale apres l'ajustement
+			if (getAlarm()) {
+				changeState(State::MUR_FINDHOME);
+			}
+
+			break;
+
+		// avance tout droit en esperant rencontrer la distance ideale
+		case MUR_FINDHOME:
+			if (premiereFois_) {
+
+				// tout droit
 				setSpeedCoteMur(HI_SPEED);
-				setSpeedCoteOppose(LO_SPEED);
-			} else {
-				// on se rapproche
-				setSpeedCoteMur(LO_SPEED);
 				setSpeedCoteOppose(HI_SPEED);
+
+				setAlarm(longeurAjustement_*4+LONGUEUR_FINDHOME);
+
+				premiereFois_ = false;
 			}
 
-			// Si on a fait une transition et qu'il n'y a pas eu 
-			// d'interruption dans l'ancien mur, on attends de trouver un 
-			// trou
-			if (postTransition_) {
-				if (getDistObstacle() > DISTANCE_MAXIMALE) {
-					postTransition_ = false;
+			// Si on ne voit plus le mur, il faut le retrouver
+			if (getDistMur() > DISTANCE_MAXIMALE) {
+				changeState(State::MUR_PERDU);
+			}
+
+			// Si on est vraiment trop pres du mur, on fait un virage serre
+			if (getDistMur() < DISTANCE_OPTIMALE-3) {
+				changeState(State::MUR_VIRAGESERRE);
+			}
+
+			// Si on trouve la disance optimale, on se replace droit
+			if (getDistMur() == DISTANCE_OPTIMALE) {
+				changeState(State::MUR_REAJUSTE);
+			}
+
+			// si on ne la retrouve pas, on refait un plus gros ajusement
+			if (getAlarm()) {
+				longeurAjustement_++;
+				changeState(State::MUR_AJUSTE);
+			}
+
+			break;
+
+		// se replace droit apres l'ajustement
+		case MUR_REAJUSTE:
+			if (premiereFois_) {
+
+				if (tropLoin_) {
+					setSpeedCoteMur(HI_SPEED);
+					setSpeedCoteOppose(0);
+				} else {
+					setSpeedCoteMur(0);
+					setSpeedCoteOppose(HI_SPEED);
 				}
+
+				setAlarm( (longeurAjustement_ * (longeurAjustement_+1))/4 );
+
+				premiereFois_ = false;
+			}
+
+			if (getAlarm()) {
+				changeState(State::MUR_IDEAL);
+			}
+
+			break;
+
+		// On retrouve un mur perdu
+		case MUR_PERDU:
+			if (premiereFois_) {
+
+				// on cherche le mur
+				setSpeedCoteOppose(HI_SPEED);
+
+				premiereFois_ = false;
+			}
+
+			// Vitesse 1/3 de HI_SPEED
+			if (loopCounter_ % 3 == 0) {
+				setSpeedCoteMur(HI_SPEED);
 			} else {
-				//On push la distance observe par le capteur oppose
-				obstacle_.push(getDistObstacle());
+				setSpeedCoteMur(0);
 			}
 
-			// verifier si on doit agir par rapport au obstacles de l'autre cote
-			detectionObstacle_ = obstacle_.analyze();
-
-			// il s'agit d'un poteau
-			if (detectionObstacle_ == Obstacle::POLE) {
-				// faire jouer le piezo
-				changeStateMusique(StateMusique::TONE1);
+			// si on a retrouve le mur
+			if (getDistMur() <= DISTANCE_MAXIMALE) {
+				changeState(State::MUR_IDEAL);
 			}
 
-			// il s'agit d'un mur
-			if (detectionObstacle_ == Obstacle::WALL) {
-				changeSide();
-				changeState(State::TRANSITION_TOURNE);
+			break;
+
+		case MUR_VIRAGESERRE:
+			if (premiereFois_) {
+
+				// on vire
+				setSpeedCoteMur(HI_SPEED);
+				setSpeedCoteOppose(0);
+
+				premiereFois_ = false;
+			}
+
+			if (getDistMur() >= DISTANCE_OPTIMALE) {
+				changeState(State::MUR_IDEAL);
 			}
 
 			break;
@@ -210,22 +359,26 @@ void Parcours::runMachine() {
 
 			if (premiereFois_) {
 
+				suitUnMur_ = false;
+
 				// on eteint la led
 				led_.setColor(Led::OFF);
+
+				// on change de cote
+				changeSide();
 
 				// on tourne sur nous meme du cote oppose
 				switch (side_) {
 					case D:
-						bot_.setDirection(Motor::BACK, Motor::FRWD);
-						side_ = G;
+						bot_.setDirection(Motor::FRWD, Motor::BACK);
 						break;
 					case G:
-						bot_.setDirection(Motor::FRWD, Motor::BACK);
-						side_ = D;
+						bot_.setDirection(Motor::BACK, Motor::FRWD);
 						break;
 				}
 
-				bot_.setSpeed(LO_SPEED, LO_SPEED);
+				// on tourne
+				bot_.setSpeed(ROTATION_SPEED, ROTATION_SPEED);
 
 				premiereFois_ = false;
 				
@@ -233,29 +386,54 @@ void Parcours::runMachine() {
 
 			// on arrete de tourner lorsque la distance est bonne
 			if (getDistMur() < DISTANCE_ARRET_ROTATION) {
-				changeState(State::MUR);
+				changeState(State::MUR_INIT);
 			}
 
 			break;
 
 		// TRANSITION
 
-		// effectue une transition vers la gauche vers un mur
-		case TRANSITION_TOURNE:
-		
+		// effectue une transition vers un mur
+		case TRANSITION_INIT:
 			if (premiereFois_) {
+
+				suitUnMur_ = false;
+				postTransition_ = true;
+
+				compteurRotationTransition_ = 0;
 
 				// on eteint la led
 				led_.setColor(Led::OFF);
 
 				// on avance
 				bot_.setDirection(Motor::FRWD, Motor::FRWD);
+				
+				premiereFois_ = false;
+			}
+
+			changeState(State::TRANSITION_TOURNE);
+
+			break;
+
+		// tourne jusqu'a ce que le mur ne soit plus en vue
+		case TRANSITION_TOURNE:
+		
+			if (premiereFois_) {
 
 				// on tourne
-				setSpeedCoteOppose(LO_SPEED);
-				setSpeedCoteMur(0);
+				setSpeedCoteOppose(HI_SPEED);
 
 				premiereFois_ = false;
+			}
+
+			// on compte pour le redressement
+			compteurRotationTransition_++;
+
+			// Vitesse 1/4 de HI_SPEED
+			if (loopCounter_ % 4 == 0) {
+				setSpeedCoteMur(HI_SPEED);
+			} else {
+				setSpeedCoteMur(0);
 			}
 
 			// Si on trouve le debut du mur (en tournant)
@@ -266,29 +444,40 @@ void Parcours::runMachine() {
 			
 			// Si le mur est deja proche, on le suit
 			if (getDistMur() < DISTANCE_OPTIMALE + 2) {
-				changeState(State::MUR);
+				changeState(State::MUR_INIT);
 			}
 
 			break;
 
-		// retrouve le debut du mur (corrige l'erreur a cause de l'inertie)
+		// retrouve le debut du mur
 		case TRANSITION_CORRECT:
 			if (premiereFois_) {
 
 				// on tourne
-				setSpeedCoteMur(LO_SPEED);
-				setSpeedCoteOppose(0);
+				setSpeedCoteMur(HI_SPEED);
+
+				setAlarm(compteurRotationTransition_/4);
 
 				premiereFois_ = false;
 			}
 
-			if (getDistMur() <= DISTANCE_MAXIMALE) {
+			// Vitesse 1/4 de HI_SPEED
+			if (loopCounter_ % 4 == 0) {
+				setSpeedCoteOppose(HI_SPEED);
+			} else {
+				setSpeedCoteOppose(0);
+			}
+
+			// on compte pour le redressement
+			compteurRotationTransition_--;
+
+			if (getAlarm()) {
 				changeState(State::TRANSITION_COLLECT);
 			}
 
 			break;
 
-		// calcule 
+		// calcule
 		case TRANSITION_COLLECT:
 
 			if (premiereFois_) {
@@ -305,8 +494,8 @@ void Parcours::runMachine() {
 			}
 
 			// Si le mur est deja proche, on le suit
-			if (getDistMur() < DISTANCE_OPTIMALE + 2) {
-				changeState(State::MUR);
+			if (getDistMur() < DISTANCE_FIN_TRANSITION) {
+				changeState(State::TRANSITION_REDRESSE);
 			}
 
 			// on attend un certain nombre d'execution de la boucle
@@ -337,14 +526,15 @@ void Parcours::runMachine() {
 			if (premiereFois_) {
 
 				// on avance droit
-				bot_.setSpeed(HI_SPEED, HI_SPEED);
+				setSpeedCoteMur(HI_SPEED);
+				setSpeedCoteOppose(HI_SPEED);
 
 				premiereFois_ = false;
 			}
 			
 			// Si le mur est assez proche, on le suit
 			if (getDistMur() < DISTANCE_FIN_TRANSITION) {
-				changeState(State::MUR);
+				changeState(State::TRANSITION_REDRESSE);
 			}
 
 			break;
@@ -353,15 +543,23 @@ void Parcours::runMachine() {
 
 			if (premiereFois_) {
 
-				// on tourne a droite
+				// on tourne
 				setSpeedCoteMur(HI_SPEED);
-				setSpeedCoteOppose(LO_SPEED);
+
+				setAlarm(compteurRotationTransition_-3);
 
 				premiereFois_ = false;
 			}
 
-			if (getDistMur() < DISTANCE_OPTIMALE) {
-				changeState(State::MUR);
+			// Vitesse 1/4 de HI_SPEED
+			if (loopCounter_ % 4 == 0) {
+				setSpeedCoteOppose(HI_SPEED);
+			} else {
+				setSpeedCoteOppose(0);
+			}
+
+			if (getAlarm()) {
+				changeState(State::MUR_INIT);
 			}
 
 			break;
@@ -481,9 +679,8 @@ void Parcours::runMachineMusique() {
 				premiereFoisMusique_ = false;
 			}
 
-			if (timer_.isExpired()) {
+			if (getAlarmMusique()) {
 				changeStateMusique(StateMusique::TONE3);
-
 			}
 
 			break;
@@ -507,7 +704,7 @@ void Parcours::runMachineMusique() {
 }
 
 void Parcours::changeStateMusique(StateMusique s) {
-	premiereFois_ = true;
+	premiereFoisMusique_ = true;
 	etatMusique_ = s;
 }
 

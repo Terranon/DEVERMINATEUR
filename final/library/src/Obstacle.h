@@ -17,9 +17,10 @@ public:
 	
 	/**
 	 * \brief constructor
+	 * \param length Minimum wall length
 	 * \return an Obstacle
 	 */
-	Obstacle();
+	Obstacle(uint8_t length);
 	
 	/**
 	 * \brief Add a distance to the data log
@@ -55,7 +56,7 @@ private:
 	
 	// Number of consecutive readings before it is concluded that the obstacle
 	// is a wall and not a pole
-	static const uint8_t WALL_MIN_LENGTH = 20;
+	uint8_t wallMinLength_;
 
 	// Max range
 	static const uint8_t MAX_DISTANCE = 60;
