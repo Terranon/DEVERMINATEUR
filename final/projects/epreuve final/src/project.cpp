@@ -27,6 +27,7 @@
 #include <memoire_24.h>
 #include <USBCommunicator.h>
 #include <Parcours.h>
+#include <Piezo.h>
 
 /******************************************************************************\
 * Constants for loading proper boot states
@@ -41,6 +42,9 @@ const uint8_t PATH = 0;
  * \return a uint8_t containing the current Boot State: Diagnostic or Path.
  */
 uint8_t loadBootState() {
+    
+    Piezo success;
+    success.tanaNaNaaa();
     
     uint8_t lastState, currentState;
     Memoire24CXXX mem;

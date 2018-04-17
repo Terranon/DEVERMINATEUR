@@ -291,6 +291,21 @@ void Piezo::playNote(uint8_t note) {
 }
 
 /**
+ * \brief plays success sound from zelda
+ */
+void Piezo::tanaNaNaaa(){
+    playNote(LA_THREE);
+    _delay_ms(200);
+    playNote(LASHARP_THREE);
+    _delay_ms(200);
+    playNote(SI_THREE);
+    _delay_ms(200);
+    playNote(DO_THREE);
+    _delay_ms(500);
+    stopPlayingNote();
+}
+
+/**
  * \brief plays melody of the song Gucci Gang
  */
 void Piezo::gucciGang() {
@@ -368,80 +383,5 @@ void Piezo::gucciGang() {
         _delay_ms(500);
         playNote(LA_TWO);
         _delay_ms(500);
-    }
-}
-
-/**
- * \brief plays melody of the song Africa by Toto
- */
-void Piezo::africaToto() {
-    
-    
-    for(int i = 0; i < 2; i++) {
-        playNote(LA_ONE);
-        _delay_ms(612);
-        playNote(LA_ONE);
-        _delay_ms(612);
-        stopPlayingNote();
-        _delay_ms(612);
-        playNote(LA_ONE);
-        _delay_ms(612);
-        stopPlayingNote();
-        _delay_ms(612);
-        playNote(LA_ONE);
-        _delay_ms(612);
-        stopPlayingNote();
-        _delay_ms(612);
-        playNote(LA_ONE);
-        _delay_ms(612);
-        
-        playNote(LA_ONE);
-        _delay_ms(612);
-        stopPlayingNote();
-        _delay_ms(612);
-        playNote(LA_ONE);
-        _delay_ms(612);
-        stopPlayingNote();
-        _delay_ms(612);
-        playNote(SOSHARP_ONE);
-        _delay_ms(1225);
-        playNote(FASHARP_TWO);
-        _delay_ms(612);
-        playNote(MI_TWO);
-        _delay_ms(612);
-        
-        playNote(DOSHARP_TWO);
-        _delay_ms(612);
-        playNote(MI_TWO);
-        _delay_ms(612);
-        playNote(DOSHARP_TWO);
-        _delay_ms(612);
-        playNote(FASHARP_TWO);
-        _delay_ms(612);
-        stopPlayingNote();
-        _delay_ms(612);
-        playNote(MI_TWO);
-        _delay_ms(612);
-        playNote(DOSHARP_TWO);
-        _delay_ms(612);
-        playNote(MI_TWO);
-        _delay_ms(612);
-        
-        playNote(FASHARP_TWO);
-        _delay_ms(612);
-        playNote(MI_TWO);
-        _delay_ms(612);
-        playNote(DOSHARP_TWO);
-        _delay_ms(612);
-        playNote(SI_TWO);
-        _delay_ms(612);
-        playNote(DOSHARP_TWO);
-        _delay_ms(612);
-        playNote(MI_TWO);
-        _delay_ms(612);
-        playNote(DOSHARP_TWO);
-        _delay_ms(612);
-        stopPlayingNote();
-        _delay_ms(612);
     }
 }

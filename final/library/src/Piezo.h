@@ -86,17 +86,16 @@ public:
     *             in chromatic scale LA_ONE:110Hz to LA_FOUR:880Hz
     */
     void playNote(uint8_t note);
+    
+    /**
+    * \brief plays success sound from zelda
+    */
+    void tanaNaNaaa();
 
     /**
     * \brief plays melody of the song Gucci Gang
     */
     void gucciGang();
-    
-    /**
-    * \brief plays melody of the song Africa by Toto
-    */
-    void africaToto();
-    
     
 private:
 
