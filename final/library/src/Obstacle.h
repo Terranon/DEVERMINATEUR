@@ -55,7 +55,10 @@ private:
 	
 	// Number of consecutive readings before it is concluded that the obstacle
 	// is a wall and not a pole
-	static const uint8_t WALL_MIN_LENGTH = 30;
+	static const uint8_t WALL_MIN_LENGTH = 20;
+
+	// Max range
+	static const uint8_t MAX_DISTANCE = 60;
 	
 };
 
