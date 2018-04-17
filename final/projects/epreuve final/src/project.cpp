@@ -1,7 +1,7 @@
 /*****************************************************************************\
  * Authors:     Jean-Raphael Matte, Maximilien Bianchi, Thomas Dufour,
  *              William Chartrand
- * Name:        project.cpp
+ * Name:        guccibot.cpp
  * Description: Ce programme alterne entre les deux modes d'operation 
  *              (Diagnostic ou Path) en utilisant la memoire EEPROM.
  * Pinout :
