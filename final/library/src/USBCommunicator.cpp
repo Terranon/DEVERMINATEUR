@@ -12,7 +12,7 @@
 USBCommunicator::USBCommunicator():
 robotName_("GucciBot     "),
 teamNumber_("93-97    "),
-sectionNumber_('5'),
+sectionNumber_(5),
 semester_("18-1"),
 robotColor_(BASECOLOR_BLACK),
 button_(),

@@ -1,42 +1,41 @@
 GUCCIBOT
 
-/project/  contient: -/src/ qui contient le code source guccibot.cpp                G
+/guccibot/ contient: -/src/ qui contient le code source guccibot.cpp                G
                      -un Makefile pour compiler et installer le projet complet
                      -*Pour compiler guccibot.cpp et l'installer*                   U
-                         % make
-                         % make install                                             C
-                     -*Pour recompiler le projet complet et l'installer* 
-                         % make -B                                                  C
-                         % make install
-                     -*Pour enlever tous les fichiers crees par une compilation*    I
-                         % make clean
+                         % make install                                             
+                     -*Pour recompiler le projet complet et l'installer*            C
+                         % make install -B                                          
+                     -*Pour enlever tous les fichiers dans ce repertoire crees      C
+                       par une compilation*                                         
+                         % make clean                                               I
 
-/library/ contient:  -/src/ qui contient le code source de toutes les classes       B
-                     -un Makefile pour compiler la library
-                     -*Pour compiler la library*                                    O
-                         % make
-                     -*Pour recompiler la library completement*                     T
-                         % make -B
-                     -*Pour enlever tous les fichiers crees par une compilation
-                       sauf la library*                                             G
-                         % make clean
-                     -*Pour enlever tous les fichiers crees par une compilation     U
-                       incluant le library*
-                         % make mrproper                                            C
- 
+/library/ contient:  -/src/ qui contient le code source de toutes les classes       
+                     -un Makefile pour compiler la library                          B
+                     -*Pour compiler la library*                                    
+                         % make                                                     O
+                     -*Pour recompiler la library completement*                     
+                         % make -B                                                  T
+                     -*Pour enlever tous les fichiers crees par une compilation     
+                       sauf la library elle-meme*                                   
+                         % make clean                                               G
+                     -*Pour enlever tous les fichiers crees par une compilation     
+                       incluant la library*                                         U
+                         % make mrproper                                            
                                                                                     C
- 
- * Layout des fils pour bon fonctionnement du GUCCIBOT                              I
- *
- * 
- *    Sensor inputs ( L R )       RightMotor ( E   D )                              B
- *                    | |                      |   |
- * PORTA  1 2 3 4 5 6 7 8       PORTB  1 2 3 4 5 6 7 8                              O
- *                                           |   |
- *                               LeftMotor ( E   D )                                T
- * 
- *      LED ( - + )                        Piezo ( - + )
- *            | |                                  | |
+                                                                                    
+                                                                                    C
+ * Layout des fils pour bon fonctionnement du GUCCIBOT                              
+ *                                                                                  I
+ *                                                                                  
+ *    Sensor inputs ( L R )       RightMotor ( E   D )                              
+ *                    | |                      |   |                                B
+ * PORTA  1 2 3 4 5 6 7 8       PORTB  1 2 3 4 5 6 7 8                              
+ *                                           |   |                                  O
+ *                               LeftMotor ( E   D )                                
+ *                                                                                  T
+ *      LED ( - + )                        Piezo ( - + )                            
+ *            | |                                  | |                              
  * PORTC  1 2 3 4 5 6 7 8       PORTD  1 2 3 4 5 6 7 8
  *                                             | |
  *                            Jumper for Timer \_/

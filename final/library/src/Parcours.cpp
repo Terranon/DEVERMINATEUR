@@ -7,7 +7,7 @@
 				consideration les poteaux et les fins de murs. Ce programme  
 				utilise donc les classes Sensor et Motor. De plus, ce programme 
 				permet au robot de changer de direction de maniere fluide.                                                               
- * Version: 1.0
+ * Version: 1.3
 \******************************************************************************/
 
 #include "Parcours.h"
@@ -25,7 +25,8 @@ void Parcours::start() {
 	// Boucle principale
 	while(1) {
 
-		timer_.schedule(50);
+		// Fixe la duree du cycle
+		timer_.schedule(DELTA_T);
 
 		updateDistance();
 
@@ -43,34 +44,32 @@ void Parcours::start() {
 		if (suitUnMur_) {
 
 			// Si on a fait une transition et qu'il n'y a pas eu 
-			// d'interruption dans l'ancien mur, on attends de trouver un 
-			// trou
+			// d'interruption dans l'ancien mur, on attends d'en trouver une
 			if (postTransition_) {
 
+				// Si on a trouve un trou
 				if (getDistObstacle() > DISTANCE_MAXIMALE) {
 					postTransition_ = false;
 				}
 
 			} else {
-
-				//On push la distance observe par le capteur oppose
+				// On indique au gestionnaire d'obstacle la distance observe 
+				// par le capteur
 				obstacle_.push(getDistObstacle());
-
 			}
 
-			// verifier si on doit agir par rapport aux obstacles de l'autre 
-			// cote
-			detectionObstacle_ = obstacle_.analyze();
+			// verifier si on doit agir par rapport aux obstacles
+			uint8_t detectionObstacle = obstacle_.analyze();
 
 			// il s'agit d'un poteau
-			if (detectionObstacle_ == Obstacle::POLE) {
+			if (detectionObstacle == Obstacle::POLE) {
 				// faire jouer le piezo
 				changeStateMusique(StateMusique::TONE1);
 			}
 
 			// il s'agit d'un mur
-			if (detectionObstacle_ == Obstacle::WALL) {
-				changeSide();
+			if (detectionObstacle == Obstacle::WALL) {
+				// Fait une transition
 				changeState(State::TRANSITION_INIT);
 			}
 		}
@@ -167,25 +166,20 @@ void Parcours::runMachine() {
 
 			break;
 
+		// Commence a suivre un mur
 		case MUR_INIT:
 			if (premiereFois_) {
 
+				// Redemarre le gestionnaire d'obstacles
 				obstacle_.clear();
 
+				// On suit un mur
 				suitUnMur_ = true;
 
-				switch (side_) {
-					case D:
-						// allume rouge si un mur a droite
-						led_.setColor(Led::RED);
-						break;
-					case G:
-						// allume vert si un mur a gauche
-						led_.setColor(Led::GREEN);
-						break;
-				}
+				// Allume la DEL en vert
+				led_.setColor(Led::GREEN);
 
-				// on avance
+				// On avance
 				bot_.setDirection(Motor::FRWD, Motor::FRWD);
 
 				premiereFois_ = false;
@@ -195,10 +189,11 @@ void Parcours::runMachine() {
 
 			break;
 
+		// On est precisement a la distance optimale
 		case MUR_IDEAL:
 			if (premiereFois_) {
 
-				// tout droit
+				// Tout droit
 				setSpeedCoteMur(HI_SPEED);
 				setSpeedCoteOppose(HI_SPEED);
 
@@ -215,6 +210,7 @@ void Parcours::runMachine() {
 					tropLoin_ = true;
 				}
 
+				// On initialise la longeurAjustement_
 				longeurAjustement_ = 0;
 				changeState(State::MUR_AJUSTE);
 
@@ -224,14 +220,19 @@ void Parcours::runMachine() {
 
 		case MUR_AJUSTE:
 			if (premiereFois_) {
+
+				// Si on es trop loin
 				if (tropLoin_) {
+					// On tourne vers le mur
 					setSpeedCoteMur(0);
 					setSpeedCoteOppose(HI_SPEED);
 				} else {
+					// On tourne pour s'eloigner du mur
 					setSpeedCoteMur(HI_SPEED);
 					setSpeedCoteOppose(0);
 				}
 
+				// Fixe une alarme
 				setAlarm(longeurAjustement_);
 
 				premiereFois_ = false;
@@ -242,14 +243,14 @@ void Parcours::runMachine() {
 				changeState(State::MUR_REAJUSTE);
 			}
 
-			// Essaie de retrouver la distance optimale apres l'ajustement
+			// L'ajustement est fini
 			if (getAlarm()) {
 				changeState(State::MUR_FINDHOME);
 			}
 
 			break;
 
-		// avance tout droit en esperant rencontrer la distance ideale
+		// Essaie de retrouver la distance optimale en allant droit
 		case MUR_FINDHOME:
 			if (premiereFois_) {
 
@@ -257,6 +258,7 @@ void Parcours::runMachine() {
 				setSpeedCoteMur(HI_SPEED);
 				setSpeedCoteOppose(HI_SPEED);
 
+				// Formule pour le nombre de cycles
 				setAlarm(longeurAjustement_*4+LONGUEUR_FINDHOME);
 
 				premiereFois_ = false;
@@ -268,7 +270,7 @@ void Parcours::runMachine() {
 			}
 
 			// Si on est vraiment trop pres du mur, on fait un virage serre
-			if (getDistMur() < DISTANCE_OPTIMALE-3) {
+			if (getDistMur() <= DISTANCE_VIRAGE_SERRE) {
 				changeState(State::MUR_VIRAGESERRE);
 			}
 
@@ -285,7 +287,7 @@ void Parcours::runMachine() {
 
 			break;
 
-		// se replace droit apres l'ajustement
+		// Se replace droit apres l'ajustement
 		case MUR_REAJUSTE:
 			if (premiereFois_) {
 
@@ -297,11 +299,13 @@ void Parcours::runMachine() {
 					setSpeedCoteOppose(HI_SPEED);
 				}
 
+				// Formule pour le nombre de cycles
 				setAlarm( (longeurAjustement_ * (longeurAjustement_+1))/4 );
 
 				premiereFois_ = false;
 			}
 
+			// Le reajustement est fini
 			if (getAlarm()) {
 				changeState(State::MUR_IDEAL);
 			}
@@ -318,50 +322,75 @@ void Parcours::runMachine() {
 				premiereFois_ = false;
 			}
 
-			// Vitesse 1/3 de HI_SPEED
-			if (loopCounter_ % 3 == 0) {
+			// Vitesse 1/2 de HI_SPEED
+			if (loopCounter_ % 2 == 0) {
 				setSpeedCoteMur(HI_SPEED);
 			} else {
 				setSpeedCoteMur(0);
 			}
 
-			// si on a retrouve le mur
+			// Si on a retrouve le mur
 			if (getDistMur() <= DISTANCE_MAXIMALE) {
 				changeState(State::MUR_IDEAL);
 			}
 
 			break;
 
+		// Fais un virage serre
 		case MUR_VIRAGESERRE:
 			if (premiereFois_) {
 
-				// on vire
+				compteurVirageSerre_ = 0;
+
+				// On vire
 				setSpeedCoteMur(HI_SPEED);
 				setSpeedCoteOppose(0);
 
 				premiereFois_ = false;
 			}
 
-			if (getDistMur() >= DISTANCE_OPTIMALE) {
+			// Incremente le compteur
+			compteurVirageSerre_++;
+
+			// Arrete le virage lorsqu'on est a une distance raisonable
+			if (getDistMur() > DISTANCE_VIRAGE_SERRE) {
+				changeState(State::MUR_VIRAGEREDRESSE);
+			}
+
+			break;
+
+		// Redresse apres un virage serre
+		case MUR_VIRAGEREDRESSE:
+			if (premiereFois_) {
+
+				setSpeedCoteMur(0);
+				setSpeedCoteOppose(HI_SPEED);
+
+				setAlarm(compteurVirageSerre_/2);
+
+				premiereFois_ = false;
+			}
+			if (getAlarm()) {
 				changeState(State::MUR_IDEAL);
 			}
 
 			break;
 
-		// effectue une rotation de 180 degres puis suit le mur
+		// Effectue une rotation de 180 degres puis suit le mur
 		case ROTATION:
 
 			if (premiereFois_) {
 
+				// On ne suit pas un mur
 				suitUnMur_ = false;
 
-				// on eteint la led
-				led_.setColor(Led::OFF);
+				// Allume la DEL en rouge
+				led_.setColor(Led::RED);
 
-				// on change de cote
+				// On va suivre l'autre cote
 				changeSide();
 
-				// on tourne sur nous meme du cote oppose
+				// On tourne sur nous meme du cote de obstacles
 				switch (side_) {
 					case D:
 						bot_.setDirection(Motor::FRWD, Motor::BACK);
@@ -371,14 +400,14 @@ void Parcours::runMachine() {
 						break;
 				}
 
-				// on tourne
+				// On tourne
 				bot_.setSpeed(ROTATION_SPEED, ROTATION_SPEED);
 
 				premiereFois_ = false;
 				
 			}
 
-			// on arrete de tourner lorsque la distance est bonne
+			// On arrete de tourner lorsque la distance est bonne
 			if (getDistMur() < DISTANCE_ARRET_ROTATION) {
 				changeState(State::MUR_INIT);
 			}
@@ -387,19 +416,27 @@ void Parcours::runMachine() {
 
 		// TRANSITION
 
-		// effectue une transition vers un mur
+		// Effectue une transition vers un mur
 		case TRANSITION_INIT:
 			if (premiereFois_) {
-
+				
+				// On ne suit pas un mur
 				suitUnMur_ = false;
+
+				// On a fait un transition
 				postTransition_ = true;
 
+				// Le compteur de rotation doit etre reinitialise
 				compteurRotationTransition_ = 0;
 
-				// on eteint la led
-				led_.setColor(Led::OFF);
 
-				// on avance
+				// On va suivre l'autre cote
+				changeSide();
+
+				// Allume la DEL en rouge
+				led_.setColor(Led::RED);
+
+				// On avance
 				bot_.setDirection(Motor::FRWD, Motor::FRWD);
 				
 				premiereFois_ = false;
@@ -409,18 +446,18 @@ void Parcours::runMachine() {
 
 			break;
 
-		// tourne jusqu'a ce que le mur ne soit plus en vue
+		// Tourne jusqu'a ce que le mur ne soit plus en vue
 		case TRANSITION_TOURNE:
 		
 			if (premiereFois_) {
 
-				// on tourne
+				// On tourne
 				setSpeedCoteOppose(HI_SPEED);
 
 				premiereFois_ = false;
 			}
 
-			// on compte pour le redressement
+			// On compte pour le redressement
 			compteurRotationTransition_++;
 
 			// Vitesse 1/4 de HI_SPEED
@@ -437,20 +474,24 @@ void Parcours::runMachine() {
 			}
 			
 			// Si le mur est deja proche, on le suit
-			if (getDistMur() < DISTANCE_OPTIMALE + 2) {
-				changeState(State::MUR_INIT);
+			if (getDistMur() < DISTANCE_FIN_TRANSITION) {
+				changeState(State::TRANSITION_REDRESSE);
 			}
 
 			break;
 
-		// retrouve le debut du mur
+		// Retrouve le debut du mur
 		case TRANSITION_CORRECT:
 			if (premiereFois_) {
 
-				// on tourne
+				// On tourne
 				setSpeedCoteMur(HI_SPEED);
 
-				setAlarm(compteurRotationTransition_/4);
+				if (compteurRotationTransition_/4 >= DIFF_CORRECT) {
+					setAlarm(compteurRotationTransition_/4 - DIFF_CORRECT);
+				} else {
+					setAlarm(compteurRotationTransition_/4);
+				}
 
 				premiereFois_ = false;
 			}
@@ -462,27 +503,29 @@ void Parcours::runMachine() {
 				setSpeedCoteOppose(0);
 			}
 
-			// on compte pour le redressement
-			compteurRotationTransition_--;
+			// On compte pour le redressement
+			if (compteurRotationTransition_ != 0) {
+				compteurRotationTransition_--;
+			}
 
 			if (getAlarm()) {
-				changeState(State::TRANSITION_COLLECT);
+				changeState(State::TRANSITION_VERIFY);
 			}
 
 			break;
 
-		// calcule
-		case TRANSITION_COLLECT:
+		// Calcule la vitesse de rapprochement du mur
+		case TRANSITION_VERIFY:
 
 			if (premiereFois_) {
 
-				// on avance droit
+				// On avance droit
 				bot_.setSpeed(HI_SPEED, HI_SPEED);
 
-				// on enregistre la distance
+				// On enregistre la distance
 				ancienneDistance_ = getDistMur();
 
-				setAlarm(NB_LOOP_COLLECT);
+				setAlarm(NB_LOOP_VERIFY);
 
 				premiereFois_ = false;
 			}
@@ -492,7 +535,6 @@ void Parcours::runMachine() {
 				changeState(State::TRANSITION_REDRESSE);
 			}
 
-			// on attend un certain nombre d'execution de la boucle
 			if (getAlarm()) {
 
 				// on calcule deltaD
@@ -515,6 +557,7 @@ void Parcours::runMachine() {
 
 			break;
 
+		// Avance en ligne droite jusqu'a ce que le mur soit assez proche
 		case TRANSITION_FONCE:
 
 			if (premiereFois_) {
@@ -533,6 +576,7 @@ void Parcours::runMachine() {
 
 			break;
 
+		// Essaie de replacer le robot droit avec le mur
 		case TRANSITION_REDRESSE:
 
 			if (premiereFois_) {
@@ -540,7 +584,9 @@ void Parcours::runMachine() {
 				// on tourne
 				setSpeedCoteMur(HI_SPEED);
 
-				setAlarm(compteurRotationTransition_-3);
+				if (compteurRotationTransition_ >= DIFF_REDRESSE) {
+					setAlarm(compteurRotationTransition_ - DIFF_REDRESSE);
+				}
 
 				premiereFois_ = false;
 			}
@@ -579,7 +625,11 @@ void Parcours::runMachineBouton() {
 	switch (etatBouton_) {
 		case PRESSED:
 			if (premiereFoisBouton_) {
-				changeState(State::ROTATION);
+
+				if (suitUnMur_) {
+					changeState(State::ROTATION);
+				}
+
 				premiereFoisBouton_ = false;
 			}
 			if ( !bouton_.isPressed() ) {

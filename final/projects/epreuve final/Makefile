@@ -11,13 +11,13 @@
 
 # Name of you project
 # (use a single word, ex: "myproject")
-projectName := project
+projectName := guccibot
 
 # Source files
 # List all .cpp source file to compile, separated by a whitespace,
 # or use '$(notdir $(wildcard src/*.cpp))' to include all .cpp files
 # in the src directory
-srcFiles := project.cpp
+srcFiles := guccibot.cpp
 
 # Directories of included libraries
 # The paths cannot contain whitespace characters
